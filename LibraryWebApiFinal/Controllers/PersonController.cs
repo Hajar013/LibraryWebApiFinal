@@ -19,7 +19,7 @@ namespace LibraryWebApiFinal.Controllers
 
         // GET: api/<PersonController>
         [HttpGet]
-        [Route("getper123456")]
+        [Route("get all persons")]
         public ActionResult<IEnumerable<Person>> Get()
         {
             return _context.Persons.ToList();
@@ -27,8 +27,8 @@ namespace LibraryWebApiFinal.Controllers
         }
 
         // GET api/<PersonController>/5
-        [HttpGet("{id}")]
-        [Route("getperson")]
+        [HttpGet]
+        [Route("get person by id ")]
         public Person GetPerson(int id)
         {
             Person p = new Person();
@@ -38,17 +38,38 @@ namespace LibraryWebApiFinal.Controllers
             return p;
         }
 
-
-        // PUT api/<PersonController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        [HttpPost]
+        [Route("add new person ")]
+        public ActionResult<Person> PostPerson(Person person)
         {
-        }
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
 
-        // DELETE api/<PersonController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
+            try
+            {
+                _context.Persons.Add(person);
+                _context.SaveChanges(); // Saving changes synchronously
+
+                return CreatedAtAction("GetPerson", new { id = person.Id }, person);
+            }
+            catch (Exception ex)
+            {
+                // Log the exception or handle it as per your requirement
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
         }
+        //// PUT api/<PersonController>/5
+        //[HttpPut("{id}")]
+        //public void Put(int id, [FromBody] string value)
+        //{
+        //}
+
+        //// DELETE api/<PersonController>/5
+        //[HttpDelete("{id}")]
+        //public void Delete(int id)
+        //{
+        //}
     }
 }

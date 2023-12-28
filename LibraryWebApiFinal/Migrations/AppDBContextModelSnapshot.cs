@@ -23,7 +23,7 @@ namespace LibraryWebApiFinal.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
-            modelBuilder.Entity("LibraryEF.Models.Accounter", b =>
+            modelBuilder.Entity("LibraryWebApiFinal.Models.Accounter", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -46,7 +46,7 @@ namespace LibraryWebApiFinal.Migrations
                     b.ToTable("Accounters");
                 });
 
-            modelBuilder.Entity("LibraryEF.Models.Author", b =>
+            modelBuilder.Entity("LibraryWebApiFinal.Models.Author", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -69,7 +69,7 @@ namespace LibraryWebApiFinal.Migrations
                     b.ToTable("Authors");
                 });
 
-            modelBuilder.Entity("LibraryEF.Models.Bill", b =>
+            modelBuilder.Entity("LibraryWebApiFinal.Models.Bill", b =>
                 {
                     b.Property<int>("BillNo")
                         .ValueGeneratedOnAdd()
@@ -103,7 +103,7 @@ namespace LibraryWebApiFinal.Migrations
                     b.ToTable("Bills");
                 });
 
-            modelBuilder.Entity("LibraryEF.Models.Book", b =>
+            modelBuilder.Entity("LibraryWebApiFinal.Models.Book", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -141,7 +141,7 @@ namespace LibraryWebApiFinal.Migrations
                     b.ToTable("Books");
                 });
 
-            modelBuilder.Entity("LibraryEF.Models.BookAuthor", b =>
+            modelBuilder.Entity("LibraryWebApiFinal.Models.BookAuthor", b =>
                 {
                     b.Property<int>("BookAuthorId")
                         .ValueGeneratedOnAdd()
@@ -167,7 +167,7 @@ namespace LibraryWebApiFinal.Migrations
                     b.ToTable("AuthorBooks");
                 });
 
-            modelBuilder.Entity("LibraryEF.Models.Borrower", b =>
+            modelBuilder.Entity("LibraryWebApiFinal.Models.Borrower", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -189,7 +189,7 @@ namespace LibraryWebApiFinal.Migrations
                     b.ToTable("Borrowers");
                 });
 
-            modelBuilder.Entity("LibraryEF.Models.Librarian", b =>
+            modelBuilder.Entity("LibraryWebApiFinal.Models.Librarian", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -213,7 +213,7 @@ namespace LibraryWebApiFinal.Migrations
                     b.ToTable("Librarians");
                 });
 
-            modelBuilder.Entity("LibraryEF.Models.Person", b =>
+            modelBuilder.Entity("LibraryWebApiFinal.Models.Person", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -247,7 +247,7 @@ namespace LibraryWebApiFinal.Migrations
                     b.ToTable("Persons");
                 });
 
-            modelBuilder.Entity("LibraryEF.Models.Transaction", b =>
+            modelBuilder.Entity("LibraryWebApiFinal.Models.Transaction", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -279,32 +279,32 @@ namespace LibraryWebApiFinal.Migrations
                     b.ToTable("Transactions");
                 });
 
-            modelBuilder.Entity("LibraryEF.Models.Accounter", b =>
+            modelBuilder.Entity("LibraryWebApiFinal.Models.Accounter", b =>
                 {
-                    b.HasOne("LibraryEF.Models.Person", "Person")
+                    b.HasOne("LibraryWebApiFinal.Models.Person", "Person")
                         .WithOne("Accounter")
-                        .HasForeignKey("LibraryEF.Models.Accounter", "PersonId")
+                        .HasForeignKey("LibraryWebApiFinal.Models.Accounter", "PersonId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Person");
                 });
 
-            modelBuilder.Entity("LibraryEF.Models.Bill", b =>
+            modelBuilder.Entity("LibraryWebApiFinal.Models.Bill", b =>
                 {
-                    b.HasOne("LibraryEF.Models.Accounter", "Accounter")
+                    b.HasOne("LibraryWebApiFinal.Models.Accounter", "Accounter")
                         .WithMany("Bills")
                         .HasForeignKey("AccounterId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("LibraryEF.Models.Book", "Book")
+                    b.HasOne("LibraryWebApiFinal.Models.Book", "Book")
                         .WithMany("Bills")
                         .HasForeignKey("BookId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("LibraryEF.Models.Borrower", "Borrower")
+                    b.HasOne("LibraryWebApiFinal.Models.Borrower", "Borrower")
                         .WithMany("Bills")
                         .HasForeignKey("BorrowerId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -317,15 +317,15 @@ namespace LibraryWebApiFinal.Migrations
                     b.Navigation("Borrower");
                 });
 
-            modelBuilder.Entity("LibraryEF.Models.BookAuthor", b =>
+            modelBuilder.Entity("LibraryWebApiFinal.Models.BookAuthor", b =>
                 {
-                    b.HasOne("LibraryEF.Models.Author", "Author")
+                    b.HasOne("LibraryWebApiFinal.Models.Author", "Author")
                         .WithMany("BookAuthors")
                         .HasForeignKey("AuthorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("LibraryEF.Models.Book", "Book")
+                    b.HasOne("LibraryWebApiFinal.Models.Book", "Book")
                         .WithMany("BookAuthors")
                         .HasForeignKey("BookId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -336,43 +336,43 @@ namespace LibraryWebApiFinal.Migrations
                     b.Navigation("Book");
                 });
 
-            modelBuilder.Entity("LibraryEF.Models.Borrower", b =>
+            modelBuilder.Entity("LibraryWebApiFinal.Models.Borrower", b =>
                 {
-                    b.HasOne("LibraryEF.Models.Person", "Person")
+                    b.HasOne("LibraryWebApiFinal.Models.Person", "Person")
                         .WithOne("Borrower")
-                        .HasForeignKey("LibraryEF.Models.Borrower", "PersonId")
+                        .HasForeignKey("LibraryWebApiFinal.Models.Borrower", "PersonId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Person");
                 });
 
-            modelBuilder.Entity("LibraryEF.Models.Librarian", b =>
+            modelBuilder.Entity("LibraryWebApiFinal.Models.Librarian", b =>
                 {
-                    b.HasOne("LibraryEF.Models.Person", "Person")
+                    b.HasOne("LibraryWebApiFinal.Models.Person", "Person")
                         .WithOne("Librarian")
-                        .HasForeignKey("LibraryEF.Models.Librarian", "PersonId")
+                        .HasForeignKey("LibraryWebApiFinal.Models.Librarian", "PersonId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Person");
                 });
 
-            modelBuilder.Entity("LibraryEF.Models.Transaction", b =>
+            modelBuilder.Entity("LibraryWebApiFinal.Models.Transaction", b =>
                 {
-                    b.HasOne("LibraryEF.Models.Book", "Book")
+                    b.HasOne("LibraryWebApiFinal.Models.Book", "Book")
                         .WithMany("Transactions")
                         .HasForeignKey("BookId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("LibraryEF.Models.Borrower", "Borrower")
+                    b.HasOne("LibraryWebApiFinal.Models.Borrower", "Borrower")
                         .WithMany()
                         .HasForeignKey("BorrowerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("LibraryEF.Models.Librarian", "Librarian")
+                    b.HasOne("LibraryWebApiFinal.Models.Librarian", "Librarian")
                         .WithMany("transactions")
                         .HasForeignKey("LibrarianId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -385,17 +385,17 @@ namespace LibraryWebApiFinal.Migrations
                     b.Navigation("Librarian");
                 });
 
-            modelBuilder.Entity("LibraryEF.Models.Accounter", b =>
+            modelBuilder.Entity("LibraryWebApiFinal.Models.Accounter", b =>
                 {
                     b.Navigation("Bills");
                 });
 
-            modelBuilder.Entity("LibraryEF.Models.Author", b =>
+            modelBuilder.Entity("LibraryWebApiFinal.Models.Author", b =>
                 {
                     b.Navigation("BookAuthors");
                 });
 
-            modelBuilder.Entity("LibraryEF.Models.Book", b =>
+            modelBuilder.Entity("LibraryWebApiFinal.Models.Book", b =>
                 {
                     b.Navigation("Bills");
 
@@ -404,17 +404,17 @@ namespace LibraryWebApiFinal.Migrations
                     b.Navigation("Transactions");
                 });
 
-            modelBuilder.Entity("LibraryEF.Models.Borrower", b =>
+            modelBuilder.Entity("LibraryWebApiFinal.Models.Borrower", b =>
                 {
                     b.Navigation("Bills");
                 });
 
-            modelBuilder.Entity("LibraryEF.Models.Librarian", b =>
+            modelBuilder.Entity("LibraryWebApiFinal.Models.Librarian", b =>
                 {
                     b.Navigation("transactions");
                 });
 
-            modelBuilder.Entity("LibraryEF.Models.Person", b =>
+            modelBuilder.Entity("LibraryWebApiFinal.Models.Person", b =>
                 {
                     b.Navigation("Accounter");
 
