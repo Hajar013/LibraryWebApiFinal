@@ -1,35 +1,39 @@
 ﻿using LibraryWebApiFinal.Models;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using BLL;
+using DAL.Repositories.RepositoryFactory;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace LibraryWebApiFinal.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
+    [Route("[controller]")]
     public class PersonController : ControllerBase
     {
-      //  private readonly AppDBContext _context;
-        private PersonBLL _BLL;
+       private readonly IRepositoryFactory _repository;
 
         //   public PersonController(AppDBContext context)
-        public PersonController(PersonBLL BLL)
+        public PersonController(IRepositoryFactory repository)
         {
-            //  _context = context;
-            _BLL = BLL;
+            _repository = repository;
         }
 
-
-        // GET: api/<PersonController>
         [HttpGet]
-        [Route("get all persons")]
-        public ActionResult<IEnumerable<Person>> Get()
+        public IEnumerable<Person> Get()
         {
-            return _BLL.GetAllPersons();
-
+           // var domesticAccounts = _repository.Person.FindByCondition(x => x.Id.Equals("Domestic"));
+            var persons = _repository.Person.FindAll();
+            return persons;
         }
+        // GET: api/<PersonController>
+        //[HttpGet]
+        //[Route("get all persons")]
+        //public ActionResult<IEnumerable<Person>> Get()
+        //{
+        //    return _BLL.GetAllPersons();
+
+        //}
 
         //// GET api/<PersonController>/5
         //[HttpGet]

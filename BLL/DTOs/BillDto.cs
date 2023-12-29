@@ -1,0 +1,21 @@
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
+
+namespace LibraryWebApiFinal.Models
+{
+    public class BillDto
+    {
+        public int BillNo { get; set; }
+        public DateTime Date { get; set; }
+        public int BorrowerId { get; set; }
+        public double Amount { get; set; }
+        public int BookId { get; set; }
+        public int AccounterId { get; set; }
+
+        public BorrowerDto Borrower { get; set; }
+        public BookDto Book { get; set; }
+        public AccounterDto Accounter { get; set; }
+
+    }
+
+}
