@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace BLL.Services
 {
-    public class ServicesBase<T> : IServicesBase<T>
+    public abstract class ServicesBase<T> : IServicesBase<T> where T : class
     {
         private readonly IRepositoryFactory _repository;
 

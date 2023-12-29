@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LibraryWebApiFinal.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace BLL.Services.PersonServices
 {
-    public interface IPersonService
+    public interface IPersonService : IServicesBase<PersonDto>
     {
-        public 
+       
     }
 }
