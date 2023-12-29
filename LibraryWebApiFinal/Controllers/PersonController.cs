@@ -1,4 +1,4 @@
-﻿using LibraryWebApiFinal.Models;
+﻿using DAL.Entities;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using DAL.Repositories.RepositoryFactory;

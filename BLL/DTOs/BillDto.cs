@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 
-namespace LibraryWebApiFinal.Models
+namespace BLL.DTOs
 {
     public class BillDto
     {

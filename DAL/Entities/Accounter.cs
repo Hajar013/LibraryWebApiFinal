@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System;
 
-namespace LibraryWebApiFinal.Models
+namespace DAL.Entities
 {
     public class Accounter
     {
@@ -12,7 +12,5 @@ namespace LibraryWebApiFinal.Models
         public string Certification { get; set; }
         public List<Bill>? Bills { get; set; }
         public Person Person { get; set; }
-
-
     }
 }

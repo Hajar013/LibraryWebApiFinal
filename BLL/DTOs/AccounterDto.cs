@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System;
 
-namespace LibraryWebApiFinal.Models
+namespace BLL.DTOs
 {
     public class AccounterDto
     {

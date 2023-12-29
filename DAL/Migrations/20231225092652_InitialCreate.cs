@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace LibraryWebApiFinal.Migrations
+namespace DAL.Migrations
 {
     public partial class InitialCreate : Migration
     {

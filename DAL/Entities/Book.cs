@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Transactions;
 
-namespace LibraryWebApiFinal.Models
+namespace DAL.Entities
 {
     public class Book
     {

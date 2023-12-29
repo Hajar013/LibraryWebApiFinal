@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace LibraryWebApiFinal.Models
+namespace DAL.Entities
 {
     public class BookAuthor
     {

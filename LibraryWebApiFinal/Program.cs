@@ -1,11 +1,12 @@
 using DAL.Repositories.RepositoryFactory;
-using LibraryWebApiFinal.Models;
+using DAL.Entities;
 using Microsoft.EntityFrameworkCore;
+using AutoMapper;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
+builder.Services.AddAutoMapper(typeof(Program).Assembly);
 // Configure DbContext
 builder.Services.AddDbContext<AppDBContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DbCon"))

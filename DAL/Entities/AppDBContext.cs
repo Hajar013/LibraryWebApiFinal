@@ -4,7 +4,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
-namespace LibraryWebApiFinal.Models
+namespace DAL.Entities
 {
     public class AppDBContext : DbContext
     {

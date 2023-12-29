@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Transactions;
 
-namespace LibraryWebApiFinal.Models
+namespace BLL.DTOs
 {
     public class BookDto
     {

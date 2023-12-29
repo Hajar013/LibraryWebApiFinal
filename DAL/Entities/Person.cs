@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Security.Cryptography;
 using System.Security.Principal;
 
-namespace LibraryWebApiFinal.Models
+namespace DAL.Entities
 {
 
     public class Person
