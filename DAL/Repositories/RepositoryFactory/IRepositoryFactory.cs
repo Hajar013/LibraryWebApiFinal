@@ -1,4 +1,6 @@
-﻿using DAL.Repositories.PersonRepos;
+﻿using DAL.Repositories.BorrowerRepos;
+using DAL.Repositories.LibrarianRepos;
+using DAL.Repositories.PersonRepos;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +12,8 @@ namespace DAL.Repositories.RepositoryFactory
     public interface IRepositoryFactory
     {
         IPersonRepository Person { get; }
+        ILibrarianRepository Librarian { get; }
+        IBorrowerRepository Borrower { get; }
         void Save();
     }
 }

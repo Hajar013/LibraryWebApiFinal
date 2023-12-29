@@ -16,14 +16,14 @@ namespace BLL.Services.PersonServices
     public  class PersonService : IPersonService
     {
         private readonly IRepositoryFactory _repository;
-        private readonly Mapper _PersonMapper;
+        private readonly IMapper _mapper;
 
-
-        public PersonService(IRepositoryFactory repository) 
+        public PersonService(IRepositoryFactory repository, IMapper mapper) 
         {
             _repository = repository;
-            var _configPerson = new MapperConfiguration(cfg => cfg.CreateMap<Person, PersonDto>().ReverseMap());
-            _PersonMapper = new Mapper(_configPerson);
+            //var _configPerson = new MapperConfiguration(cfg => cfg.CreateMap<Person, PersonDto>().ReverseMap());
+            //_mapper = new Mapper(_configPerson);
+            _mapper = mapper;
         }
 
         public void Create(PersonDto dto)
@@ -38,16 +38,19 @@ namespace BLL.Services.PersonServices
 
         public IQueryable<PersonDto> FindAll()
         {
+            //IQueryable<Person> personsFromDB = _repository.Person.FindAll();
+            //IQueryable<PersonDto> personsDto = personsFromDB.Select(person => new PersonDto
+            //{
+            //    Id = person.Id,
+            //    Role = person.Role,
+            //    Name = person.Name,
+            //    Address = person.Address,
+            //    UserName = person.UserName,
+            //    Password = person.Password,
+            //});
             IQueryable<Person> personsFromDB = _repository.Person.FindAll();
-            IQueryable<PersonDto> personsDto = personsFromDB.Select(person => new PersonDto
-            {
-                Id = person.Id,
-                Role = person.Role,
-                Name = person.Name,
-                Address = person.Address,
-                UserName = person.UserName,
-                Password = person.Password,
-            });
+            var personsDto = _mapper.ProjectTo<PersonDto>(personsFromDB);
+
             return personsDto;
         }
 
@@ -80,16 +83,6 @@ namespace BLL.Services.PersonServices
 
         public IQueryable<PersonDto> FindByCondition(int id)
         {
-            //Expression<Func<Person, bool>> entityExpression = person =>
-            //    expression.Compile().Invoke(new PersonDto
-            //    {
-            //        Id = person.Id,
-            //        Role = person.Role,
-            //        Name = person.Name,
-            //        Address = person.Address,
-            //        UserName = person.UserName,
-            //        Password = person.Password,
-            //    });
 
             IQueryable<Person> personsFromDB = _repository.Person.FindByCondition(x=>x.Id == id);
             IQueryable<PersonDto> personsDto = personsFromDB.Select(person => new PersonDto
@@ -116,8 +109,9 @@ namespace BLL.Services.PersonServices
             //    UserName = dto.UserName,
             //    Password = dto.Password,
             //};
-
-            throw new NotImplementedException();
+            //var personEntity = _mapper.Map<Person>(dto);
+            //var person = _repository.Person.Update(personEntity);
+            //throw new NotImplementedException();
         }
     }
 }

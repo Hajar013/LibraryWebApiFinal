@@ -3,6 +3,7 @@ using DAL.Entities;
 using Microsoft.EntityFrameworkCore;
 using AutoMapper;
 using BLL.Services.PersonServices;
+using BLL.Profiles;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -26,7 +27,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 //Add Auto Mapper
 //builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-builder.Services.AddAutoMapper(typeof(Program));
+builder.Services.AddAutoMapper(typeof(Program), typeof(MappingProfile));
+
 
 var app = builder.Build();
 

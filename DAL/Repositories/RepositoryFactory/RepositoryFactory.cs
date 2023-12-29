@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using DAL.Repositories.LibrarianRepos;
+using DAL.Repositories.BorrowerRepos;
 
 namespace DAL.Repositories.RepositoryFactory
 {
@@ -12,6 +14,8 @@ namespace DAL.Repositories.RepositoryFactory
     {
         private readonly AppDBContext _appDBContext;
         private IPersonRepository _person;
+        private ILibrarianRepository _librarian;
+        private IBorrowerRepository _borrower;
         //private IAccountRepository _account;
         public IPersonRepository Person
         {
@@ -22,6 +26,29 @@ namespace DAL.Repositories.RepositoryFactory
                     _person = new PersonRepository(_appDBContext);
                 }
                 return _person;
+            }
+        }
+
+        public ILibrarianRepository Librarian
+        {
+            get
+            {
+                if (_librarian == null)
+                {
+                    _librarian = new LibrarianRepository(_appDBContext);
+                }
+                return _librarian;
+            }
+        }
+        public IBorrowerRepository Borrower
+        {
+            get
+            {
+                if (_borrower == null)
+                {
+                    _borrower = new BorrowerRepository(_appDBContext);
+                }
+                return _borrower;
             }
         }
         //public IAccountRepository Account
