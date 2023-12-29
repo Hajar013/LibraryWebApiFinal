@@ -31,7 +31,7 @@ namespace BLL.Services.BookServices
            
         }
 
-        public void Delete(LibrarianDto dto)
+        public void Delete(BookDto dto)
         {
             Book book = _mapper.Map<Book>(dto);
             _repository.Book.Delete(book);
