@@ -28,28 +28,22 @@ namespace BLL.Services.PersonServices
 
         public void Create(PersonDto dto)
         {
-            throw new NotImplementedException();
+            Person person = _mapper.Map<Person>(dto);
+             _repository.Person.Create(person);
+            
         }
 
         public void Delete(PersonDto dto)
         {
-            throw new NotImplementedException();
+            Person person = _mapper.Map<Person>(dto);
+            _repository.Person.Delete(person);
         }
 
         public IQueryable<PersonDto> FindAll()
         {
-            //IQueryable<Person> personsFromDB = _repository.Person.FindAll();
-            //IQueryable<PersonDto> personsDto = personsFromDB.Select(person => new PersonDto
-            //{
-            //    Id = person.Id,
-            //    Role = person.Role,
-            //    Name = person.Name,
-            //    Address = person.Address,
-            //    UserName = person.UserName,
-            //    Password = person.Password,
-            //});
+        
             IQueryable<Person> personsFromDB = _repository.Person.FindAll();
-            var personsDto = _mapper.ProjectTo<PersonDto>(personsFromDB);
+            IQueryable<PersonDto> personsDto = personsFromDB.Select(person => _mapper.Map<PersonDto>(person));
 
             return personsDto;
         }
@@ -83,35 +77,15 @@ namespace BLL.Services.PersonServices
 
         public IQueryable<PersonDto> FindByCondition(int id)
         {
-
             IQueryable<Person> personsFromDB = _repository.Person.FindByCondition(x=>x.Id == id);
-            IQueryable<PersonDto> personsDto = personsFromDB.Select(person => new PersonDto
-            {
-                Id = person.Id,
-                Role = person.Role,
-                Name = person.Name,
-                Address = person.Address,
-                UserName = person.UserName,
-                Password = person.Password,
-            });
-
+            IQueryable<PersonDto> personsDto = personsFromDB.Select(person => _mapper.Map<PersonDto>(person));
             return personsDto;
         }
 
         public void Update(PersonDto dto)
         {
-            //var personsDto = new Person
-            //{
-            //    Id = dto.Id,
-            //    Role = dto.Role,
-            //    Name = dto.Name,
-            //    Address = dto.Address,
-            //    UserName = dto.UserName,
-            //    Password = dto.Password,
-            //};
-            //var personEntity = _mapper.Map<Person>(dto);
-            //var person = _repository.Person.Update(personEntity);
-            //throw new NotImplementedException();
+            Person person = _mapper.Map<Person>(dto);
+            _repository.Person.Update(person);
         }
     }
 }
