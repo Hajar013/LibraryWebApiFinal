@@ -35,12 +35,57 @@ namespace LibraryWebApiFinal.Controllers
         }
 
         [HttpGet]
-        [Route("getPerson")]
+        [Route("GetPerson/{id}")]
         public IQueryable<PersonDto> GetById(int id)
         {
             var person = _personServices.FindByCondition(id);
             return person;
         }
+
+        //[HttpPost]
+        //[Route("Register")]
+        //public ActionResult<PersonDto> PostPerson([FromBody]PersonDto person)
+        //{
+        //    if (!ModelState.IsValid)
+        //    {
+        //        return BadRequest(ModelState);
+        //    }
+
+        //    try
+        //    {
+        //        _personServices.Create(person);
+        //        return CreatedAtAction("GetPerson", new { id = person.Id }, person);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        // Log the exception or handle it as per your requirement
+        //        return StatusCode(500, $"Internal server error: {ex.Message}");
+        //    }
+        //}
+
+        [HttpPost]
+        [Route("Register")]
+        public ActionResult<PersonDto> PostPerson([FromBody] PersonDto person)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            try
+            {
+                _personServices.Create(person);
+
+                // Use the correct action name ("GetPerson") and route values (id)
+                return CreatedAtAction("GetPerson", new { id = person.Id }, person);
+            }
+            catch (Exception ex)
+            {
+                // Log the exception or handle it as per your requirement
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+        }
+
 
         // GET: api/<PersonController>
         //[HttpGet]
