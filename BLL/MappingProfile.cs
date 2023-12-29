@@ -13,10 +13,16 @@ namespace BLL
     {
         public MappingProfile()
         {
-              CreateMap<Person, PersonDto>().ReverseMap();
-              CreateMap<Librarian, LibrarianDto>().ReverseMap();
-              CreateMap<Borrower, BorrowerDto>().ReverseMap();
-              CreateMap<Accounter, AccounterDto>().ReverseMap();
+            CreateMap<Accounter, AccounterDto>().ReverseMap();
+            CreateMap<Author, AuthorDto>().ReverseMap();    
+            CreateMap<Bill, BillDto>().ReverseMap();
+            CreateMap<BookAuthor, BookAuthorDto>().ReverseMap();
+            CreateMap<Book,BookDto>().ReverseMap();
+            CreateMap<Borrower, BorrowerDto>().ReverseMap();
+            CreateMap<Librarian, LibrarianDto>().ReverseMap();
+            CreateMap<Person, PersonDto>().ReverseMap();
+            CreateMap<Transaction, TransactionDto>().ReverseMap();  
+          
         }
 
     }
