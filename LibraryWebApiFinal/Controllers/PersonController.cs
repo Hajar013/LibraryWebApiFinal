@@ -4,6 +4,7 @@ using System;
 using DAL.Repositories.RepositoryFactory;
 using BLL.Services.PersonServices;
 using BLL.DTOs;
+using AutoMapper;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -13,18 +14,13 @@ namespace LibraryWebApiFinal.Controllers
     [Route("[controller]")]
     public class PersonController : ControllerBase
     {
-        //private readonly IRepositoryFactory _repository;
-
-        // //   public PersonController(AppDBContext context)
-        // public PersonController(IRepositoryFactory repository)
-        // {
-        //     _repository = repository;
-        // }
-
+    
         private readonly IPersonService _personServices;
-        public PersonController(IPersonService personServices)
+        private readonly IMapper _mapper;
+        public PersonController(IPersonService personServices, IMapper mapper)
         {
             _personServices = personServices;
+            _mapper = mapper;
         }
 
         [HttpGet]
@@ -42,26 +38,6 @@ namespace LibraryWebApiFinal.Controllers
             return person;
         }
 
-        //[HttpPost]
-        //[Route("Register")]
-        //public ActionResult<PersonDto> PostPerson([FromBody]PersonDto person)
-        //{
-        //    if (!ModelState.IsValid)
-        //    {
-        //        return BadRequest(ModelState);
-        //    }
-
-        //    try
-        //    {
-        //        _personServices.Create(person);
-        //        return CreatedAtAction("GetPerson", new { id = person.Id }, person);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        // Log the exception or handle it as per your requirement
-        //        return StatusCode(500, $"Internal server error: {ex.Message}");
-        //    }
-        //}
 
         [HttpPost]
         [Route("Register")]
@@ -76,8 +52,74 @@ namespace LibraryWebApiFinal.Controllers
             {
                 _personServices.Create(person);
 
-                // Use the correct action name ("GetPerson") and route values (id)
-                return CreatedAtAction("GetPerson", new { id = person.Id }, person);
+                // Assuming your Create method sets the Id of the created person, you can retrieve it
+                int createdPersonId = person.Id;
+
+                // Use the correct action name ("GetById") and route values (id)
+                return CreatedAtAction("GetById", new { id = createdPersonId }, person);
+            }
+            catch (Exception ex)
+            {
+                // Log the exception or handle it as per your requirement
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+        }
+        [HttpPut]
+        [Route("Edit/{id}")]
+        public ActionResult<PersonDto> EditPerson(int id, [FromBody] PersonDto updatedPerson)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            try
+            {
+                var existingPerson = _personServices.FindByCondition(id).FirstOrDefault();
+
+                if (existingPerson == null)
+                {
+                    return NotFound($"Person with ID {id} not found");
+                }
+
+                // Update properties of existingPerson with values from updatedPerson
+                existingPerson.Name = updatedPerson.Name;
+                existingPerson.Address = updatedPerson.Address;
+                existingPerson.UserName = updatedPerson.UserName;
+                existingPerson.Password = updatedPerson.Password;
+
+                // Use AutoMapper to map the updated entity back to DTO if needed
+                var updatedPersonDto = _mapper.Map<PersonDto>(existingPerson);
+
+                // Save changes to the repository
+                _personServices.Update(existingPerson);
+
+                return Ok(updatedPersonDto);
+            }
+            catch (Exception ex)
+            {
+                // Log the exception or handle it as per your requirement
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+        }
+
+        [HttpDelete]
+        [Route("Delete/{id}")]
+        public IActionResult DeletePerson(int id)
+        {
+            try
+            {
+                var existingPerson = _personServices.FindByCondition(id).FirstOrDefault();
+
+                if (existingPerson == null)
+                {
+                    return NotFound($"Person with ID {id} not found");
+                }
+
+                // Use your service to delete the person
+                _personServices.Delete(existingPerson);
+
+                return NoContent(); // 204 No Content
             }
             catch (Exception ex)
             {
@@ -87,59 +129,6 @@ namespace LibraryWebApiFinal.Controllers
         }
 
 
-        // GET: api/<PersonController>
-        //[HttpGet]
-        //[Route("get all persons")]
-        //public ActionResult<IEnumerable<Person>> Get()
-        //{
-        //    return _BLL.GetAllPersons();
 
-        //}
-
-        //// GET api/<PersonController>/5
-        //[HttpGet]
-        //[Route("get person by id ")]
-        //public Person GetPerson(int id)
-        //{
-        //    Person p = new Person();
-        //    p = _context.Persons.FirstOrDefault(x => x.Id == id);
-        //    if (p == null)
-        //        throw new Exception("not found ");
-        //    return p;
-        //}
-
-        //[HttpPost]
-        //[Route("add new person ")]
-        //public ActionResult<Person> PostPerson(Person person)
-        //{
-        //    if (!ModelState.IsValid)
-        //    {
-        //        return BadRequest(ModelState);
-        //    }
-
-        //    try
-        //    {
-        //        _context.Persons.Add(person);
-        //        _context.SaveChanges(); // Saving changes synchronously
-
-        //        return CreatedAtAction("GetPerson", new { id = person.Id }, person);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        // Log the exception or handle it as per your requirement
-        //        return StatusCode(500, $"Internal server error: {ex.Message}");
-        //    }
-        //}
-        ////// PUT api/<PersonController>/5
-        //[HttpPut("{id}")]
-        //public void Put(int id, [FromBody] string value)
-        //{
-        //}
-
-        //// DELETE api/<PersonController>/5
-        //[HttpDelete("{id}")]
-        //public void Delete(int id)
-        //{
-        //}
     }
 }

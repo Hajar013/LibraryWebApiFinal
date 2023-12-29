@@ -25,13 +25,14 @@ namespace BLL.Services.AccounterServices
         {
             Accounter accounter = _mapper.Map<Accounter>(dto);
             _repository.Accounter.Create(accounter);
-
+            _repository.Save();
         }
 
         public void Delete(AccounterDto dto)
         {
             Accounter accounter = _mapper.Map<Accounter>(dto);
             _repository.Accounter.Delete(accounter);
+            _repository.Save();
         }
 
         public IQueryable<AccounterDto> FindAll()
@@ -56,6 +57,7 @@ namespace BLL.Services.AccounterServices
         {
             Accounter accounter = _mapper.Map<Accounter>(dto);
             _repository.Accounter.Update(accounter);
+            _repository.Save();
         }
     }
 }

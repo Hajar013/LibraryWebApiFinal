@@ -29,14 +29,16 @@ namespace BLL.Services.PersonServices
         public void Create(PersonDto dto)
         {
             Person person = _mapper.Map<Person>(dto);
-             _repository.Person.Create(person);
-            
+            _repository.Person.Create(person);
+            _repository.Save();
+
         }
 
         public void Delete(PersonDto dto)
         {
             Person person = _mapper.Map<Person>(dto);
             _repository.Person.Delete(person);
+            _repository.Save();
         }
 
         public IQueryable<PersonDto> FindAll()
@@ -86,6 +88,7 @@ namespace BLL.Services.PersonServices
         {
             Person person = _mapper.Map<Person>(dto);
             _repository.Person.Update(person);
+            _repository.Save();
         }
     }
 }
