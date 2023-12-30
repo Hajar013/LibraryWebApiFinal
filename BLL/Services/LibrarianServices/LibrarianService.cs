@@ -28,13 +28,15 @@ namespace BLL.Services.LibrarianServices
         {
             Librarian librarian = _mapper.Map<Librarian>(dto);
             _repository.Librarian.Create(librarian);
-           
+            _repository.Save();
+
         }
 
         public void Delete(LibrarianDto dto)
         {
             Librarian librarian = _mapper.Map<Librarian>(dto);
             _repository.Librarian.Delete(librarian);
+            _repository.Save();
         }
 
         public IQueryable<LibrarianDto> FindAll()
@@ -59,6 +61,7 @@ namespace BLL.Services.LibrarianServices
         {
             Librarian librarian = _mapper.Map<Librarian>(dto);
             _repository.Librarian.Update(librarian);
+            _repository.Save();
         }
     }
 }
