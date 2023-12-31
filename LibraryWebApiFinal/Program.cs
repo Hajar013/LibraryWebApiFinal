@@ -7,6 +7,7 @@ using System.Reflection;
 using BLL;
 using BLL.Services.LibrarianServices;
 using BLL.Services.BorrowerServices;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -36,7 +37,14 @@ builder.Services.AddScoped<IRepositoryFactory, RepositoryFactory>();
 builder.Services.AddScoped<IPersonService, PersonService>();
 builder.Services.AddScoped<ILibrarianService, LibrarianService>();
 builder.Services.AddScoped<IBorrowerService, BorrowerService>();
-
+//to return person obj when login 
+builder.Services.AddControllers()
+        .AddJsonOptions(options =>
+        {
+            options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
+            // Other JSON serialization options...
+        });
+///to return person obj when login 
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
