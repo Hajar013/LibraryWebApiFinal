@@ -1,8 +1,11 @@
 ﻿using AutoMapper;
 using BLL.DTOs;
+using BLL.Services;
+using BLL.Services.AuthorServices;
 using BLL.Services.LibrarianServices;
 using BLL.Services.PersonServices;
 using DAL.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -16,12 +19,14 @@ namespace LibraryWebApiFinal.Controllers
 
         private readonly ILibrarianService _librarianServices;
         private readonly IMapper _mapper;
-        public LibrarianController(ILibrarianService librarianServices, IMapper mapper)
+        private readonly IAuthService<LibrarianDto> _authService;
+        public LibrarianController(ILibrarianService librarianServices, IMapper mapper, IAuthService<LibrarianDto> authService)
         {
             _librarianServices = librarianServices;
             _mapper = mapper;
+            _authService = authService;
         }
-
+        [Authorize]
         [HttpGet]
         public IQueryable<LibrarianDto> Get()
         {
@@ -38,24 +43,63 @@ namespace LibraryWebApiFinal.Controllers
         }
 
 
-        [HttpPost]
-        [Route("Register")]
-        public ActionResult<LibrarianDto> PostPerson([FromBody] LibrarianDto librarian)
+        //[HttpPost]
+        //[Route("Register")]
+        //public ActionResult<LibrarianDto> PostPerson([FromBody] LibrarianDto librarian)
+        //{
+        //    if (!ModelState.IsValid)
+        //    {
+        //        return BadRequest(ModelState);
+        //    }
+        //    librarian.Person.Role = "librarian";
+        //    try
+        //    {
+        //        _librarianServices.Create(librarian);
+
+        //        // Assuming your Create method sets the Id of the created person, you can retrieve it
+        //        int createdlibrarianId = librarian.Id;
+
+        //        // Use the correct action name ("GetById") and route values (id)
+        //        return CreatedAtAction("GetById", new { id = createdlibrarianId }, librarian);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        // Log the exception or handle it as per your requirement
+        //        return StatusCode(500, $"Internal server error: {ex.Message}");
+        //    }
+        //}
+
+        [HttpPost("login")]
+        public IActionResult Login([FromBody] LibrarianDto librarianDto)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
+            var librarian = _authService.Authenticate(librarianDto.Person.UserName, librarianDto.Person.Password);
+
+            if (librarian == null)
+                return Unauthorized("Invalid username or password");
+
+            var token = _authService.GenerateJwtToken(librarian);
+            return Ok(new { Token = token });
+        }
+
+
+        [HttpPost("Register")]
+        public IActionResult Register([FromBody] LibrarianDto librarian)
+        {
+            // Validate librarian DTO or handle validation errors
+
             librarian.Person.Role = "librarian";
+
             try
             {
-                _librarianServices.Create(librarian);
+                _authService.Register(librarian);
+                //_librarianServices.Create(librarian);
 
-                // Assuming your Create method sets the Id of the created person, you can retrieve it
-                int createdlibrarianId = librarian.Id;
+                // Assuming your Create method sets the Id of the created librarian, you can retrieve it
+                int createdLibrarianId = librarian.Id;
 
-                // Use the correct action name ("GetById") and route values (id)
-                return CreatedAtAction("GetById", new { id = createdlibrarianId }, librarian);
+                var token = _authService.GenerateJwtToken(librarian);
+
+                return CreatedAtAction("GetById", new { id = createdLibrarianId }, new { Token = token });
             }
             catch (Exception ex)
             {
@@ -63,6 +107,9 @@ namespace LibraryWebApiFinal.Controllers
                 return StatusCode(500, $"Internal server error: {ex.Message}");
             }
         }
+
+
+
         [HttpPut]
         [Route("Edit/{id}")]
         public ActionResult<LibrarianDto> EditPerson(int id, [FromBody] LibrarianDto updatedLibrarian)
@@ -124,38 +171,38 @@ namespace LibraryWebApiFinal.Controllers
                 return StatusCode(500, $"Internal server error: {ex.Message}");
             }
         }
-        [HttpPost]
-        [Route("Login")]
-        public ActionResult<List<LibrarianDto>> Login([FromBody] LibrarianDto librarian)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
+        //[HttpPost]
+        //[Route("Login")]
+        //public ActionResult<List<LibrarianDto>> Login([FromBody] LibrarianDto librarian)
+        //{
+        //    if (!ModelState.IsValid)
+        //    {
+        //        return BadRequest(ModelState);
+        //    }
 
-            try
-            {
-                // Authenticate librarian (sample logic)
-                var authenticatedLibrarian = _librarianServices.Authenticate(librarian.Person.UserName, librarian.Person.Password);
-                if (authenticatedLibrarian.Count ==0)
-                {
-                    // If authentication fails
-                    return Unauthorized("Invalid username or password");
-                }
+        //    try
+        //    {
+        //        // Authenticate librarian (sample logic)
+        //        var authenticatedLibrarian = _librarianServices.Authenticate(librarian.Person.UserName, librarian.Person.Password);
+        //        if (authenticatedLibrarian.Count ==0)
+        //        {
+        //            // If authentication fails
+        //            return Unauthorized("Invalid username or password");
+        //        }
 
-                // If authenticated, you might generate a token or perform further actions as needed
-                // For example, setting some authentication flag or creating a JWT token
+        //        // If authenticated, you might generate a token or perform further actions as needed
+        //        // For example, setting some authentication flag or creating a JWT token
 
-                return Ok(authenticatedLibrarian); // Return the authenticated librarian DTO
-            }
-            catch (Exception ex)
-            {
-                // Log the exception or handle it as per your requirement
-                return StatusCode(500, $"Internal server error: {ex.Message}");
-            }
-        }
+        //        return Ok(authenticatedLibrarian); // Return the authenticated librarian DTO
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        // Log the exception or handle it as per your requirement
+        //        return StatusCode(500, $"Internal server error: {ex.Message}");
+        //    }
+    //}
 
 
 
-    }
+}
 }

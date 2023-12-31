@@ -5,6 +5,7 @@ using DAL.Repositories.RepositoryFactory;
 using BLL.Services.PersonServices;
 using BLL.DTOs;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -12,6 +13,7 @@ namespace LibraryWebApiFinal.Controllers
 {
     [ApiController]
     [Route("[controller]")]
+    [Authorize]
     public class PersonController : ControllerBase
     {
     

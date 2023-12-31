@@ -11,18 +11,25 @@ using System.Linq.Expressions;
 using AutoMapper;
 using DAL.Entities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text.Unicode;
 
 namespace BLL.Services.LibrarianServices
 {
-    public  class LibrarianService : ILibrarianService
+    public  class LibrarianService : ILibrarianService, IAuthService<LibrarianDto>
     {
         private readonly IRepositoryFactory _repository;
         private readonly IMapper _mapper;
+        private readonly IConfiguration _configuration;
 
-        public LibrarianService(IRepositoryFactory repository, IMapper mapper) 
+        public LibrarianService(IRepositoryFactory repository, IMapper mapper, IConfiguration configuration) 
         {
             _repository = repository;
             _mapper = mapper;
+            _configuration = configuration;
         }
 
         public void Create(LibrarianDto dto)
@@ -64,25 +71,85 @@ namespace BLL.Services.LibrarianServices
             _repository.Librarian.Update(librarian);
             _repository.Save();
         }
-        /*        public List<LibrarianDto> Authenticate(string username, string password)
+
+        //public List<LibrarianDto> Authenticate(string username, string password)
+        //{
+        //    var authenticatedLibrarian = _repository.Librarian
+        //        .FindByCondition(librarian =>
+        //            librarian.Person.UserName == username && librarian.Person.Password == password)
+        //        .Include(librarian => librarian.Person) // Ensure Person is included in the query
+        //        .ToList();
+
+        //    var authenticatedLibrarianDto = _mapper.Map<List<LibrarianDto>>(authenticatedLibrarian);
+        //    return authenticatedLibrarianDto;
+        //}
+
+        //public string GenerateJwtToken(LibrarianDto user)
+        //{
+        //    // var tokenHandler = new JwtSecurityTokenHandler();
+        //    var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
+        //    var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
+        //    //var tokenDescriptor = new SecurityTokenDescriptor
+        //    //{
+        //    //    Subject = new ClaimsIdentity(new Claim[]
+        //    //    {
+        //    //         new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+        //    //         new Claim(ClaimTypes.Role, user.Person.Role),
+        //    //    }),
+        //    //    Expires = DateTime.UtcNow.AddDays(7), // Token expiry time
+        //    //    SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+        //    //};
+        //    var token = new JwtSecurityToken(_configuration["Jwt:Issuer"], _configuration["Jwt:Audience"], null,
+        //        expires: DateTime.Now.AddMinutes(1), // Token expiry time
+        //        signingCredentials :credentials
+        //        );
+        //   // var token = tokenHandler.CreateToken(tokenDescriptor);
+        //    return new JwtSecurityTokenHandler().WriteToken(token);
+        //}
+        public string GenerateJwtToken(LibrarianDto user)
+        {
+            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
+            var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
+
+            var token = new JwtSecurityToken(
+                issuer: _configuration["Jwt:Issuer"],
+                audience: _configuration["Jwt:Audience"],
+                claims: new List<Claim>
                 {
-                    // Replace this logic with your actual authentication process (e.g., database check, token validation, etc.)
-                    var authenticatedLibrarian = _repository.Librarian.FindByCondition(librarian =>
-                        librarian.Person.UserName == username && librarian.Person.Password == password);
-                     var authenticatedLibrarianDto = _mapper.Map<List<LibrarianDto>>(authenticatedLibrarian);
-                    return authenticatedLibrarianDto;
-                }*/
-        public List<LibrarianDto> Authenticate(string username, string password)
+            new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+            new Claim(ClaimTypes.Role, user.Person.Role),
+                },
+                expires: DateTime.Now.AddMinutes(30), // Token expiry time (adjust as needed)
+                signingCredentials: credentials
+            );
+
+            return new JwtSecurityTokenHandler().WriteToken(token);
+        }
+
+
+        public LibrarianDto Authenticate(string username, string password)
         {
             var authenticatedLibrarian = _repository.Librarian
                 .FindByCondition(librarian =>
                     librarian.Person.UserName == username && librarian.Person.Password == password)
-                .Include(librarian => librarian.Person) // Ensure Person is included in the query
-                .ToList();
+                .Include(librarian => librarian.Person)
+                .FirstOrDefault();
+            var librarian = _mapper.Map<LibrarianDto>(authenticatedLibrarian);
 
-            var authenticatedLibrarianDto = _mapper.Map<List<LibrarianDto>>(authenticatedLibrarian);
-            return authenticatedLibrarianDto;
+            return librarian;
+
         }
+
+
+        public void Register(LibrarianDto user)
+        {
+            var librarian = _mapper.Map<Librarian>(user);
+            _repository.Person.Create(librarian.Person);
+            _repository.Librarian.Create(librarian);
+            _repository.Save();
+
+        }
+
 
     }
 }
