@@ -46,7 +46,7 @@ namespace LibraryWebApiFinal.Controllers
             {
                 return BadRequest(ModelState);
             }
-
+            librarian.Person.Role = "librarian";
             try
             {
                 _librarianServices.Create(librarian);
@@ -124,6 +124,7 @@ namespace LibraryWebApiFinal.Controllers
                 return StatusCode(500, $"Internal server error: {ex.Message}");
             }
         }
+
 
 
     }
