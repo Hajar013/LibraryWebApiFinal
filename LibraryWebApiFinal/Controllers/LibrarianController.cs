@@ -124,6 +124,36 @@ namespace LibraryWebApiFinal.Controllers
                 return StatusCode(500, $"Internal server error: {ex.Message}");
             }
         }
+        [HttpPost]
+        [Route("Login")]
+        public ActionResult<List<LibrarianDto>> Login([FromBody] LibrarianDto librarian)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            try
+            {
+                // Authenticate librarian (sample logic)
+                var authenticatedLibrarian = _librarianServices.Authenticate(librarian.Person.UserName, librarian.Person.Password);
+                if (authenticatedLibrarian.Count ==0)
+                {
+                    // If authentication fails
+                    return Unauthorized("Invalid username or password");
+                }
+
+                // If authenticated, you might generate a token or perform further actions as needed
+                // For example, setting some authentication flag or creating a JWT token
+
+                return Ok(authenticatedLibrarian); // Return the authenticated librarian DTO
+            }
+            catch (Exception ex)
+            {
+                // Log the exception or handle it as per your requirement
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+        }
 
 
 

@@ -63,5 +63,14 @@ namespace BLL.Services.LibrarianServices
             _repository.Librarian.Update(librarian);
             _repository.Save();
         }
+        public List<LibrarianDto> Authenticate(string username, string password)
+        {
+            // Replace this logic with your actual authentication process (e.g., database check, token validation, etc.)
+            var authenticatedLibrarian = _repository.Librarian.FindByCondition(librarian =>
+                librarian.Person.UserName == username && librarian.Person.Password == password);
+             var authenticatedLibrarianDto = _mapper.Map<List<LibrarianDto>>(authenticatedLibrarian);
+            return authenticatedLibrarianDto;
+        }
+
     }
 }

@@ -13,6 +13,7 @@ namespace BLL
     {
         public MappingProfile()
         {
+           
             CreateMap<Accounter, AccounterDto>().ReverseMap();
             CreateMap<Author, AuthorDto>().ReverseMap();    
             CreateMap<Bill, BillDto>().ReverseMap();
