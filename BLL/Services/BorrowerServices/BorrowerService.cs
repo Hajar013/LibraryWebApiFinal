@@ -15,6 +15,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using BLL.Services.BookServices;
+using BLL.Services.PersonServices;
+using BLL.Services.TransactionServices;
 
 namespace BLL.Services.BorrowerServices
 {
@@ -23,12 +26,19 @@ namespace BLL.Services.BorrowerServices
         private readonly IRepositoryFactory _repository;
         private readonly IMapper _mapper;
         private readonly IConfiguration _configuration;
+        private readonly IBookService _bookService;
+        private readonly IPersonService _personService;
+        private readonly ITransactionService _transactionService;
 
-        public BorrowerService(IRepositoryFactory repository, IMapper mapper, IConfiguration configuration) 
+        public BorrowerService(IRepositoryFactory repository, IMapper mapper, IConfiguration configuration, IBookService bookService,
+            IPersonService personService, ITransactionService transactionService) 
         {
             _repository = repository;
             _mapper = mapper;
             _configuration = configuration;
+            _bookService = bookService;
+            _personService = personService;
+            _transactionService = transactionService;
         }
 
 
@@ -56,11 +66,11 @@ namespace BLL.Services.BorrowerServices
             return borrowersDto;
         }
 
-        public IQueryable<BorrowerDto> FindByCondition(int id)
+        public BorrowerDto FindById(int id)
         {
 
-            IQueryable<Borrower> borrowersFromDB = _repository.Borrower.FindByCondition(x=>x.Id == id);
-            IQueryable<BorrowerDto> borrowersDto = borrowersFromDB.Select(borrower => _mapper.Map<BorrowerDto>(borrower));
+            Borrower borrowersFromDB = _repository.Borrower.FindByCondition(x=>x.Id == id).FirstOrDefault();
+            BorrowerDto borrowersDto =  _mapper.Map<BorrowerDto>(borrowersFromDB);
 
             return borrowersDto;
         }
@@ -116,6 +126,43 @@ namespace BLL.Services.BorrowerServices
             _repository.Save();
 
         }
+
+
+
+        public bool RequestToBorrowBook(int bookId, int borrowerId)
+        {
+            // Assuming there's a method to search for a book by ID in the BookRepository
+            var book = _bookService.FindByCondition(bookId);
+
+            if (book == null)
+            {
+                Console.WriteLine("Book not found or not available for borrowing.");
+                return false;
+            }
+
+            // Assuming there's a method to get a borrower by their ID from a PersonRepository
+            var borrower =FindById(borrowerId);
+
+            if (borrower == null)
+            {
+                Console.WriteLine("Borrower not found.");
+                return false;
+            }
+
+            // Create a transaction and add it to the pending transactions
+            var transaction = new TransactionDto
+            {
+                BookId = book.Id,
+                BorrowerId = borrowerId,
+                Status = "Pending",
+                Date = DateTime.Now
+            };
+
+            _transactionService.Create(transaction);
+
+            return true; // Successfully borrowed the book
+        }
+
 
     }
 }

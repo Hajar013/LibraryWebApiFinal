@@ -11,9 +11,10 @@ namespace BLL.Services.BorrowerServices
     public interface IBorrowerService
     {
         IQueryable<BorrowerDto> FindAll();
-        IQueryable<BorrowerDto> FindByCondition(int id);
+       BorrowerDto FindById(int id);
         void Create(BorrowerDto dto);
         void Update(BorrowerDto dto);
         void Delete(BorrowerDto dto);
+        bool RequestToBorrowBook(int bookTitle, int borrowerId);
     }
 }

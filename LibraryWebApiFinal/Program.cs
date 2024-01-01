@@ -55,6 +55,14 @@ builder.Services.AddAuthorization(options =>
     {
         policy.RequireClaim(ClaimTypes.Role, "librarian");
     });
+    options.AddPolicy("BorrowerPolicy", policy =>
+    {
+        policy.RequireClaim(ClaimTypes.Role, "borrower");
+    });
+    options.AddPolicy("AccounterPolicy", policy =>
+    {
+        policy.RequireClaim(ClaimTypes.Role, "accounter");
+    });
 });
 
 //builder.Services.AddAuthorization();

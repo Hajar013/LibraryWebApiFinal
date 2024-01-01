@@ -5,6 +5,7 @@ using BLL.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
+using BLL.Services.BookServices;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -17,11 +18,13 @@ namespace LibraryWebApiFinal.Controllers
         private readonly IBorrowerService _borrowerServices;
         private readonly IMapper _mapper;
         private readonly IAuthService<BorrowerDto> _authService;
-        public BorrowerController(IBorrowerService borrowerServices, IMapper mapper, IAuthService<BorrowerDto> authService)
+        private readonly IBookService _bookService;
+        public BorrowerController(IBorrowerService borrowerServices, IMapper mapper, IAuthService<BorrowerDto> authService, IBookService bookService)
         {
             _borrowerServices = borrowerServices;
             _mapper = mapper;
             _authService = authService;
+            _bookService = bookService;
         }
         //[Authorize]
         [Authorize(Policy = "BorrowerPolicy")]
@@ -34,9 +37,9 @@ namespace LibraryWebApiFinal.Controllers
 
         [HttpGet]
         [Route("GetBorrower/{id}")]
-        public IQueryable<BorrowerDto> GetById(int id)
+        public BorrowerDto GetById(int id)
         {
-            var borrower = _borrowerServices.FindByCondition(id);
+            var borrower = _borrowerServices.FindById(id);
             return borrower;
         }
 
@@ -92,7 +95,7 @@ namespace LibraryWebApiFinal.Controllers
 
             try
             {
-                var existingBorrower = _borrowerServices.FindByCondition(id).FirstOrDefault();
+                var existingBorrower = _borrowerServices.FindById(id);
 
                 if (existingBorrower == null)
                 {
@@ -124,7 +127,7 @@ namespace LibraryWebApiFinal.Controllers
         {
             try
             {
-                var existingBorrower = _borrowerServices.FindByCondition(id).FirstOrDefault();
+                var existingBorrower = _borrowerServices.FindById(id);
 
                 if (existingBorrower == null)
                 {
@@ -165,6 +168,76 @@ namespace LibraryWebApiFinal.Controllers
             }
 
             return Unauthorized(); // If the user is not authenticated
+        }
+
+        //[HttpPost("RequestToBorrow")]
+        //public IActionResult RequestToBorrow([FromBody] BorrowerDto borrower, int title)
+        //{
+        //    try
+        //    {
+        //        // Validate borrower DTO or handle validation errors
+        //        if (_borrowerServices.RequestToBorrowBook(title, borrower.Person.Id))
+        //            return StatusCode(200, "Your request was successfully sent to Liibrarian. please wait...");
+
+
+        //        return StatusCode(400, "Something wrong. The book title is not correct.");
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        // Log the exception or handle it as per your requirement
+        //        return StatusCode(500, $"Internal server error: {ex.Message}");
+        //    }
+        //}
+        [Authorize(Policy = "BorrowerPolicy")]
+        [HttpPost("RequestToBorrow")]
+        public IActionResult RequestToBorrow(int bookId)
+        {
+            try
+            {
+                int borrowerId = GetUserIdFromClaim();
+                // Validate borrower DTO or handle validation errors
+                if (_borrowerServices.RequestToBorrowBook(bookId, borrowerId))
+                    return StatusCode(200, "Your request was successfully sent to the librarian. Please wait...");
+
+                return StatusCode(400, "Something is wrong. The book title is not correct.");
+            }
+            catch (Exception ex)
+            {
+                // Log the exception or handle it as per your requirement
+                Console.WriteLine($"Internal server error: {ex.Message}");
+                if (ex.InnerException != null)
+                {
+                    Console.WriteLine($"Inner exception: {ex.InnerException.Message}");
+                }
+                return StatusCode(500, "An internal server error occurred.");
+            }
+        }
+
+        [HttpGet]
+        [Route("GetBook/{id}")]
+        public BookDto GetBookById(int id)
+        {
+            var book = _bookService.FindByCondition(id);
+            return book;
+        }
+        [HttpGet]
+        [Route("GetBook/{title}")]
+        public BookDto GetBookBytitle(string title)
+        {
+            var book = _bookService.FindByTitle(title).First(b=>b.Title == title);
+            return book;
+        }
+
+        // Helper method to get the user ID from the claim
+        private int GetUserIdFromClaim()
+        {
+            var userIdClaim = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (int.TryParse(userIdClaim, out int userId))
+            {
+                return userId;
+            }
+            // Handle the case where the claim doesn't contain a valid user ID
+            throw new InvalidOperationException("User ID not found in claims.");
         }
 
     }

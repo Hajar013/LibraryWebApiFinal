@@ -28,6 +28,7 @@ namespace BLL.Services.TransactionServices
         {
             Transaction transaction = _mapper.Map<Transaction>(dto);
             _repository.Transaction.Create(transaction);
+            _repository.Save();
            
         }
 
@@ -35,6 +36,7 @@ namespace BLL.Services.TransactionServices
         {
             Transaction transaction = _mapper.Map<Transaction>(dto);
             _repository.Transaction.Delete(transaction);
+            _repository.Save();
         }
 
         public IQueryable<TransactionDto> FindAll()
@@ -59,6 +61,7 @@ namespace BLL.Services.TransactionServices
         {
             Transaction transaction = _mapper.Map<Transaction>(dto);
             _repository.Transaction.Update(transaction);
+            _repository.Save();
         }
     }
 }

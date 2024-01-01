@@ -48,15 +48,23 @@ namespace BLL.Services.BookServices
             return booksDto;
         }
 
-        public IQueryable<BookDto> FindByCondition(int id)
+        public BookDto FindByCondition(int id)
         {
 
-            IQueryable<Book> booksFromDB = _repository.Book.FindByCondition(x=>x.Id == id);
-            IQueryable<BookDto> booksDto = booksFromDB.Select(book => _mapper.Map<BookDto>(book));
+            Book booksFromDB = _repository.Book.FindByCondition(x=>x.Id == id).FirstOrDefault();
+            BookDto booksDto =  _mapper.Map<BookDto>(booksFromDB);
 
             return booksDto;
         }
 
+        public IQueryable<BookDto> FindByTitle(string title)
+        {
+
+            IQueryable<Book> booksFromDB = _repository.Book.FindByCondition(x => x.Title == title);
+            IQueryable<BookDto> booksDto = booksFromDB.Select(book => _mapper.Map<BookDto>(book));
+
+            return booksDto;
+        }
         public void Update(BookDto dto)
         {
             Book book = _mapper.Map<Book>(dto);

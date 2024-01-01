@@ -10,7 +10,7 @@ namespace BLL.DTOs
         public int BorrowerId { get; set; }
         public double Amount { get; set; }
         public int BookId { get; set; }
-        public int AccounterId { get; set; }
+        public int? AccounterId { get; set; }
 
         public BorrowerDto Borrower { get; set; }
         public BookDto Book { get; set; }

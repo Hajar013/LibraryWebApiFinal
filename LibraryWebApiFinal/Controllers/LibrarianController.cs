@@ -37,7 +37,7 @@ namespace LibraryWebApiFinal.Controllers
         }
         [HttpGet]
         [Route("GetBookById/{id}")]
-        public IQueryable<BookDto> GetBookById(int id)
+        public BookDto GetBookById(int id)
         {
             // Retrieve the book by id and return it
             var book = _bookService.FindByCondition(id);

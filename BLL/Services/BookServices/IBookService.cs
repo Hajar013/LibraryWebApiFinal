@@ -11,7 +11,8 @@ namespace BLL.Services.BookServices
     public interface IBookService
     {
         IQueryable<BookDto> FindAll();
-        IQueryable<BookDto> FindByCondition(int id);
+        BookDto FindByCondition(int id);
+        IQueryable<BookDto> FindByTitle(string title);
         void Create(BookDto dto);
         void Update(BookDto dto);
         void Delete(BookDto dto);

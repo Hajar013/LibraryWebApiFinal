@@ -8,7 +8,7 @@ namespace BLL.DTOs
         public int Id { get; set; }
         public int PersonId { get; set; }
         public DateTime DateOfMembership { get; set; }
-
+        public List<TransactionDto>? transactions { get; set; }
         public List<BillDto>? Bills { get; set; }
         public PersonDto Person { get; set; }
     }
