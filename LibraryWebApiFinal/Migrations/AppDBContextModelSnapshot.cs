@@ -76,7 +76,6 @@ namespace LibraryWebApiFinal.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("BillNo"), 1L, 1);
 
                     b.Property<int?>("AccounterId")
-                        .IsRequired()
                         .HasColumnType("int");
 
                     b.Property<double>("Amount")
@@ -272,7 +271,6 @@ namespace LibraryWebApiFinal.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<int?>("LibrarianId")
-                        .IsRequired()
                         .HasColumnType("int");
 
                     b.Property<string>("Status")
@@ -305,9 +303,7 @@ namespace LibraryWebApiFinal.Migrations
                 {
                     b.HasOne("DAL.Entities.Accounter", "Accounter")
                         .WithMany("Bills")
-                        .HasForeignKey("AccounterId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("AccounterId");
 
                     b.HasOne("DAL.Entities.Book", "Book")
                         .WithMany("Bills")
@@ -385,9 +381,7 @@ namespace LibraryWebApiFinal.Migrations
 
                     b.HasOne("DAL.Entities.Librarian", "Librarian")
                         .WithMany("transactions")
-                        .HasForeignKey("LibrarianId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("LibrarianId");
 
                     b.Navigation("Book");
 

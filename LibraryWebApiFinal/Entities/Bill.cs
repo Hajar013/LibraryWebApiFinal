@@ -16,7 +16,7 @@ namespace DAL.Entities
         public double Amount { get; set; }
         [Required]
         public int BookId { get; set; }
-        [Required]
+      
         public int? AccounterId { get; set; }
 
         [ForeignKey("BorrowerId")]

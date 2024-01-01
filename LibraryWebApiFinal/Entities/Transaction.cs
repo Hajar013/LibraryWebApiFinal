@@ -11,7 +11,7 @@ namespace DAL.Entities
 
         public DateTime? Date { get; set; }
         public string Status { get; set; }
-        [Required]
+        
         public int? LibrarianId { get; set; }
         [Required]
         public int BorrowerId { get; set; }
