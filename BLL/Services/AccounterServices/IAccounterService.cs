@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace BLL.Services.AccounterServices
 {
-    public interface IAccounterService
+    public interface IAccounterService 
     {
         IQueryable<AccounterDto> FindAll();
         IQueryable<AccounterDto> FindByCondition(int id);

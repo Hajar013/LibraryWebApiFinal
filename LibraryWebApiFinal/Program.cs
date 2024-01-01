@@ -14,6 +14,7 @@ using System.Text;
 using BLL.DTOs;
 using BLL.Services;
 using System.Security.Claims;
+using BLL.Services.AccounterServices;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -78,8 +79,11 @@ builder.Services.AddScoped<IRepositoryFactory, RepositoryFactory>();
 builder.Services.AddScoped<IPersonService, PersonService>();
 builder.Services.AddScoped<ILibrarianService, LibrarianService>();
 builder.Services.AddScoped<IBorrowerService, BorrowerService>();
+builder.Services.AddScoped<IAccounterService, AccounterService>();
 builder.Services.AddScoped<IAuthService<LibrarianDto>, LibrarianService>();
 builder.Services.AddScoped<IAuthService<BorrowerDto>, BorrowerService>();
+builder.Services.AddScoped<IAuthService<AccounterDto>, AccounterService>();
+
 //to return person obj when login 
 builder.Services.AddControllers()
         .AddJsonOptions(options =>
