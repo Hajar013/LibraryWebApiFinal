@@ -72,40 +72,6 @@ namespace BLL.Services.LibrarianServices
             _repository.Save();
         }
 
-        //public List<LibrarianDto> Authenticate(string username, string password)
-        //{
-        //    var authenticatedLibrarian = _repository.Librarian
-        //        .FindByCondition(librarian =>
-        //            librarian.Person.UserName == username && librarian.Person.Password == password)
-        //        .Include(librarian => librarian.Person) // Ensure Person is included in the query
-        //        .ToList();
-
-        //    var authenticatedLibrarianDto = _mapper.Map<List<LibrarianDto>>(authenticatedLibrarian);
-        //    return authenticatedLibrarianDto;
-        //}
-
-        //public string GenerateJwtToken(LibrarianDto user)
-        //{
-        //    // var tokenHandler = new JwtSecurityTokenHandler();
-        //    var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
-        //    var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
-        //    //var tokenDescriptor = new SecurityTokenDescriptor
-        //    //{
-        //    //    Subject = new ClaimsIdentity(new Claim[]
-        //    //    {
-        //    //         new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-        //    //         new Claim(ClaimTypes.Role, user.Person.Role),
-        //    //    }),
-        //    //    Expires = DateTime.UtcNow.AddDays(7), // Token expiry time
-        //    //    SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
-        //    //};
-        //    var token = new JwtSecurityToken(_configuration["Jwt:Issuer"], _configuration["Jwt:Audience"], null,
-        //        expires: DateTime.Now.AddMinutes(1), // Token expiry time
-        //        signingCredentials :credentials
-        //        );
-        //   // var token = tokenHandler.CreateToken(tokenDescriptor);
-        //    return new JwtSecurityTokenHandler().WriteToken(token);
-        //}
         public string GenerateJwtToken(LibrarianDto user)
         {
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
@@ -116,8 +82,8 @@ namespace BLL.Services.LibrarianServices
                 audience: _configuration["Jwt:Audience"],
                 claims: new List<Claim>
                 {
-            new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-            new Claim(ClaimTypes.Role, user.Person.Role),
+                    new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                    new Claim(ClaimTypes.Role, user.Person.Role),
                 },
                 expires: DateTime.Now.AddMinutes(30), // Token expiry time (adjust as needed)
                 signingCredentials: credentials

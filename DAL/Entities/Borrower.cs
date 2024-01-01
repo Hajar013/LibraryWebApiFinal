@@ -10,7 +10,7 @@ namespace DAL.Entities
         public int PersonId { get; set; }
 
         [Required]
-        public DateTime DateOfMembership { get; set; }
+        public DateTime? DateOfMembership { get; set; }
         public List<Bill>? Bills { get; set; }
         public Person Person { get; set; }
     }

@@ -7,8 +7,8 @@ using BLL.Services.PersonServices;
 using DAL.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace LibraryWebApiFinal.Controllers
 {
@@ -26,8 +26,9 @@ namespace LibraryWebApiFinal.Controllers
             _mapper = mapper;
             _authService = authService;
         }
-        [Authorize]
-        [HttpGet]
+        //[Authorize]
+        [Authorize(Policy = "LibrarianPolicy")]
+        [HttpGet("GetLibrarians")]
         public IQueryable<LibrarianDto> Get()
         {
             var librarians = _librarianServices.FindAll();
@@ -35,39 +36,12 @@ namespace LibraryWebApiFinal.Controllers
         }
 
         [HttpGet]
-        [Route("GetPerson/{id}")]
+        [Route("GetLibrarian/{id}")]
         public IQueryable<LibrarianDto> GetById(int id)
         {
             var librarian = _librarianServices.FindByCondition(id);
             return librarian;
         }
-
-
-        //[HttpPost]
-        //[Route("Register")]
-        //public ActionResult<LibrarianDto> PostPerson([FromBody] LibrarianDto librarian)
-        //{
-        //    if (!ModelState.IsValid)
-        //    {
-        //        return BadRequest(ModelState);
-        //    }
-        //    librarian.Person.Role = "librarian";
-        //    try
-        //    {
-        //        _librarianServices.Create(librarian);
-
-        //        // Assuming your Create method sets the Id of the created person, you can retrieve it
-        //        int createdlibrarianId = librarian.Id;
-
-        //        // Use the correct action name ("GetById") and route values (id)
-        //        return CreatedAtAction("GetById", new { id = createdlibrarianId }, librarian);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        // Log the exception or handle it as per your requirement
-        //        return StatusCode(500, $"Internal server error: {ex.Message}");
-        //    }
-        //}
 
         [HttpPost("login")]
         public IActionResult Login([FromBody] LibrarianDto librarianDto)
@@ -171,6 +145,31 @@ namespace LibraryWebApiFinal.Controllers
                 return StatusCode(500, $"Internal server error: {ex.Message}");
             }
         }
+
+        [HttpGet("CheckLibrarianRole")]
+        public ActionResult CheckLibrarianRole()
+        {
+            // Check if user is authenticated
+            if (User.Identity.IsAuthenticated)
+            {
+                // Check if the user has the "librarian" role claim
+                var isLibrarian = User.HasClaim(c => c.Type == ClaimTypes.Role && c.Value == "librarian");
+
+                if (isLibrarian)
+                {
+                    // User is a librarian
+                    return Ok("User is a librarian.");
+                }
+                else
+                {
+                    // User is not a librarian
+                    return Forbid(); // Or return another status code for unauthorized access
+                }
+            }
+
+            return Unauthorized(); // If the user is not authenticated
+        }
+
         //[HttpPost]
         //[Route("Login")]
         //public ActionResult<List<LibrarianDto>> Login([FromBody] LibrarianDto librarian)
@@ -200,9 +199,9 @@ namespace LibraryWebApiFinal.Controllers
         //        // Log the exception or handle it as per your requirement
         //        return StatusCode(500, $"Internal server error: {ex.Message}");
         //    }
-    //}
+        //}
 
 
 
-}
+    }
 }

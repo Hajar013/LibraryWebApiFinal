@@ -13,6 +13,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using BLL.DTOs;
 using BLL.Services;
+using System.Security.Claims;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -31,6 +32,23 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         ValidAudience = builder.Configuration["Jwt:Audience"],
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
     };
+});
+
+
+//builder.Services.AddAuthorization(options =>
+//{
+//    options.AddPolicy("LibrarianPolicy", policy =>
+//    {
+//        policy.RequireRole("librarian");
+//    });
+//});
+
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("LibrarianPolicy", policy =>
+    {
+        policy.RequireClaim(ClaimTypes.Role, "librarian");
+    });
 });
 
 //builder.Services.AddAuthorization();
@@ -61,6 +79,7 @@ builder.Services.AddScoped<IPersonService, PersonService>();
 builder.Services.AddScoped<ILibrarianService, LibrarianService>();
 builder.Services.AddScoped<IBorrowerService, BorrowerService>();
 builder.Services.AddScoped<IAuthService<LibrarianDto>, LibrarianService>();
+builder.Services.AddScoped<IAuthService<BorrowerDto>, BorrowerService>();
 //to return person obj when login 
 builder.Services.AddControllers()
         .AddJsonOptions(options =>
@@ -92,5 +111,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+
 
 app.Run();
