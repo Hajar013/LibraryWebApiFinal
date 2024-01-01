@@ -27,7 +27,7 @@ namespace LibraryWebApiFinal.Controllers
             _authService = authService;
         }
         //[Authorize]
-        [Authorize(Policy = "LibrarianPolicy")]
+       /* [Authorize(Policy = "LibrarianPolicy")]*/
         [HttpGet("GetLibrarians")]
         public IQueryable<LibrarianDto> Get()
         {

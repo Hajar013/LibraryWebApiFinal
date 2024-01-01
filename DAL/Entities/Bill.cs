@@ -17,14 +17,14 @@ namespace DAL.Entities
         [Required]
         public int BookId { get; set; }
         [Required]
-        public int AccounterId { get; set; }
+        public int? AccounterId { get; set; }
 
         [ForeignKey("BorrowerId")]
         public Borrower Borrower { get; set; }
         [ForeignKey("BookId")]
         public Book Book { get; set; }
         [ForeignKey("AccounterId")]
-        public Accounter Accounter { get; set; }
+        public Accounter? Accounter { get; set; }
 
     }
 

@@ -12,13 +12,13 @@ namespace DAL.Entities
         public DateTime? Date { get; set; }
         public string Status { get; set; }
         [Required]
-        public int LibrarianId { get; set; }
+        public int? LibrarianId { get; set; }
         [Required]
         public int BorrowerId { get; set; }
         [Required]
         public int BookId { get; set; }
         [ForeignKey("LibrarianId")]
-        public Librarian Librarian { get; set; }
+        public Librarian? Librarian { get; set; }
 
         [ForeignKey("BorrowerId")]
         public Borrower Borrower { get; set; }
