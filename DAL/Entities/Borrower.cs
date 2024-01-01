@@ -12,6 +12,8 @@ namespace DAL.Entities
         [Required]
         public DateTime? DateOfMembership { get; set; }
         public List<Bill>? Bills { get; set; }
+        public List<Transaction>? transactions { get; set; }
+
         public Person Person { get; set; }
     }
 }

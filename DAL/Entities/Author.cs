@@ -10,10 +10,9 @@ namespace DAL.Entities
         [Required]
         [MaxLength(50)]
         public string Name { get; set; }
-        [Required]
         [MaxLength(200)]
-        public string Biography { get; set; }
-        public List<BookAuthor> BookAuthors { get; set; }
+        public string? Biography { get; set; }
+        public List<BookAuthor>? BookAuthors { get; set; }
 
 
     }

@@ -8,8 +8,9 @@ namespace DAL.Entities
     {
         [Key]
         public int Id { get; set; }
-        [Required]
-        public DateTime? DateOfIssues { get; set; }
+
+        public DateTime? Date { get; set; }
+        public string Status { get; set; }
         [Required]
         public int LibrarianId { get; set; }
         [Required]
@@ -24,6 +25,7 @@ namespace DAL.Entities
 
         [ForeignKey("BookId")]
         public Book Book { get; set; }
+
 
     }
 }

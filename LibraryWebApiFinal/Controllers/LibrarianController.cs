@@ -103,7 +103,7 @@ namespace LibraryWebApiFinal.Controllers
                 }
 
                 // Update properties of existingLibrarian with values from updatedLibrarian
-                existingLibrarian.LiberianLicenseNumber = updatedLibrarian.LiberianLicenseNumber;
+                existingLibrarian.LibrarianlicenseNumber = updatedLibrarian.LibrarianlicenseNumber;
               
 
                 // Use AutoMapper to map the updated entity back to DTO if needed

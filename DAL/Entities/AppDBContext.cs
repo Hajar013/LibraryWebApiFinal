@@ -18,8 +18,20 @@ namespace DAL.Entities
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlServer(_configuration.GetConnectionString("DbCon"));
-        }
+            /*       if (!optionsBuilder.IsConfigured)
+                   {
+                       optionsBuilder.UseSqlServer(
+                           _configuration.GetConnectionString("DbCon"),
+                           b => b.MigrationsAssembly("LibraryWebApiFinal")); // Update with your assembly name
+                   }*/
 
+        }
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Person>()
+                .HasIndex(p => p.UserName)
+                .IsUnique();
+        }
         public DbSet<Borrower> Borrowers { get; set; }
         public DbSet<Librarian> Librarians { get; set; }
         public DbSet<Accounter> Accounters { get; set; }

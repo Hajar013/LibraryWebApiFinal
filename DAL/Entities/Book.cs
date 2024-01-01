@@ -24,8 +24,8 @@ namespace DAL.Entities
         [Required]
         public bool Availability { get; set; }
         // Navigation properties
-        public List<Bill> Bills { get; set; }
-        public List<Transaction> Transactions { get; set; }
+        public List<Bill>? Bills { get; set; }
+        public List<Transaction>? Transactions { get; set; }
         public List<BookAuthor>? BookAuthors { get; set; }
 
     }
