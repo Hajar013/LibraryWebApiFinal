@@ -36,13 +36,15 @@ namespace BLL.Services.BorrowerServices
         {
             Borrower borrower = _mapper.Map<Borrower>(dto);
             _repository.Borrower.Create(borrower);
-           
+            _repository.Save();
+
         }
 
         public void Delete(BorrowerDto dto)
         {
             Borrower borrower = _mapper.Map<Borrower>(dto);
             _repository.Borrower.Delete(borrower);
+            _repository.Save();
         }
 
         public IQueryable<BorrowerDto> FindAll()
@@ -68,6 +70,7 @@ namespace BLL.Services.BorrowerServices
         {
             Borrower borrower = _mapper.Map<Borrower>(dto);
             _repository.Borrower.Update(borrower);
+            _repository.Save();
         }
 
         public string GenerateJwtToken(BorrowerDto user)

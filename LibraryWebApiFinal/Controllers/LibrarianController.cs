@@ -2,6 +2,7 @@
 using BLL.DTOs;
 using BLL.Services;
 using BLL.Services.AuthorServices;
+using BLL.Services.BookServices;
 using BLL.Services.LibrarianServices;
 using BLL.Services.PersonServices;
 using DAL.Entities;
@@ -18,14 +19,31 @@ namespace LibraryWebApiFinal.Controllers
     {
 
         private readonly ILibrarianService _librarianServices;
+        private readonly IBookService _bookService;
         private readonly IMapper _mapper;
         private readonly IAuthService<LibrarianDto> _authService;
-        public LibrarianController(ILibrarianService librarianServices, IMapper mapper, IAuthService<LibrarianDto> authService)
+        public LibrarianController(ILibrarianService librarianServices, IMapper mapper, IAuthService<LibrarianDto> authService, IBookService bookService)
         {
             _librarianServices = librarianServices;
             _mapper = mapper;
             _authService = authService;
+            _bookService = bookService;
         }
+
+        [HttpPost("AddBook")]
+        public void AddBook([FromBody] BookDto book)
+        {
+            _bookService.Create(book);
+        }
+        [HttpGet]
+        [Route("GetBookById/{id}")]
+        public IQueryable<BookDto> GetBookById(int id)
+        {
+            // Retrieve the book by id and return it
+            var book = _bookService.FindByCondition(id);
+            return book;
+        }
+
         //[Authorize]
         [Authorize(Policy = "LibrarianPolicy")]
         [HttpGet("GetLibrarians")]

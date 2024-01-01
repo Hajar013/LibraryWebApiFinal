@@ -28,6 +28,7 @@ namespace BLL.Services.BillServices
         {
             Bill bill = _mapper.Map<Bill>(dto);
             _repository.Bill.Create(bill);
+            _repository.Save();
 
         }
 
@@ -35,7 +36,7 @@ namespace BLL.Services.BillServices
         {
             Bill bill = _mapper.Map<Bill>(dto);
             _repository.Bill.Delete(bill);
-
+            _repository.Save();
         }
 
         public IQueryable<BillDto> FindAll()
@@ -60,7 +61,7 @@ namespace BLL.Services.BillServices
         {
             Bill bill = _mapper.Map<Bill>(dto);
             _repository.Bill.Update(bill);
-
+            _repository.Save();
         }
     }
 }
