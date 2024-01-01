@@ -28,13 +28,14 @@ namespace BLL.Services.BookAuthorServices
         {
             BookAuthor bookAuthor = _mapper.Map<BookAuthor>(dto);
             _repository.BookAuthor.Create(bookAuthor);
-
+            _repository.Save();
         }
 
         public void Delete(BookAuthorDto dto)
         {
             BookAuthor bookAuthor = _mapper.Map<BookAuthor>(dto);
             _repository.BookAuthor.Delete(bookAuthor);
+            _repository.Save();
         }
 
         public IQueryable<BookAuthorDto> FindAll()
@@ -59,6 +60,7 @@ namespace BLL.Services.BookAuthorServices
         {
             BookAuthor bookAuthor = _mapper.Map<BookAuthor>(dto);
             _repository.BookAuthor.Update(bookAuthor);
+            _repository.Save();
         }
     }
 }

@@ -28,6 +28,7 @@ namespace BLL.Services.BookServices
         {
             Book book = _mapper.Map<Book>(dto);
             _repository.Book.Create(book);
+            _repository.Save();
            
         }
 
@@ -35,6 +36,7 @@ namespace BLL.Services.BookServices
         {
             Book book = _mapper.Map<Book>(dto);
             _repository.Book.Delete(book);
+            _repository.Save();
         }
 
         public IQueryable<BookDto> FindAll()
@@ -59,6 +61,7 @@ namespace BLL.Services.BookServices
         {
             Book book = _mapper.Map<Book>(dto);
             _repository.Book.Update(book);
+            _repository.Save();
         }
     }
 }

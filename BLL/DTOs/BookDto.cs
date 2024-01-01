@@ -14,8 +14,8 @@ namespace BLL.DTOs
         public bool Availability { get; set; }
 
         // Navigation properties
-        public List<BillDto> Bills { get; set; }
-        public List<TransactionDto> Transactions { get; set; }
+        public List<BillDto>? Bills { get; set; }
+        public List<TransactionDto>? Transactions { get; set; }
         public List<BookAuthorDto>? BookAuthors { get; set; }
 
     }

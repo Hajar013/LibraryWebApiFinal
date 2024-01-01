@@ -15,6 +15,11 @@ using BLL.DTOs;
 using BLL.Services;
 using System.Security.Claims;
 using BLL.Services.AccounterServices;
+using BLL.Services.BookServices;
+using BLL.Services.TransactionServices;
+using BLL.Services.AuthorServices;
+using BLL.Services.BookAuthorServices;
+using BLL.Services.BillServices;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -80,6 +85,12 @@ builder.Services.AddScoped<IPersonService, PersonService>();
 builder.Services.AddScoped<ILibrarianService, LibrarianService>();
 builder.Services.AddScoped<IBorrowerService, BorrowerService>();
 builder.Services.AddScoped<IAccounterService, AccounterService>();
+builder.Services.AddScoped<IBookService, BookService>();
+builder.Services.AddScoped<ITransactionService, TransactionService>();
+builder.Services.AddScoped<IAuthorService, AuthorService>();
+builder.Services.AddScoped<IBookAuthorService, BookAuthorService>();
+builder.Services.AddScoped<IBillService, BillService>();
+
 builder.Services.AddScoped<IAuthService<LibrarianDto>, LibrarianService>();
 builder.Services.AddScoped<IAuthService<BorrowerDto>, BorrowerService>();
 builder.Services.AddScoped<IAuthService<AccounterDto>, AccounterService>();

@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace BLL.Services.AuthorServices
 {
-    public class AuthorService
+    public class AuthorService: IAuthorService
     {
         private readonly IRepositoryFactory _repository;
         private readonly IMapper _mapper;
