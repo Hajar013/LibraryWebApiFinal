@@ -25,6 +25,7 @@ namespace DAL.Entities
 
         [ForeignKey("BookId")]
         public Book Book { get; set; }
+        //12
 
 
     }
