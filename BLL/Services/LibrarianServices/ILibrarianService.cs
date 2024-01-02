@@ -16,6 +16,10 @@ namespace BLL.Services.LibrarianServices
         void Update(LibrarianDto dto);
         void Delete(LibrarianDto dto);
         //public List<LibrarianDto> Authenticate(string username, string password);
+        bool AllowBorrow(int librarianId, int transactionId);
+
+/*        void DenyBorrow(int transactionId);
+*/
 
     }
 }

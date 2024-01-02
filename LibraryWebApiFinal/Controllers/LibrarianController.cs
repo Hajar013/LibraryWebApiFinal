@@ -8,6 +8,7 @@ using BLL.Services.PersonServices;
 using DAL.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Net;
 using System.Security.Claims;
 
 
@@ -122,7 +123,7 @@ namespace LibraryWebApiFinal.Controllers
 
                 // Update properties of existingLibrarian with values from updatedLibrarian
                 existingLibrarian.LibrarianlicenseNumber = updatedLibrarian.LibrarianlicenseNumber;
-              
+
 
                 // Use AutoMapper to map the updated entity back to DTO if needed
                 var updatedLibrarianDto = _mapper.Map<LibrarianDto>(existingLibrarian);
@@ -218,7 +219,38 @@ namespace LibraryWebApiFinal.Controllers
         //        return StatusCode(500, $"Internal server error: {ex.Message}");
         //    }
         //}
+        [HttpPost("AllowBorrow")]
+        [Authorize(Policy = "LibrarianPolicy")]
 
+        public IActionResult AllowBorrow(int tranisactionId)
+        {
+            try
+            {
+                var librarianId = GetUserIdFromClaim();
+
+                // Validate librarian DTO or handle validation errors
+                if (_librarianServices.AllowBorrow(librarianId, tranisactionId))
+
+                    return StatusCode(200, "The borrower's request has been approved.");
+
+                return StatusCode(400, "The borrower's request has been failed");
+            }
+            catch (Exception ex)
+            {
+
+                return StatusCode(500, $"An internal server error occurred.: {ex.Message}");
+            }
+        }
+        private int GetUserIdFromClaim()
+        {
+            var userIdClaim = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (int.TryParse(userIdClaim, out int userId))
+            {
+                return userId;
+            }
+            // Handle the case where the claim doesn't contain a valid user ID
+            throw new InvalidOperationException("User ID not found in claims.");
+        }
 
 
     }

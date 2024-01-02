@@ -16,6 +16,8 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text.Unicode;
+using BLL.Services.TransactionServices;
+using BLL.Services.BookServices;
 
 namespace BLL.Services.LibrarianServices
 {
@@ -24,12 +26,15 @@ namespace BLL.Services.LibrarianServices
         private readonly IRepositoryFactory _repository;
         private readonly IMapper _mapper;
         private readonly IConfiguration _configuration;
-
-        public LibrarianService(IRepositoryFactory repository, IMapper mapper, IConfiguration configuration) 
+        private readonly ITransactionService _transactionService;
+        private readonly IBookService _bookService;
+        public LibrarianService(IRepositoryFactory repository, IMapper mapper, IConfiguration configuration, ITransactionService transactionService, IBookService bookService) 
         {
             _repository = repository;
             _mapper = mapper;
             _configuration = configuration;
+            _bookService=bookService;
+            _transactionService = transactionService;
         }
 
         public void Create(LibrarianDto dto)
@@ -116,6 +121,52 @@ namespace BLL.Services.LibrarianServices
 
         }
 
+        public bool AllowBorrow(int librarianId,int transactionId)
+        {
+            var transaction = _transactionService.FindByCondition(transactionId).FirstOrDefault();
+            BookDto book = _bookService.FindByCondition(transaction.BookId);
+           if (transaction == null)
+            {
+                Console.WriteLine(" NULL");
+                return false;
+            }
+            transaction.LibrarianId = librarianId;
 
+            if (book == null )
+            {
+                Console.WriteLine(" B NULL");
+                return false;
+                
+            }
+            if(!book.Availability || book.Copies == 0)
+            {
+                Console.WriteLine(" B NAV COPIES 0");
+
+                _transactionService.Delete(transaction);
+
+                return false;
+            }
+
+            if (transaction != null && transaction.Status == "Pending")
+            {
+                // Logic to approve the borrow request
+
+                book.Copies--;
+                _bookService.Update(book);
+
+                transaction.Status = "Success";
+                _transactionService.Update(transaction);
+
+                return true;
+            }
+
+            return false;
+
+        }
+
+   /*     public void DenyBorrow(int transactionId)
+        {
+            throw new NotImplementedException();
+        }*/
     }
 }
