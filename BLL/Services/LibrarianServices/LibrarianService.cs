@@ -130,7 +130,6 @@ namespace BLL.Services.LibrarianServices
                 Console.WriteLine(" NULL");
                 return false;
             }
-            transaction.LibrarianId = librarianId;
 
             if (book == null )
             {
@@ -152,8 +151,13 @@ namespace BLL.Services.LibrarianServices
                 // Logic to approve the borrow request
 
                 book.Copies--;
+                if (book.Copies == 0)
+                {
+                    book.Availability = false;
+                }
                 _bookService.Update(book);
 
+                transaction.LibrarianId = librarianId;
                 transaction.Status = "Success";
                 _transactionService.Update(transaction);
 
