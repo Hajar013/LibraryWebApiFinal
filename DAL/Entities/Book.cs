@@ -8,6 +8,7 @@ namespace DAL.Entities
         [Key]
         [Required]
         public int Id { get; set; }
+        public double? Amount { get; set; }
         [Required]
         [MaxLength(50)]
         public string Title { get; set; }
