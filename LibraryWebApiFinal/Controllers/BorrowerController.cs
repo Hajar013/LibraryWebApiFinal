@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using BLL.Services.BookServices;
+using BLL.Services.BillServices;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -238,6 +239,31 @@ namespace LibraryWebApiFinal.Controllers
             }
             // Handle the case where the claim doesn't contain a valid user ID
             throw new InvalidOperationException("User ID not found in claims.");
+        }
+
+        [Authorize(Policy = "BorrowerPolicy")]
+        [HttpPost("RequestToBill")]
+        public IActionResult RequestToBill(int bookId)
+        {
+            try
+            {
+                int borrowerId = GetUserIdFromClaim();
+                // Validate borrower DTO or handle validation errors
+                if (_borrowerServices.RequestToBorrowBook(bookId, borrowerId))
+                    return StatusCode(200, "Your request was successfully sent to the librarian. Please wait...");
+
+                return StatusCode(400, "Something is wrong. The book title is not correct.");
+            }
+            catch (Exception ex)
+            {
+                // Log the exception or handle it as per your requirement
+                Console.WriteLine($"Internal server error: {ex.Message}");
+                if (ex.InnerException != null)
+                {
+                    Console.WriteLine($"Inner exception: {ex.InnerException.Message}");
+                }
+                return StatusCode(500, "An internal server error occurred.");
+            }
         }
 
     }

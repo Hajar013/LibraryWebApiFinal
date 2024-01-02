@@ -18,6 +18,7 @@ using System.Security.Claims;
 using BLL.Services.BookServices;
 using BLL.Services.PersonServices;
 using BLL.Services.TransactionServices;
+using BLL.Services.BillServices;
 
 namespace BLL.Services.BorrowerServices
 {
@@ -29,9 +30,11 @@ namespace BLL.Services.BorrowerServices
         private readonly IBookService _bookService;
         private readonly IPersonService _personService;
         private readonly ITransactionService _transactionService;
+        private readonly IBillService _billService;
+
 
         public BorrowerService(IRepositoryFactory repository, IMapper mapper, IConfiguration configuration, IBookService bookService,
-            IPersonService personService, ITransactionService transactionService) 
+            IPersonService personService, ITransactionService transactionService, IBillService billService)
         {
             _repository = repository;
             _mapper = mapper;
@@ -39,6 +42,7 @@ namespace BLL.Services.BorrowerServices
             _bookService = bookService;
             _personService = personService;
             _transactionService = transactionService;
+            _billService = billService; 
         }
 
 
@@ -162,7 +166,41 @@ namespace BLL.Services.BorrowerServices
 
             return true; // Successfully borrowed the book
         }
+        public bool RequestToBill(int bookId, int borrowerId)
+        {
+            // Assuming there's a method to search for a book by ID in the BookRepository
+            var book = _bookService.FindByCondition(bookId);
 
-           
+            if (book == null)
+            {
+                Console.WriteLine("Book not found or not available for borrowing.");
+                return false;
+            }
+
+            // Assuming there's a method to get a borrower by their ID from a PersonRepository
+            var borrower = FindById(borrowerId);
+
+            if (borrower == null)
+            {
+                Console.WriteLine("Borrower not found.");
+                return false;
+            }
+
+            // Create a transaction and add it to the pending transactions
+            var bill= new BillDto
+            {
+                BookId = book.Id,
+                BorrowerId = borrowerId,
+                Status = "Pending",
+                Date = DateTime.Now
+            };
+
+            _billService.Create(bill);
+
+
+            return true; // Successfully borrowed the book
+        }
+
+
     }
 }
