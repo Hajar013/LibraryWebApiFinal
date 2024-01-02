@@ -5,6 +5,7 @@ using BLL.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
+using BLL.Services.BillServices;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -17,11 +18,16 @@ namespace LibraryWebApiFinal.Controllers
         private readonly IAccounterService _accounterServices;
         private readonly IMapper _mapper;
         private readonly IAuthService<AccounterDto> _authService;
-        public AccounterController(IAccounterService accounterServices, IMapper mapper, IAuthService<AccounterDto> authService)
+        private readonly IBillService _billService;
+        private readonly IAccounterService _accounterService;
+        public AccounterController(IAccounterService accounterServices, IMapper mapper, IAuthService<AccounterDto> authService,
+            IBillService billService, IAccounterService accounterService)
         {
             _accounterServices = accounterServices;
             _mapper = mapper;
             _authService = authService;
+            _billService = billService;
+            _accounterService = accounterService;
         }
         //[Authorize]
         [Authorize(Policy = "AccounterPolicy")]
@@ -165,6 +171,39 @@ namespace LibraryWebApiFinal.Controllers
             }
 
             return Unauthorized(); // If the user is not authenticated
+        }
+
+        [HttpPost("AllowBill")]
+        [Authorize(Policy = "AccounterPolicy")]
+
+        public IActionResult AllowBorrow(int billId)
+        {
+            try
+            {
+                var accounterId = GetUserIdFromClaim();
+
+                // Validate librarian DTO or handle validation errors
+                if (_accounterService.AllowBills(accounterId, billId))
+
+                    return StatusCode(200, "The borrower's request to bill has been approved.");
+
+                return StatusCode(400, "The borrower's request to bill has been failed");
+            }
+            catch (Exception ex)
+            {
+
+                return StatusCode(500, $"An internal server error occurred.: {ex.Message}");
+            }
+        }
+        private int GetUserIdFromClaim()
+        {
+            var userIdClaim = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (int.TryParse(userIdClaim, out int userId))
+            {
+                return userId;
+            }
+            // Handle the case where the claim doesn't contain a valid user ID
+            throw new InvalidOperationException("User ID not found in claims.");
         }
 
     }

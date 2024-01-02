@@ -11,6 +11,7 @@ namespace BLL.Services.AccounterServices
     {
         IQueryable<AccounterDto> FindAll();
         IQueryable<AccounterDto> FindByCondition(int id);
+        bool AllowBills(int accounterId, int billId);
         void Create(AccounterDto dto);
         void Update(AccounterDto dto);
         void Delete(AccounterDto dto);
