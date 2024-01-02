@@ -249,7 +249,7 @@ namespace LibraryWebApiFinal.Controllers
             {
                 int borrowerId = GetUserIdFromClaim();
                 // Validate borrower DTO or handle validation errors
-                if (_borrowerServices.RequestToBorrowBook(bookId, borrowerId))
+                if (_borrowerServices.RequestToBill(bookId, borrowerId)) ;
                     return StatusCode(200, "Your request was successfully sent to the librarian. Please wait...");
 
                 return StatusCode(400, "Something is wrong. The book title is not correct.");

@@ -173,7 +173,7 @@ namespace BLL.Services.BorrowerServices
 
             if (book == null)
             {
-                Console.WriteLine("Book not found or not available for borrowing.");
+                Console.WriteLine("Book not found or not available for buyig");
                 return false;
             }
 
@@ -192,7 +192,8 @@ namespace BLL.Services.BorrowerServices
                 BookId = book.Id,
                 BorrowerId = borrowerId,
                 Status = "Pending",
-                Date = DateTime.Now
+                Date = DateTime.Now,
+                Amount = book.Amount 
             };
 
             _billService.Create(bill);

@@ -13,6 +13,8 @@ namespace BLL.DTOs
         public int Copies { get; set; }
         public bool Availability { get; set; }
 
+        public double Amount { get; set; }
+
         // Navigation properties
         public List<BillDto>? Bills { get; set; }
         public List<TransactionDto>? Transactions { get; set; }
