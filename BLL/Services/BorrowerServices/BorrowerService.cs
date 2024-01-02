@@ -158,7 +158,7 @@ namespace BLL.Services.BorrowerServices
             {
                 BookId = book.Id,
                 BorrowerId = borrowerId,
-                Status = "Pending",
+                BrrowStatus = "Pending",
                 Date = DateTime.Now
             };
 
@@ -198,6 +198,34 @@ namespace BLL.Services.BorrowerServices
 
             _billService.Create(bill);
 
+
+            return true; // Successfully borrowed the book
+        }
+
+        public bool RequestToReturnBook(int transactionId, int borrowerId)
+        {
+            // Assuming there's a method to search for a book by ID in the BookRepository
+            TransactionDto transaction = _transactionService.FindByCondition(transactionId).FirstOrDefault();
+
+            if (transaction == null)
+            {
+                Console.WriteLine("Book not found or not available for borrowing.");
+                return false;
+            }
+
+            // Assuming there's a method to get a borrower by their ID from a PersonRepository
+            var borrower = FindById(borrowerId);
+
+            if (borrower == null)
+            {
+                Console.WriteLine("Borrower not found.");
+                return false;
+            }
+            if (transaction.BrrowStatus != "Success")
+                return false;
+
+            transaction.ReturnStats = "Pending";
+            _transactionService.Update(transaction);
 
             return true; // Successfully borrowed the book
         }

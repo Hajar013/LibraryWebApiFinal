@@ -241,6 +241,28 @@ namespace LibraryWebApiFinal.Controllers
                 return StatusCode(500, $"An internal server error occurred.: {ex.Message}");
             }
         }
+
+        [HttpPost("AllowReturn")]
+        [Authorize(Policy = "LibrarianPolicy")]
+        public IActionResult AllowReturn(int tranisactionId)
+        {
+            try
+            {
+                var librarianId = GetUserIdFromClaim();
+
+                // Validate librarian DTO or handle validation errors
+                if (_librarianServices.AllowReturn(librarianId, tranisactionId))
+
+                    return StatusCode(200, "The borrower's request has been approved.");
+
+                return StatusCode(400, "The borrower's request has been failed");
+            }
+            catch (Exception ex)
+            {
+
+                return StatusCode(500, $"An internal server error occurred.: {ex.Message}");
+            }
+        }
         private int GetUserIdFromClaim()
         {
             var userIdClaim = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;

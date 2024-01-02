@@ -8,7 +8,8 @@ namespace BLL.DTOs
     {
         public int Id { get; set; }
         public DateTime? Date { get; set; }
-        public string Status { get; set; }
+        public string? BrrowStatus { get; set; }
+        public string? ReturnStats { get; set; }
         public int? LibrarianId { get; set; }
         public int BorrowerId { get; set; }
         public int BookId { get; set; }

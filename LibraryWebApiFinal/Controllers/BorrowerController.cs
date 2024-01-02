@@ -214,6 +214,31 @@ namespace LibraryWebApiFinal.Controllers
             }
         }
 
+        [Authorize(Policy = "BorrowerPolicy")]
+        [HttpPost("RequestToReturn")]
+        public IActionResult RequestToReturn(int transactionId)
+        {
+            try
+            {
+                int borrowerId = GetUserIdFromClaim();
+                // Validate borrower DTO or handle validation errors
+                if (_borrowerServices.RequestToReturnBook(transactionId, borrowerId))
+                    return StatusCode(200, "Your request was successfully sent to the librarian. Please wait...");
+
+                return StatusCode(400, "Something is wrong. The transaction is not found.");
+            }
+            catch (Exception ex)
+            {
+                // Log the exception or handle it as per your requirement
+                Console.WriteLine($"Internal server error: {ex.Message}");
+                if (ex.InnerException != null)
+                {
+                    Console.WriteLine($"Inner exception: {ex.InnerException.Message}");
+                }
+                return StatusCode(500, "An internal server error occurred.");
+            }
+        }
+
         [HttpGet]
         [Route("GetBook/{id}")]
         public BookDto GetBookById(int id)

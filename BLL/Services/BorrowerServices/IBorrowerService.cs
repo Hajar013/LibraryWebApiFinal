@@ -16,6 +16,7 @@ namespace BLL.Services.BorrowerServices
         void Update(BorrowerDto dto);
         void Delete(BorrowerDto dto);
         bool RequestToBorrowBook(int bookTitle, int borrowerId);
+        bool RequestToReturnBook(int transactionId, int borrowerId);
          bool RequestToBill(int bookId, int borrowerId);
 
     }

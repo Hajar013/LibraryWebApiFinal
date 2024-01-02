@@ -146,7 +146,7 @@ namespace BLL.Services.LibrarianServices
                 return false;
             }
 
-            if (transaction != null && transaction.Status == "Pending")
+            if (transaction != null && transaction.BrrowStatus == "Pending")
             {
                 // Logic to approve the borrow request
 
@@ -158,7 +158,7 @@ namespace BLL.Services.LibrarianServices
                 _bookService.Update(book);
 
                 transaction.LibrarianId = librarianId;
-                transaction.Status = "Success";
+                transaction.BrrowStatus = "Success";
                 _transactionService.Update(transaction);
 
                 return true;
@@ -168,11 +168,53 @@ namespace BLL.Services.LibrarianServices
 
         }
 
-
-
-   /*     public void DenyBorrow(int transactionId)
+        public bool AllowReturn(int librarianId, int transactionId)
         {
-            throw new NotImplementedException();
-        }*/
+            var transaction = _transactionService.FindByCondition(transactionId).FirstOrDefault();
+            BookDto book = _bookService.FindByCondition(transaction.BookId);
+            if (transaction == null)
+            {
+                Console.WriteLine(" NULL");
+                return false;
+            }
+
+            if (book == null)
+            {
+                Console.WriteLine(" B NULL");
+                return false;
+
+            }
+            //if (!book.Availability || book.Copies == 0)
+            //{
+            //    Console.WriteLine(" B NAV COPIES 0");
+
+            //    _transactionService.Delete(transaction);
+
+            //    return false;
+            //}
+
+            if (transaction != null && transaction.ReturnStats == "Pending")
+            {
+                // Logic to approve the borrow request
+
+                book.Copies++;
+                book.Availability = true;
+                _bookService.Update(book);
+
+                transaction.LibrarianId = librarianId;
+                transaction.ReturnStats = "Success";
+                _transactionService.Update(transaction);
+
+                return true;
+            }
+
+            return false;
+
+        }
+
+        /*     public void DenyBorrow(int transactionId)
+             {
+                 throw new NotImplementedException();
+             }*/
     }
 }
