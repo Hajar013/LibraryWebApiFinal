@@ -18,6 +18,7 @@ using System.Security.Claims;
 using System.Text.Unicode;
 using BLL.Services.TransactionServices;
 using BLL.Services.BookServices;
+using BLL.Services.BookAuthorServices;
 
 namespace BLL.Services.LibrarianServices
 {
@@ -28,13 +29,15 @@ namespace BLL.Services.LibrarianServices
         private readonly IConfiguration _configuration;
         private readonly ITransactionService _transactionService;
         private readonly IBookService _bookService;
-        public LibrarianService(IRepositoryFactory repository, IMapper mapper, IConfiguration configuration, ITransactionService transactionService, IBookService bookService) 
+        private readonly IBookAuthorService _bookAuthorService;
+        public LibrarianService(IRepositoryFactory repository, IMapper mapper, IConfiguration configuration, ITransactionService transactionService, IBookService bookService, IBookAuthorService bookAuthorService) 
         {
             _repository = repository;
             _mapper = mapper;
             _configuration = configuration;
             _bookService=bookService;
             _transactionService = transactionService;
+            _bookAuthorService= bookAuthorService;
         }
 
         public void Create(LibrarianDto dto)
@@ -210,6 +213,10 @@ namespace BLL.Services.LibrarianServices
 
             return false;
 
+        }
+        public void AddBookAndAuther(BookAuthorDto bookAuthorDto)
+        {
+                _bookAuthorService.Create(bookAuthorDto);
         }
 
         /*     public void DenyBorrow(int transactionId)

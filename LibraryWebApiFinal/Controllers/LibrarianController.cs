@@ -217,6 +217,24 @@ namespace LibraryWebApiFinal.Controllers
             throw new InvalidOperationException("User ID not found in claims.");
         }
 
+        [HttpPost("CreatBookWithAuther")]
+        public IActionResult CreatBookWithAuther([FromBody]BookAuthorDto bookAuthorDto)
+        {
+            try
+            {
+                
+                _librarianServices.AddBookAndAuther(bookAuthorDto);
+
+                    return StatusCode(200, "AddBookAndAuther.");
+
+            }
+            catch (Exception ex)
+            {
+
+                return StatusCode(500, $"An internal server error occurred.: {ex.Message}");
+            }
+        }
+
 
     }
 }

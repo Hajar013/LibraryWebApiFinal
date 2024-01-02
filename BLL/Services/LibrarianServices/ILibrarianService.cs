@@ -18,6 +18,8 @@ namespace BLL.Services.LibrarianServices
         //public List<LibrarianDto> Authenticate(string username, string password);
         bool AllowBorrow(int librarianId, int transactionId);
         bool AllowReturn(int librarianId, int transactionId);
+        void AddBookAndAuther(BookAuthorDto bookAuthorDto);
+
 
 /*        void DenyBorrow(int transactionId);
 */
