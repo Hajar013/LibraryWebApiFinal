@@ -13,24 +13,22 @@ namespace LibraryWebApiFinal.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Policy = "AccounterPolicy")]
     public class AccounterController : ControllerBase
     {
         private readonly IAccounterService _accounterServices;
         private readonly IMapper _mapper;
         private readonly IAuthService<AccounterDto> _authService;
-        private readonly IBillService _billService;
         private readonly IAccounterService _accounterService;
         public AccounterController(IAccounterService accounterServices, IMapper mapper, IAuthService<AccounterDto> authService,
-            IBillService billService, IAccounterService accounterService)
+             IAccounterService accounterService)
         {
             _accounterServices = accounterServices;
             _mapper = mapper;
             _authService = authService;
-            _billService = billService;
             _accounterService = accounterService;
         }
-        //[Authorize]
-        [Authorize(Policy = "AccounterPolicy")]
+ 
         [HttpGet("GetAccounters")]
         public IQueryable<AccounterDto> Get()
         {
@@ -47,6 +45,7 @@ namespace LibraryWebApiFinal.Controllers
         }
 
         [HttpPost("login")]
+        [AllowAnonymous]
         public IActionResult Login([FromBody] AccounterDto accounterDto)
         {
             var accounter = _authService.Authenticate(accounterDto.Person.UserName, accounterDto.Person.Password);
@@ -60,6 +59,7 @@ namespace LibraryWebApiFinal.Controllers
 
 
         [HttpPost("Register")]
+        [AllowAnonymous]
         public IActionResult Register([FromBody] AccounterDto accounter)
         {
             // Validate accounter DTO or handle validation errors
@@ -149,33 +149,7 @@ namespace LibraryWebApiFinal.Controllers
             }
         }
 
-        [HttpGet("CheckAccounterRole")]
-        public ActionResult CheckAccounterRole()
-        {
-            // Check if user is authenticated
-            if (User.Identity.IsAuthenticated)
-            {
-                // Check if the user has the "accounter" role claim
-                var isAccounter = User.HasClaim(c => c.Type == ClaimTypes.Role && c.Value == "accounter");
-
-                if (isAccounter)
-                {
-                    // User is a accounter
-                    return Ok("User is a accounter.");
-                }
-                else
-                {
-                    // User is not a accounter
-                    return Forbid(); // Or return another status code for unauthorized access
-                }
-            }
-
-            return Unauthorized(); // If the user is not authenticated
-        }
-
-        [HttpPost("AllowBill")]
-        [Authorize(Policy = "AccounterPolicy")]
-
+        [HttpPost("AllowBill")] 
         public IActionResult AllowBorrow(int billId)
         {
             try

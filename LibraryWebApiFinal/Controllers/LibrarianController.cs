@@ -16,6 +16,7 @@ namespace LibraryWebApiFinal.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Policy = "LibrarianPolicy")]
     public class LibrarianController : ControllerBase
     {
 
@@ -44,9 +45,7 @@ namespace LibraryWebApiFinal.Controllers
             var book = _bookService.FindByCondition(id);
             return book;
         }
-
-        //[Authorize]
-        [Authorize(Policy = "LibrarianPolicy")]
+         
         [HttpGet("GetLibrarians")]
         public IQueryable<LibrarianDto> Get()
         {
@@ -62,6 +61,7 @@ namespace LibraryWebApiFinal.Controllers
             return librarian;
         }
 
+        [AllowAnonymous]
         [HttpPost("login")]
         public IActionResult Login([FromBody] LibrarianDto librarianDto)
         {
@@ -74,7 +74,7 @@ namespace LibraryWebApiFinal.Controllers
             return Ok(new { Token = token });
         }
 
-
+        [AllowAnonymous]
         [HttpPost("Register")]
         public IActionResult Register([FromBody] LibrarianDto librarian)
         {
@@ -164,64 +164,8 @@ namespace LibraryWebApiFinal.Controllers
                 return StatusCode(500, $"Internal server error: {ex.Message}");
             }
         }
-
-        [HttpGet("CheckLibrarianRole")]
-        public ActionResult CheckLibrarianRole()
-        {
-            // Check if user is authenticated
-            if (User.Identity.IsAuthenticated)
-            {
-                // Check if the user has the "librarian" role claim
-                var isLibrarian = User.HasClaim(c => c.Type == ClaimTypes.Role && c.Value == "librarian");
-
-                if (isLibrarian)
-                {
-                    // User is a librarian
-                    return Ok("User is a librarian.");
-                }
-                else
-                {
-                    // User is not a librarian
-                    return Forbid(); // Or return another status code for unauthorized access
-                }
-            }
-
-            return Unauthorized(); // If the user is not authenticated
-        }
-
-        //[HttpPost]
-        //[Route("Login")]
-        //public ActionResult<List<LibrarianDto>> Login([FromBody] LibrarianDto librarian)
-        //{
-        //    if (!ModelState.IsValid)
-        //    {
-        //        return BadRequest(ModelState);
-        //    }
-
-        //    try
-        //    {
-        //        // Authenticate librarian (sample logic)
-        //        var authenticatedLibrarian = _librarianServices.Authenticate(librarian.Person.UserName, librarian.Person.Password);
-        //        if (authenticatedLibrarian.Count ==0)
-        //        {
-        //            // If authentication fails
-        //            return Unauthorized("Invalid username or password");
-        //        }
-
-        //        // If authenticated, you might generate a token or perform further actions as needed
-        //        // For example, setting some authentication flag or creating a JWT token
-
-        //        return Ok(authenticatedLibrarian); // Return the authenticated librarian DTO
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        // Log the exception or handle it as per your requirement
-        //        return StatusCode(500, $"Internal server error: {ex.Message}");
-        //    }
-        //}
+   
         [HttpPost("AllowBorrow")]
-        [Authorize(Policy = "LibrarianPolicy")]
-
         public IActionResult AllowBorrow(int tranisactionId)
         {
             try
@@ -243,7 +187,6 @@ namespace LibraryWebApiFinal.Controllers
         }
 
         [HttpPost("AllowReturn")]
-        [Authorize(Policy = "LibrarianPolicy")]
         public IActionResult AllowReturn(int tranisactionId)
         {
             try

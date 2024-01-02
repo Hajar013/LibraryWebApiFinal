@@ -14,6 +14,7 @@ namespace LibraryWebApiFinal.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Policy = "BorrowerPolicy")]
     public class BorrowerController : ControllerBase
     {
         private readonly IBorrowerService _borrowerServices;
@@ -27,14 +28,14 @@ namespace LibraryWebApiFinal.Controllers
             _authService = authService;
             _bookService = bookService;
         }
-        //[Authorize]
-        [Authorize(Policy = "BorrowerPolicy")]
+ 
         [HttpGet("GetBorrowers")]
         public IQueryable<BorrowerDto> Get()
         {
             var borrowers = _borrowerServices.FindAll();
             return borrowers;
         }
+
 
         [HttpGet]
         [Route("GetBorrower/{id}")]
@@ -45,6 +46,7 @@ namespace LibraryWebApiFinal.Controllers
         }
 
         [HttpPost("login")]
+        [AllowAnonymous]
         public IActionResult Login([FromBody] BorrowerDto borrowerDto)
         {
             var borrower = _authService.Authenticate(borrowerDto.Person.UserName, borrowerDto.Person.Password);
@@ -58,6 +60,7 @@ namespace LibraryWebApiFinal.Controllers
 
 
         [HttpPost("Register")]
+        [AllowAnonymous]
         public IActionResult Register([FromBody] BorrowerDto borrower)
         {
             // Validate borrower DTO or handle validation errors
@@ -147,48 +150,6 @@ namespace LibraryWebApiFinal.Controllers
             }
         }
 
-        [HttpGet("CheckBorrowerRole")]
-        public ActionResult CheckBorrowerRole()
-        {
-            // Check if user is authenticated
-            if (User.Identity.IsAuthenticated)
-            {
-                // Check if the user has the "borrower" role claim
-                var isBorrower = User.HasClaim(c => c.Type == ClaimTypes.Role && c.Value == "borrower");
-
-                if (isBorrower)
-                {
-                    // User is a borrower
-                    return Ok("User is a borrower.");
-                }
-                else
-                {
-                    // User is not a borrower
-                    return Forbid(); // Or return another status code for unauthorized access
-                }
-            }
-
-            return Unauthorized(); // If the user is not authenticated
-        }
-
-        //[HttpPost("RequestToBorrow")]
-        //public IActionResult RequestToBorrow([FromBody] BorrowerDto borrower, int title)
-        //{
-        //    try
-        //    {
-        //        // Validate borrower DTO or handle validation errors
-        //        if (_borrowerServices.RequestToBorrowBook(title, borrower.Person.Id))
-        //            return StatusCode(200, "Your request was successfully sent to Liibrarian. please wait...");
-
-
-        //        return StatusCode(400, "Something wrong. The book title is not correct.");
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        // Log the exception or handle it as per your requirement
-        //        return StatusCode(500, $"Internal server error: {ex.Message}");
-        //    }
-        //}
         [Authorize(Policy = "BorrowerPolicy")]
         [HttpPost("RequestToBorrow")]
         public IActionResult RequestToBorrow(int bookId)
@@ -214,7 +175,7 @@ namespace LibraryWebApiFinal.Controllers
             }
         }
 
-        [Authorize(Policy = "BorrowerPolicy")]
+        
         [HttpPost("RequestToReturn")]
         public IActionResult RequestToReturn(int transactionId)
         {
@@ -246,13 +207,14 @@ namespace LibraryWebApiFinal.Controllers
             var book = _bookService.FindByCondition(id);
             return book;
         }
-        [HttpGet]
-        [Route("GetBook/{title}")]
-        public BookDto GetBookBytitle(string title)
-        {
-            var book = _bookService.FindByTitle(title).First(b=>b.Title == title);
-            return book;
-        }
+
+        //[HttpGet]
+        //[Route("GetBook/{title}")]
+        //public BookDto GetBookBytitle(string title)
+        //{
+        //    var book = _bookService.FindByTitle(title).First(b=>b.Title == title);
+        //    return book;
+        //}
 
         // Helper method to get the user ID from the claim
         private int GetUserIdFromClaim()
