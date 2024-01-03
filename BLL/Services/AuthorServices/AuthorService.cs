@@ -43,11 +43,11 @@ namespace BLL.Services.AuthorServices
             return authorsDto;
         }
 
-        public List<AuthorDto> FindByCondition(int id)
+        public AuthorDto FindByCondition(int id)
         {
 
-            List<Author> authorsFromDB = _repository.Author.FindByCondition(x => x.Id == id).ToList();
-            List<AuthorDto> authorsDto = authorsFromDB.Select(author => _mapper.Map<AuthorDto>(author)).ToList();
+            Author authorsFromDB = _repository.Author.FindByCondition(x => x.Id == id).FirstOrDefault();
+            AuthorDto authorsDto =  _mapper.Map<AuthorDto>(authorsFromDB);
 
             return authorsDto;
         }

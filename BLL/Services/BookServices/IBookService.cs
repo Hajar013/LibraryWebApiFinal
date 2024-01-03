@@ -12,7 +12,7 @@ namespace BLL.Services.BookServices
     {
         List<BookDto> FindAll();
         BookDto FindByCondition(int id);
-        List<BookDto> FindByTitle(string title);
+       /* List<BookDto> FindByTitle(string title);*/
         void Create(BookDto dto);
         void Update(BookDto dto);
         void Delete(BookDto dto);

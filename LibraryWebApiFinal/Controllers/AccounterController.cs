@@ -36,7 +36,7 @@ namespace LibraryWebApiFinal.Controllers
 
         [HttpGet]
         [Route("GetAccounter/{id}")]
-        public List<AccounterDto> GetById(int id)
+        public AccounterDto GetById(int id)
         {
             var accounter = _accounterServices.FindByCondition(id);
             return accounter;
@@ -54,7 +54,7 @@ namespace LibraryWebApiFinal.Controllers
             }
 
 
-                var existingAccounter = _accounterServices.FindByCondition(id).FirstOrDefault();
+                var existingAccounter = _accounterServices.FindByCondition(id);
 
                 if (existingAccounter == null)
                 {
@@ -79,7 +79,7 @@ namespace LibraryWebApiFinal.Controllers
         [Route("Delete/{id}")]
         public IActionResult DeleteAccounter(int id)
         {
-                var existingAccounter = _accounterServices.FindByCondition(id).FirstOrDefault();
+                var existingAccounter = _accounterServices.FindByCondition(id);
 
                 if (existingAccounter == null)
                 {

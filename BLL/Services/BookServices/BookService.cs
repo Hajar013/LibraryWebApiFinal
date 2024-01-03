@@ -39,11 +39,13 @@ namespace BLL.Services.BookServices
             _repository.Save();
         }
 
-        public IQueryable<BookDto> FindAll()
+        public List<BookDto> FindAll()
         {
 
-            IQueryable<Book> booksFromDB = _repository.Book.FindAll();
-            IQueryable<BookDto> booksDto = booksFromDB.Select(book => _mapper.Map<BookDto>(book));
+           List<Book> booksFromDB = _repository.Book.FindAll().ToList();
+            List<BookDto> booksDto = booksFromDB.Select(book => _mapper.Map<BookDto>(book)).ToList();
+
+         
 
             return booksDto;
         }

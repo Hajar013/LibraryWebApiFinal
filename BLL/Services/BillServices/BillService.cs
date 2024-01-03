@@ -48,11 +48,11 @@ namespace BLL.Services.BillServices
             return billsDto;
         }
 
-        public List<BillDto> FindByCondition(int id)
+        public BillDto FindByCondition(int id)
         {
 
-            List<Bill> billsFromDB = _repository.Bill.FindByCondition(x => x.BillNo == id).ToList();
-            List<BillDto> billsDto = billsFromDB.Select(bill => _mapper.Map<BillDto>(bill)).ToList();
+            Bill billsFromDB = _repository.Bill.FindByCondition(x => x.BillNo == id).FirstOrDefault();
+            BillDto billsDto = _mapper.Map<BillDto>(billsFromDB);
 
             return billsDto;
         }

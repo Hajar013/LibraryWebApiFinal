@@ -55,11 +55,11 @@ namespace BLL.Services.AccounterServices
             return accountersDto;
         }
 
-        public List<AccounterDto> FindByCondition(int id)
+        public AccounterDto FindByCondition(int id)
         {
 
-            IQueryable<Accounter> accountersFromDB = _repository.Accounter.FindByCondition(x => x.Id == id);
-            List<AccounterDto> accountersDto = accountersFromDB.Select(accounter => _mapper.Map<AccounterDto>(accounter)).ToList();
+            Accounter accountersFromDB = _repository.Accounter.FindByCondition(x => x.Id == id).FirstOrDefault();
+            AccounterDto accountersDto =  _mapper.Map<AccounterDto>(accountersFromDB);
 
             return accountersDto;
         }
@@ -74,7 +74,7 @@ namespace BLL.Services.AccounterServices
 
         public bool AllowBills(int accounterId, int billId)
         {
-            var bill = _billService.FindByCondition(billId).FirstOrDefault();
+            var bill = _billService.FindByCondition(billId);
             BookDto book = _bookService.FindByCondition(bill.BookId);
             if (bill == null)
             {

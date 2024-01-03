@@ -48,11 +48,11 @@ namespace BLL.Services.TransactionServices
             return transactionsDto;
         }
 
-        public List<TransactionDto> FindByCondition(int id)
+        public TransactionDto FindByCondition(int id)
         {
 
-            List<Transaction> transactionsFromDB = _repository.Transaction.FindByCondition(x=>x.Id == id).ToList();
-            List<TransactionDto> transactionsDto = transactionsFromDB.Select(transaction => _mapper.Map<TransactionDto>(transaction)).ToList();
+            Transaction transactionsFromDB = _repository.Transaction.FindByCondition(x=>x.Id == id).FirstOrDefault();
+            TransactionDto transactionsDto =  _mapper.Map<TransactionDto>(transactionsFromDB);
 
             return transactionsDto;
         }

@@ -11,7 +11,7 @@ namespace BLL.Services.TransactionServices
     public interface ITransactionService
     {
         List<TransactionDto> FindAll();
-        List<TransactionDto> FindByCondition(int id);
+        TransactionDto FindByCondition(int id);
         void Create(TransactionDto dto);
         void Update(TransactionDto dto);
         void Delete(TransactionDto dto);

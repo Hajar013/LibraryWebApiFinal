@@ -11,7 +11,7 @@ namespace BLL.Services.LibrarianServices
     public interface ILibrarianService
     {
         List<LibrarianDto> FindAll();
-        List<LibrarianDto> FindByCondition(int id);
+        LibrarianDto FindByCondition(int id);
         void Create(LibrarianDto dto);
         void Update(LibrarianDto dto);
         void Delete(LibrarianDto dto);

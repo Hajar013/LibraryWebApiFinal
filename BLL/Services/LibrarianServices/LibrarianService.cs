@@ -63,11 +63,11 @@ namespace BLL.Services.LibrarianServices
             return librariansDto;
         }
 
-        public List<LibrarianDto> FindByCondition(int id)
+        public LibrarianDto FindByCondition(int id)
         {
 
-            List<Librarian> librariansFromDB = _repository.Librarian.FindByCondition(x=>x.Id == id).ToList();
-            List<LibrarianDto> librariansDto = librariansFromDB.Select(librarian => _mapper.Map<LibrarianDto>(librarian)).ToList();
+            Librarian librariansFromDB = _repository.Librarian.FindByCondition(x=>x.Id == id).FirstOrDefault();
+            LibrarianDto librariansDto = _mapper.Map<LibrarianDto>(librariansFromDB);
 
             return librariansDto;
         }

@@ -11,7 +11,7 @@ namespace BLL.Services.BillServices
     public interface IBillService
     {
         List<BillDto> FindAll();
-        List<BillDto> FindByCondition(int id);
+        BillDto FindByCondition(int id);
         void Create(BillDto dto);
         void Update(BillDto dto);
         void Delete(BillDto dto);

@@ -54,7 +54,7 @@ namespace LibraryWebApiFinal.Controllers
 
         [HttpGet]
         [Route("GetLibrarian/{id}")]
-        public List<LibrarianDto> GetById(int id)
+        public LibrarianDto GetById(int id)
         {
             var librarian = _librarianServices.FindByCondition(id);
             return librarian;
@@ -72,7 +72,7 @@ namespace LibraryWebApiFinal.Controllers
 
             try
             {
-                var existingLibrarian = _librarianServices.FindByCondition(id).FirstOrDefault();
+                var existingLibrarian = _librarianServices.FindByCondition(id);
 
                 if (existingLibrarian == null)
                 {
@@ -104,7 +104,7 @@ namespace LibraryWebApiFinal.Controllers
         {
             try
             {
-                var existingLibrarian = _librarianServices.FindByCondition(id).FirstOrDefault();
+                var existingLibrarian = _librarianServices.FindByCondition(id);
 
                 if (existingLibrarian == null)
                 {

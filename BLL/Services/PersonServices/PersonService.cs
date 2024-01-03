@@ -48,10 +48,10 @@ namespace BLL.Services.PersonServices
             return personsDto;
         }
 
-        public List<PersonDto> FindByCondition(int id)
+        public PersonDto FindByCondition(int id)
         {
-            List<Person> personsFromDB = _repository.Person.FindByCondition(x=>x.Id == id).ToList();
-            List<PersonDto> personsDto = personsFromDB.Select(person => _mapper.Map<PersonDto>(person)).ToList();
+            Person personsFromDB = _repository.Person.FindByCondition(x=>x.Id == id).FirstOrDefault();
+            PersonDto personsDto = _mapper.Map<PersonDto>(personsFromDB);
             return personsDto;
         }
 

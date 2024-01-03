@@ -11,7 +11,7 @@ namespace BLL.Services.PersonServices
     public interface IPersonService 
     {
         List<PersonDto> FindAll();
-        List<PersonDto> FindByCondition(int id);
+        PersonDto FindByCondition(int id);
         void Create(PersonDto dto);
         void Update(PersonDto dto);
         void Delete(PersonDto dto);
