@@ -48,7 +48,7 @@ namespace LibraryWebApiFinal.Controllers
         }
          
         [HttpGet("GetLibrarians")]
-        public IQueryable<LibrarianDto> Get()
+        public List<LibrarianDto> Get()
         {
             var librarians = _librarianServices.FindAll();
             return librarians;
@@ -56,7 +56,7 @@ namespace LibraryWebApiFinal.Controllers
 
         [HttpGet]
         [Route("GetLibrarian/{id}")]
-        public IQueryable<LibrarianDto> GetById(int id)
+        public List<LibrarianDto> GetById(int id)
         {
             var librarian = _librarianServices.FindByCondition(id);
             return librarian;

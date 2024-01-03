@@ -9,8 +9,8 @@ namespace BLL.Services.AuthorServices
 {
     public interface IAuthorService
     {
-        IQueryable<AuthorDto> FindAll();
-        IQueryable<AuthorDto> FindByCondition(int id);
+        List<AuthorDto> FindAll();
+        List<AuthorDto> FindByCondition(int id);
         void Create(AuthorDto dto);
         void Update(AuthorDto dto);
         void Delete(AuthorDto dto);

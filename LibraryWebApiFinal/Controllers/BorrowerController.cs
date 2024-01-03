@@ -28,7 +28,7 @@ namespace LibraryWebApiFinal.Controllers
         }
  
         [HttpGet("GetBorrowers")]
-        public IQueryable<BorrowerDto> Get()
+        public List<BorrowerDto> Get()
         {
             var borrowers = _borrowerServices.FindAll();
             return borrowers;

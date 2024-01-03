@@ -25,20 +25,20 @@ namespace LibraryWebApiFinal.Controllers
             _mapper = mapper;
         }
 
-        //[HttpGet]
-        //public IQueryable<PersonDto> Get()
-        //{
-        //    var persons = _personServices.FindAll();
-        //    return persons;
-        //}
+        [HttpGet]
+        public List<PersonDto> Get()
+        {
+            var persons = _personServices.FindAll();
+            return persons;
+        }
 
-        //[HttpGet]
-        //[Route("GetPerson/{id}")]
-        //public IQueryable<PersonDto> GetById(int id)
-        //{
-        //    var person = _personServices.FindByCondition(id);
-        //    return person;
-        //}
+        [HttpGet]
+        [Route("GetPerson/{id}")]
+        public IQueryable<PersonDto> GetById(int id)
+        {
+            var person = _personServices.FindByCondition(id);
+            return person;
+        }
 
 
         //[HttpPost]

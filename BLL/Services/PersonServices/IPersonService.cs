@@ -10,8 +10,9 @@ namespace BLL.Services.PersonServices
 {
     public interface IPersonService 
     {
-        IQueryable<PersonDto> FindAll();
-        IQueryable<PersonDto> FindByCondition(int id);
+        List<PersonDto> FindAll();
+        List<PersonDto> FindByCondition(int id);
+        //IQueryable<PersonDto> FindByCondition(Expression<Func<PersonDto, bool>> expression);
         void Create(PersonDto dto);
         void Update(PersonDto dto);
         void Delete(PersonDto dto);

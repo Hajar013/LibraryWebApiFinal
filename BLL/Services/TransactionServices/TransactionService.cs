@@ -39,20 +39,20 @@ namespace BLL.Services.TransactionServices
             _repository.Save();
         }
 
-        public IQueryable<TransactionDto> FindAll()
+        public List<TransactionDto> FindAll()
         {
 
-            IQueryable<Transaction> transactionsFromDB = _repository.Transaction.FindAll();
-            IQueryable<TransactionDto> transactionsDto = transactionsFromDB.Select(transaction => _mapper.Map<TransactionDto>(transaction));
+            List<Transaction> transactionsFromDB = _repository.Transaction.FindAll().ToList();
+            List<TransactionDto> transactionsDto = transactionsFromDB.Select(transaction => _mapper.Map<TransactionDto>(transaction)).ToList();
 
             return transactionsDto;
         }
 
-        public IQueryable<TransactionDto> FindByCondition(int id)
+        public List<TransactionDto> FindByCondition(int id)
         {
 
-            IQueryable<Transaction> transactionsFromDB = _repository.Transaction.FindByCondition(x=>x.Id == id);
-            IQueryable<TransactionDto> transactionsDto = transactionsFromDB.Select(transaction => _mapper.Map<TransactionDto>(transaction));
+            List<Transaction> transactionsFromDB = _repository.Transaction.FindByCondition(x=>x.Id == id).ToList();
+            List<TransactionDto> transactionsDto = transactionsFromDB.Select(transaction => _mapper.Map<TransactionDto>(transaction)).ToList();
 
             return transactionsDto;
         }

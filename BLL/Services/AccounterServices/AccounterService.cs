@@ -46,20 +46,20 @@ namespace BLL.Services.AccounterServices
             _repository.Save();
         }
 
-        public IQueryable<AccounterDto> FindAll()
+        public List<AccounterDto> FindAll()
         {
 
-            IQueryable<Accounter> accountersFromDB = _repository.Accounter.FindAll();
-            IQueryable<AccounterDto> accountersDto = accountersFromDB.Select(accounter => _mapper.Map<AccounterDto>(accounter));
+            List<Accounter> accountersFromDB = _repository.Accounter.FindAll().ToList();
+            List<AccounterDto> accountersDto = accountersFromDB.Select(accounter => _mapper.Map<AccounterDto>(accounter)).ToList();
 
             return accountersDto;
         }
 
-        public IQueryable<AccounterDto> FindByCondition(int id)
+        public List<AccounterDto> FindByCondition(int id)
         {
 
             IQueryable<Accounter> accountersFromDB = _repository.Accounter.FindByCondition(x => x.Id == id);
-            IQueryable<AccounterDto> accountersDto = accountersFromDB.Select(accounter => _mapper.Map<AccounterDto>(accounter));
+            List<AccounterDto> accountersDto = accountersFromDB.Select(accounter => _mapper.Map<AccounterDto>(accounter)).ToList();
 
             return accountersDto;
         }

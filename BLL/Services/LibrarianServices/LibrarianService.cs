@@ -54,20 +54,20 @@ namespace BLL.Services.LibrarianServices
             _repository.Save();
         }
 
-        public IQueryable<LibrarianDto> FindAll()
+        public List<LibrarianDto> FindAll()
         {
 
-            IQueryable<Librarian> librariansFromDB = _repository.Librarian.FindAll();
-            IQueryable<LibrarianDto> librariansDto = librariansFromDB.Select(librarian => _mapper.Map<LibrarianDto>(librarian));
+            List<Librarian> librariansFromDB = _repository.Librarian.FindAll().ToList();
+            List<LibrarianDto> librariansDto = librariansFromDB.Select(librarian => _mapper.Map<LibrarianDto>(librarian)).ToList();
 
             return librariansDto;
         }
 
-        public IQueryable<LibrarianDto> FindByCondition(int id)
+        public List<LibrarianDto> FindByCondition(int id)
         {
 
-            IQueryable<Librarian> librariansFromDB = _repository.Librarian.FindByCondition(x=>x.Id == id);
-            IQueryable<LibrarianDto> librariansDto = librariansFromDB.Select(librarian => _mapper.Map<LibrarianDto>(librarian));
+            List<Librarian> librariansFromDB = _repository.Librarian.FindByCondition(x=>x.Id == id).ToList();
+            List<LibrarianDto> librariansDto = librariansFromDB.Select(librarian => _mapper.Map<LibrarianDto>(librarian)).ToList();
 
             return librariansDto;
         }

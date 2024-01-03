@@ -9,8 +9,8 @@ namespace BLL.Services.AccounterServices
 {
     public interface IAccounterService 
     {
-        IQueryable<AccounterDto> FindAll();
-        IQueryable<AccounterDto> FindByCondition(int id);
+        List<AccounterDto> FindAll();
+        List<AccounterDto> FindByCondition(int id);
         bool AllowBills(int accounterId, int billId);
         void Create(AccounterDto dto);
         void Update(AccounterDto dto);

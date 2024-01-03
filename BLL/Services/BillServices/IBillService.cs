@@ -10,8 +10,8 @@ namespace BLL.Services.BillServices
 {
     public interface IBillService
     {
-        IQueryable<BillDto> FindAll();
-        IQueryable<BillDto> FindByCondition(int id);
+        List<BillDto> FindAll();
+        List<BillDto> FindByCondition(int id);
         void Create(BillDto dto);
         void Update(BillDto dto);
         void Delete(BillDto dto);

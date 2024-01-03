@@ -28,7 +28,7 @@ namespace LibraryWebApiFinal.Controllers
         }
  
         [HttpGet("GetAccounters")]
-        public IQueryable<AccounterDto> Get()
+        public List<AccounterDto> Get()
         {
             var accounters = _accounterServices.FindAll();
             return accounters;
@@ -36,7 +36,7 @@ namespace LibraryWebApiFinal.Controllers
 
         [HttpGet]
         [Route("GetAccounter/{id}")]
-        public IQueryable<AccounterDto> GetById(int id)
+        public List<AccounterDto> GetById(int id)
         {
             var accounter = _accounterServices.FindByCondition(id);
             return accounter;

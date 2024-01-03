@@ -34,20 +34,20 @@ namespace BLL.Services.AuthorServices
             _repository.Author.Delete(author);
         }
 
-        public IQueryable<AuthorDto> FindAll()
+        public List<AuthorDto> FindAll()
         {
 
             IQueryable<Author> authorsFromDB = _repository.Author.FindAll();
-            IQueryable<AuthorDto> authorsDto = authorsFromDB.Select(author => _mapper.Map<AuthorDto>(author));
+            List<AuthorDto> authorsDto = authorsFromDB.Select(author => _mapper.Map<AuthorDto>(author)).ToList();
 
             return authorsDto;
         }
 
-        public IQueryable<AuthorDto> FindByCondition(int id)
+        public List<AuthorDto> FindByCondition(int id)
         {
 
-            IQueryable<Author> authorsFromDB = _repository.Author.FindByCondition(x => x.Id == id);
-            IQueryable<AuthorDto> authorsDto = authorsFromDB.Select(author => _mapper.Map<AuthorDto>(author));
+            List<Author> authorsFromDB = _repository.Author.FindByCondition(x => x.Id == id).ToList();
+            List<AuthorDto> authorsDto = authorsFromDB.Select(author => _mapper.Map<AuthorDto>(author)).ToList();
 
             return authorsDto;
         }

@@ -38,11 +38,11 @@ namespace BLL.Services.BookAuthorServices
             _repository.Save();
         }
 
-        public IQueryable<BookAuthorDto> FindAll()
+        public List<BookAuthorDto> FindAll()
         {
 
-            IQueryable<BookAuthor> bookAuthorsFromDB = _repository.BookAuthor.FindAll();
-            IQueryable<BookAuthorDto> bookAuthorsDto = bookAuthorsFromDB.Select(bookAuthor => _mapper.Map<BookAuthorDto>(bookAuthor));
+            List<BookAuthor> bookAuthorsFromDB = _repository.BookAuthor.FindAll().ToList().ToList();
+            List<BookAuthorDto> bookAuthorsDto = bookAuthorsFromDB.Select(bookAuthor => _mapper.Map<BookAuthorDto>(bookAuthor)).ToList();
 
             return bookAuthorsDto;
         }

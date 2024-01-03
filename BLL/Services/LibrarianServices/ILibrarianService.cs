@@ -10,8 +10,8 @@ namespace BLL.Services.LibrarianServices
 {
     public interface ILibrarianService
     {
-        IQueryable<LibrarianDto> FindAll();
-        IQueryable<LibrarianDto> FindByCondition(int id);
+        List<LibrarianDto> FindAll();
+        List<LibrarianDto> FindByCondition(int id);
         void Create(LibrarianDto dto);
         void Update(LibrarianDto dto);
         void Delete(LibrarianDto dto);

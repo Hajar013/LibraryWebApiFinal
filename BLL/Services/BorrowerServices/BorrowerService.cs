@@ -58,11 +58,11 @@ namespace BLL.Services.BorrowerServices
             _repository.Save();
         }
 
-        public IQueryable<BorrowerDto> FindAll()
+        public List<BorrowerDto> FindAll()
         {
 
-            IQueryable<Borrower> borrowersFromDB = _repository.Borrower.FindAll();
-            IQueryable<BorrowerDto> borrowersDto = borrowersFromDB.Select(borrower => _mapper.Map<BorrowerDto>(borrower));
+            List<Borrower> borrowersFromDB = _repository.Borrower.FindAll().ToList();
+            List<BorrowerDto> borrowersDto = borrowersFromDB.Select(borrower => _mapper.Map<BorrowerDto>(borrower)).ToList();
 
             return borrowersDto;
         }

@@ -39,20 +39,20 @@ namespace BLL.Services.BillServices
             _repository.Save();
         }
 
-        public IQueryable<BillDto> FindAll()
+        public List<BillDto> FindAll()
         {
 
             IQueryable<Bill> billsFromDB = _repository.Bill.FindAll();
-            IQueryable<BillDto> billsDto = billsFromDB.Select(bill => _mapper.Map<BillDto>(bill));
+            List<BillDto> billsDto = billsFromDB.Select(bill => _mapper.Map<BillDto>(bill)).ToList();
 
             return billsDto;
         }
 
-        public IQueryable<BillDto> FindByCondition(int id)
+        public List<BillDto> FindByCondition(int id)
         {
 
-            IQueryable<Bill> billsFromDB = _repository.Bill.FindByCondition(x => x.BillNo == id);
-            IQueryable<BillDto> billsDto = billsFromDB.Select(bill => _mapper.Map<BillDto>(bill));
+            List<Bill> billsFromDB = _repository.Bill.FindByCondition(x => x.BillNo == id).ToList();
+            List<BillDto> billsDto = billsFromDB.Select(bill => _mapper.Map<BillDto>(bill)).ToList();
 
             return billsDto;
         }
