@@ -9,7 +9,7 @@ namespace BLL.DTOs
         public int? PersonId { get; set; }
         public string? LibrarianlicenseNumber { get; set; }      
         
-        public List<TransactionDto>? transactions { get; set; }
+        public List<TransactionDto>? Transactions { get; set; }
         public PersonDto? Person { get; set; }
 
     }

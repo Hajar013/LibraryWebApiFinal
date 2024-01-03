@@ -20,7 +20,7 @@ namespace LibraryWebApiFinal.Controllers
         private readonly IBorrowerService _borrowerServices;
         private readonly IMapper _mapper;
         private readonly IBookService _bookService;
-        public BorrowerController(IBorrowerService borrowerServices, IMapper mapper, IAuthService authService, IBookService bookService)
+        public BorrowerController(IBorrowerService borrowerServices, IMapper mapper, IBookService bookService)
         {
             _borrowerServices = borrowerServices;
             _mapper = mapper;
@@ -59,7 +59,7 @@ namespace LibraryWebApiFinal.Controllers
 
                 if (existingBorrower == null)
                 {
-                    return NotFound($"Borrower with ID {id} not found");
+                    return NotFound();
                 }
 
                 // Update properties of existingBorrower with values from updatedBorrower
@@ -76,8 +76,7 @@ namespace LibraryWebApiFinal.Controllers
             }
             catch (Exception ex)
             {
-                // Log the exception or handle it as per your requirement
-                return StatusCode(500, $"Internal server error: {ex.Message}");
+                return StatusCode(500);
             }
         }
 
@@ -91,7 +90,7 @@ namespace LibraryWebApiFinal.Controllers
 
                 if (existingBorrower == null)
                 {
-                    return NotFound($"Borrower with ID {id} not found");
+                    return NotFound();
                 }
 
                 // Use your service to delete the Borrower
@@ -102,7 +101,7 @@ namespace LibraryWebApiFinal.Controllers
             catch (Exception ex)
             {
                 // Log the exception or handle it as per your requirement
-                return StatusCode(500, $"Internal server error: {ex.Message}");
+                return StatusCode(500);
             }
         }
 
@@ -115,19 +114,13 @@ namespace LibraryWebApiFinal.Controllers
                 int borrowerId = GetUserIdFromClaim();
                 // Validate borrower DTO or handle validation errors
                 if (_borrowerServices.RequestToBorrowBook(bookId, borrowerId))
-                    return StatusCode(200, "Your request was successfully sent to the librarian. Please wait...");
+                    return StatusCode(200);
 
-                return StatusCode(400, "Something is wrong. The book title is not correct.");
+                return StatusCode(400);
             }
             catch (Exception ex)
             {
-                // Log the exception or handle it as per your requirement
-                Console.WriteLine($"Internal server error: {ex.Message}");
-                if (ex.InnerException != null)
-                {
-                    Console.WriteLine($"Inner exception: {ex.InnerException.Message}");
-                }
-                return StatusCode(500, "An internal server error occurred.");
+                return StatusCode(500);
             }
         }
 
@@ -140,19 +133,13 @@ namespace LibraryWebApiFinal.Controllers
                 int borrowerId = GetUserIdFromClaim();
                 // Validate borrower DTO or handle validation errors
                 if (_borrowerServices.RequestToReturnBook(transactionId, borrowerId))
-                    return StatusCode(200, "Your request was successfully sent to the librarian. Please wait...");
+                    return StatusCode(200);
 
-                return StatusCode(400, "Something is wrong. The transaction is not found.");
+                return StatusCode(400);
             }
             catch (Exception ex)
             {
-                // Log the exception or handle it as per your requirement
-                Console.WriteLine($"Internal server error: {ex.Message}");
-                if (ex.InnerException != null)
-                {
-                    Console.WriteLine($"Inner exception: {ex.InnerException.Message}");
-                }
-                return StatusCode(500, "An internal server error occurred.");
+                return StatusCode(500);
             }
         }
 
@@ -193,19 +180,13 @@ namespace LibraryWebApiFinal.Controllers
                 int borrowerId = GetUserIdFromClaim();
                 // Validate borrower DTO or handle validation errors
                 if (_borrowerServices.RequestToBill(bookId, borrowerId))
-                    return StatusCode(200, "Your request was successfully sent to the librarian. Please wait...");
+                    return StatusCode(200);
 
-                return StatusCode(400, "Something is wrong. The book title is not correct.");
+                return StatusCode(400);
             }
             catch (Exception ex)
             {
-                // Log the exception or handle it as per your requirement
-                Console.WriteLine($"Internal server error: {ex.Message}");
-                if (ex.InnerException != null)
-                {
-                    Console.WriteLine($"Inner exception: {ex.InnerException.Message}");
-                }
-                return StatusCode(500, "An internal server error occurred.");
+                return StatusCode(500);
             }
         }
 

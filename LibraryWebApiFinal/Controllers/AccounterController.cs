@@ -19,7 +19,7 @@ namespace LibraryWebApiFinal.Controllers
         private readonly IAccounterService _accounterServices;
         private readonly IMapper _mapper;
         private readonly IAccounterService _accounterService;
-        public AccounterController(IAccounterService accounterServices, IMapper mapper, IAuthService authService,
+        public AccounterController(IAccounterService accounterServices, IMapper mapper,
              IAccounterService accounterService)
         {
             _accounterServices = accounterServices;
@@ -53,13 +53,12 @@ namespace LibraryWebApiFinal.Controllers
                 return BadRequest(ModelState);
             }
 
-            try
-            {
+
                 var existingAccounter = _accounterServices.FindByCondition(id).FirstOrDefault();
 
                 if (existingAccounter == null)
                 {
-                    return NotFound($"Accounter with ID {id} not found");
+                    return NotFound();
                 }
 
                 // Update properties of existingAccounter with values from updatedAccounter
@@ -73,58 +72,39 @@ namespace LibraryWebApiFinal.Controllers
                 _accounterServices.Update(existingAccounter);
 
                 return Ok(updatedAccounterDto);
-            }
-            catch (Exception ex)
-            {
-                // Log the exception or handle it as per your requirement
-                return StatusCode(500, $"Internal server error: {ex.Message}");
-            }
+
         }
 
         [HttpDelete]
         [Route("Delete/{id}")]
         public IActionResult DeleteAccounter(int id)
         {
-            try
-            {
                 var existingAccounter = _accounterServices.FindByCondition(id).FirstOrDefault();
 
                 if (existingAccounter == null)
                 {
-                    return NotFound($"Accounter with ID {id} not found");
+                    return NotFound();
                 }
 
                 // Use your service to delete the Accounter
                 _accounterServices.Delete(existingAccounter);
 
                 return NoContent(); // 204 No Content
-            }
-            catch (Exception ex)
-            {
-                // Log the exception or handle it as per your requirement
-                return StatusCode(500, $"Internal server error: {ex.Message}");
-            }
+
         }
 
         [HttpPost("AllowBill")] 
         public IActionResult AllowBorrow(int billId)
         {
-            try
-            {
                 var accounterId = GetUserIdFromClaim();
 
                 // Validate librarian DTO or handle validation errors
                 if (_accounterService.AllowBills(accounterId, billId))
 
-                    return StatusCode(200, "The borrower's request to bill has been approved.");
+                    return StatusCode(200);
 
-                return StatusCode(400, "The borrower's request to bill has been failed");
-            }
-            catch (Exception ex)
-            {
+                return StatusCode(400);
 
-                return StatusCode(500, $"An internal server error occurred.: {ex.Message}");
-            }
         }
         private int GetUserIdFromClaim()
         {
@@ -133,7 +113,6 @@ namespace LibraryWebApiFinal.Controllers
             {
                 return userId;
             }
-            // Handle the case where the claim doesn't contain a valid user ID
             throw new InvalidOperationException("User ID not found in claims.");
         }
 

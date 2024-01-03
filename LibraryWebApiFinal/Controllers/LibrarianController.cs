@@ -23,12 +23,10 @@ namespace LibraryWebApiFinal.Controllers
         private readonly ILibrarianService _librarianServices;
         private readonly IBookService _bookService;
         private readonly IMapper _mapper;
-        private readonly IAuthService _authService;
-        public LibrarianController(ILibrarianService librarianServices, IMapper mapper, IAuthService authService, IBookService bookService)
+        public LibrarianController(ILibrarianService librarianServices, IMapper mapper, IBookService bookService)
         {
             _librarianServices = librarianServices;
             _mapper = mapper;
-            _authService = authService;
             _bookService = bookService;
         }
 
@@ -78,7 +76,7 @@ namespace LibraryWebApiFinal.Controllers
 
                 if (existingLibrarian == null)
                 {
-                    return NotFound($"Librarian with ID {id} not found");
+                    return NotFound();
                 }
 
                 // Update properties of existingLibrarian with values from updatedLibrarian
@@ -96,7 +94,7 @@ namespace LibraryWebApiFinal.Controllers
             catch (Exception ex)
             {
                 // Log the exception or handle it as per your requirement
-                return StatusCode(500, $"Internal server error: {ex.Message}");
+                return StatusCode(500);
             }
         }
 
@@ -110,18 +108,18 @@ namespace LibraryWebApiFinal.Controllers
 
                 if (existingLibrarian == null)
                 {
-                    return NotFound($"Librarian with ID {id} not found");
+                    return NotFound();
                 }
 
                 // Use your service to delete the Librarian
                 _librarianServices.Delete(existingLibrarian);
 
-                return NoContent(); // 204 No Content
+                return NoContent();
             }
             catch (Exception ex)
             {
                 // Log the exception or handle it as per your requirement
-                return StatusCode(500, $"Internal server error: {ex.Message}");
+                return StatusCode(500);
             }
         }
    
@@ -135,14 +133,14 @@ namespace LibraryWebApiFinal.Controllers
                 // Validate librarian DTO or handle validation errors
                 if (_librarianServices.AllowBorrow(librarianId, tranisactionId))
 
-                    return StatusCode(200, "The borrower's request has been approved.");
+                    return StatusCode(200);
 
-                return StatusCode(400, "The borrower's request has been failed");
+                return StatusCode(400);
             }
             catch (Exception ex)
             {
 
-                return StatusCode(500, $"An internal server error occurred.: {ex.Message}");
+                return StatusCode(500);
             }
         }
 
@@ -156,14 +154,14 @@ namespace LibraryWebApiFinal.Controllers
                 // Validate librarian DTO or handle validation errors
                 if (_librarianServices.AllowReturn(librarianId, tranisactionId))
 
-                    return StatusCode(200, "The borrower's request has been approved.");
+                    return StatusCode(200);
 
-                return StatusCode(400, "The borrower's request has been failed");
+                return StatusCode(400);
             }
             catch (Exception ex)
             {
 
-                return StatusCode(500, $"An internal server error occurred.: {ex.Message}");
+                return StatusCode(500);
             }
         }
         private int GetUserIdFromClaim()
@@ -185,13 +183,13 @@ namespace LibraryWebApiFinal.Controllers
                 
                 _librarianServices.AddBookAndAuther(bookAuthorDto);
 
-                    return StatusCode(200, "AddBookAndAuther.");
+                    return StatusCode(200);
 
             }
             catch (Exception ex)
             {
 
-                return StatusCode(500, $"An internal server error occurred.: {ex.Message}");
+                return StatusCode(500);
             }
         }
 

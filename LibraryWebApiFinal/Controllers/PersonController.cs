@@ -18,11 +18,9 @@ namespace LibraryWebApiFinal.Controllers
     {
     
         private readonly IPersonService _personServices;
-        private readonly IMapper _mapper;
-        public PersonController(IPersonService personServices, IMapper mapper)
+        public PersonController(IPersonService personServices)
         {
             _personServices = personServices;
-            _mapper = mapper;
         }
 
         [HttpGet]
