@@ -187,14 +187,6 @@ namespace BLL.Services.LibrarianServices
                 return false;
 
             }
-            //if (!book.Availability || book.Copies == 0)
-            //{
-            //    Console.WriteLine(" B NAV COPIES 0");
-
-            //    _transactionService.Delete(transaction);
-
-            //    return false;
-            //}
 
             if (transaction != null && transaction.ReturnStats == "Pending")
             {
@@ -219,9 +211,5 @@ namespace BLL.Services.LibrarianServices
                 _bookAuthorService.Create(bookAuthorDto);
         }
 
-        /*     public void DenyBorrow(int transactionId)
-             {
-                 throw new NotImplementedException();
-             }*/
     }
 }

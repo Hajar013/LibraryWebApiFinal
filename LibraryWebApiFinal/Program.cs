@@ -41,13 +41,6 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 });
 
 
-//builder.Services.AddAuthorization(options =>
-//{
-//    options.AddPolicy("LibrarianPolicy", policy =>
-//    {
-//        policy.RequireRole("librarian");
-//    });
-//});
 
 builder.Services.AddAuthorization(options =>
 {
@@ -65,7 +58,6 @@ builder.Services.AddAuthorization(options =>
     });
 });
 
-//builder.Services.AddAuthorization();
 // Add services to the container.
 
 ////Add Auto Mapper
@@ -79,8 +71,6 @@ builder.Services.AddAutoMapper(config =>
 });
 
 
-//builder.Services.AddAutoMapper(typeof(Program).Assembly);
-//builder.Services.AddAutoMapper(typeof(Program));
 // Configure DbContext
 builder.Services.AddDbContext<AppDBContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DbCon"))
@@ -116,8 +106,6 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-//Add Auto Mapper
-//builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 
 var app = builder.Build();

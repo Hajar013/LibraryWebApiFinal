@@ -21,8 +21,6 @@ namespace BLL.Services.PersonServices
         public PersonService(IRepositoryFactory repository, IMapper mapper) 
         {
             _repository = repository;
-            //var _configPerson = new MapperConfiguration(cfg => cfg.CreateMap<Person, PersonDto>().ReverseMap());
-            //_mapper = new Mapper(_configPerson);
             _mapper = mapper;
         }
 
@@ -49,33 +47,6 @@ namespace BLL.Services.PersonServices
 
             return personsDto;
         }
-
-        //public IQueryable<PersonDto> FindByCondition(Expression<Func<PersonDto, bool>> expression)
-        //{
-        //    Expression<Func<Person, bool>> entityExpression = person =>
-        //        expression.Compile().Invoke(new PersonDto
-        //        {
-        //            Id = person.Id,
-        //            Role = person.Role,
-        //            Name = person.Name,
-        //            Address = person.Address,
-        //            UserName = person.UserName,
-        //            Password = person.Password,
-        //        });
-
-        //    IQueryable<Person> personsFromDB = _repository.Person.FindByCondition(entityExpression);
-        //    IQueryable<PersonDto> personsDto = personsFromDB.Select(person => new PersonDto
-        //    {
-        //        Id = person.Id,
-        //        Role = person.Role,
-        //        Name = person.Name,
-        //        Address = person.Address,
-        //        UserName = person.UserName,
-        //        Password = person.Password,
-        //    });
-
-        //    return personsDto;
-        //}
 
         public IQueryable<PersonDto> FindByCondition(int id)
         {
