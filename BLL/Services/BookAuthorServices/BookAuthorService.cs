@@ -47,10 +47,10 @@ namespace BLL.Services.BookAuthorServices
             return bookAuthorsDto;
         }
 
-        public IQueryable<BookAuthorDto> FindByCondition(int id)
+        public List<BookAuthorDto> FindByCondition(int id)
         {
-            IQueryable<BookAuthor> bookAuthorsFromDB = _repository.BookAuthor.FindByCondition(x => x.BookAuthorId == id);
-            IQueryable<BookAuthorDto> bookAuthorsDto = bookAuthorsFromDB.Select(bookAuthor => _mapper.Map<BookAuthorDto>(bookAuthor));
+            List<BookAuthor> bookAuthorsFromDB = _repository.BookAuthor.FindByCondition(x => x.BookAuthorId == id).ToList();
+            List<BookAuthorDto> bookAuthorsDto = bookAuthorsFromDB.Select(bookAuthor => _mapper.Map<BookAuthorDto>(bookAuthor)).ToList();
             return bookAuthorsDto;
         }
 

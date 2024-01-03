@@ -12,7 +12,6 @@ namespace BLL.Services.PersonServices
     {
         List<PersonDto> FindAll();
         List<PersonDto> FindByCondition(int id);
-        //IQueryable<PersonDto> FindByCondition(Expression<Func<PersonDto, bool>> expression);
         void Create(PersonDto dto);
         void Update(PersonDto dto);
         void Delete(PersonDto dto);

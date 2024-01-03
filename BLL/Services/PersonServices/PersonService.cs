@@ -41,39 +41,12 @@ namespace BLL.Services.PersonServices
 
         public List<PersonDto> FindAll()
         {
-        
-            IQueryable<Person> personsFromDB = _repository.Person.FindAll();
+
+            List<Person> personsFromDB = _repository.Person.FindAll().ToList();
             List<PersonDto> personsDto = personsFromDB.Select(person => _mapper.Map<PersonDto>(person)).ToList();
 
             return personsDto;
         }
-
-        //public IQueryable<PersonDto> FindByCondition(Expression<Func<PersonDto, bool>> expression)
-        //{
-        //    Expression<Func<Person, bool>> entityExpression = person =>
-        //        expression.Compile().Invoke(new PersonDto
-        //        {
-        //            Id = person.Id,
-        //            Role = person.Role,
-        //            Name = person.Name,
-        //            Address = person.Address,
-        //            UserName = person.UserName,
-        //            Password = person.Password,
-        //        });
-
-        //    IQueryable<Person> personsFromDB = _repository.Person.FindByCondition(entityExpression);
-        //    IQueryable<PersonDto> personsDto = personsFromDB.Select(person => new PersonDto
-        //    {
-        //        Id = person.Id,
-        //        Role = person.Role,
-        //        Name = person.Name,
-        //        Address = person.Address,
-        //        UserName = person.UserName,
-        //        Password = person.Password,
-        //    });
-
-        //    return personsDto;
-        //}
 
         public List<PersonDto> FindByCondition(int id)
         {
