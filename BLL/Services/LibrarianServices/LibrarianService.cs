@@ -27,15 +27,13 @@ namespace BLL.Services.LibrarianServices
     {
         private readonly IRepositoryFactory _repository;
         private readonly IMapper _mapper;
-        private readonly IConfiguration _configuration;
         private readonly ITransactionService _transactionService;
         private readonly IBookService _bookService;
         private readonly IBookAuthorService _bookAuthorService;
-        public LibrarianService(IRepositoryFactory repository, IMapper mapper, IConfiguration configuration, ITransactionService transactionService, IBookService bookService, IBookAuthorService bookAuthorService) 
+        public LibrarianService(IRepositoryFactory repository, IMapper mapper, ITransactionService transactionService, IBookService bookService, IBookAuthorService bookAuthorService) 
         {
             _repository = repository;
             _mapper = mapper;
-            _configuration = configuration;
             _bookService=bookService;
             _transactionService = transactionService;
             _bookAuthorService= bookAuthorService;
@@ -79,50 +77,6 @@ namespace BLL.Services.LibrarianServices
             Librarian librarian = _mapper.Map<Librarian>(dto);
             _repository.Librarian.Update(librarian);
             _repository.Save();
-        }
-
-        public string GenerateJwtToken(LibrarianDto user)
-        {
-            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
-            var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
-
-            var token = new JwtSecurityToken(
-                issuer: _configuration["Jwt:Issuer"],
-                audience: _configuration["Jwt:Audience"],
-                claims: new List<Claim>
-                {
-                    new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-                    new Claim(ClaimTypes.Role, user.Person.Role),
-                },
-                expires: DateTime.Now.AddMinutes(30), // Token expiry time (adjust as needed)
-                signingCredentials: credentials
-            );
-
-            return new JwtSecurityTokenHandler().WriteToken(token);
-        }
-
-
-        public LibrarianDto Authenticate(string username, string password)
-        {
-            var authenticatedLibrarian = _repository.Librarian
-                .FindByCondition(librarian =>
-                    librarian.Person.UserName == username && librarian.Person.Password == password)
-                .Include(librarian => librarian.Person)
-                .FirstOrDefault();
-            var librarian = _mapper.Map<LibrarianDto>(authenticatedLibrarian);
-
-            return librarian;
-
-        }
-
-
-        public void Register(LibrarianDto user)
-        {
-            var librarian = _mapper.Map<Librarian>(user);
-            _repository.Person.Create(librarian.Person);
-            _repository.Librarian.Create(librarian);
-            _repository.Save();
-
         }
 
         public bool AllowBorrow(int librarianId,int transactionId)

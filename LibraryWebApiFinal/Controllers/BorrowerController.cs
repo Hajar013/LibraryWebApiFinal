@@ -19,13 +19,11 @@ namespace LibraryWebApiFinal.Controllers
     {
         private readonly IBorrowerService _borrowerServices;
         private readonly IMapper _mapper;
-        private readonly IAuthService _authService;
         private readonly IBookService _bookService;
         public BorrowerController(IBorrowerService borrowerServices, IMapper mapper, IAuthService authService, IBookService bookService)
         {
             _borrowerServices = borrowerServices;
             _mapper = mapper;
-            _authService = authService;
             _bookService = bookService;
         }
  
@@ -44,48 +42,6 @@ namespace LibraryWebApiFinal.Controllers
             var borrower = _borrowerServices.FindById(id);
             return borrower;
         }
-
-        [HttpPost("login")]
-        [AllowAnonymous]
-        public IActionResult Login([FromBody] BorrowerDto borrowerDto)
-        {
-            var borrower = _authService.Authenticate(borrowerDto.Person.UserName, borrowerDto.Person.Password);
-
-            if (borrower == null)
-                return Unauthorized("Invalid username or password");
-
-            var token = _authService.GenerateJwtToken(borrower);
-            return Ok(new { Token = token });
-        }
-
-
-        //[HttpPost("Register")]
-        //[AllowAnonymous]
-        //public IActionResult Register([FromBody] BorrowerDto borrower)
-        //{
-        //    // Validate borrower DTO or handle validation errors
-
-        //    borrower.Person.Role = "borrower";
-
-        //    try
-        //    {
-        //        _authService.Register(borrower);
-        //        //_borrowerServices.Create(borrower);
-
-        //        // Assuming your Create method sets the Id of the created borrower, you can retrieve it
-        //        int createdBorrowerId = borrower.Id;
-
-        //        var token = _authService.GenerateJwtToken(borrower);
-
-        //        return CreatedAtAction("GetById", new { id = createdBorrowerId }, new { Token = token });
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        // Log the exception or handle it as per your requirement
-        //        return StatusCode(500, $"Internal server error: {ex.Message}");
-        //    }
-        //}
-
 
 
         [HttpPut]

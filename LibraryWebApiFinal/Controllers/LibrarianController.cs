@@ -62,47 +62,6 @@ namespace LibraryWebApiFinal.Controllers
             return librarian;
         }
 
-        [AllowAnonymous]
-        [HttpPost("login")]
-        public IActionResult Login([FromBody] LibrarianDto librarianDto)
-        {
-            var librarian = _authService.Authenticate(librarianDto.Person.UserName, librarianDto.Person.Password);
-
-            if (librarian == null)
-                return Unauthorized("Invalid username or password");
-
-            var token = _authService.GenerateJwtToken(librarian);
-            return Ok(new { Token = token });
-        }
-
-        //[AllowAnonymous]
-        //[HttpPost("Register")]
-        //public IActionResult Register([FromBody] LibrarianDto librarian)
-        //{
-        //    // Validate librarian DTO or handle validation errors
-
-        //    librarian.Person.Role = "librarian";
-
-        //    try
-        //    {
-        //        _authService.Register(librarian);
-        //        //_librarianServices.Create(librarian);
-
-        //        // Assuming your Create method sets the Id of the created librarian, you can retrieve it
-        //        int createdLibrarianId = librarian.Id;
-
-        //        var token = _authService.GenerateJwtToken(librarian);
-
-        //        return CreatedAtAction("GetById", new { id = createdLibrarianId }, new { Token = token });
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        // Log the exception or handle it as per your requirement
-        //        return StatusCode(500, $"Internal server error: {ex.Message}");
-        //    }
-        //}
-
-
 
         [HttpPut]
         [Route("Edit/{id}")]

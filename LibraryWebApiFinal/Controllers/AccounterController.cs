@@ -18,14 +18,12 @@ namespace LibraryWebApiFinal.Controllers
     {
         private readonly IAccounterService _accounterServices;
         private readonly IMapper _mapper;
-        private readonly IAuthService _authService;
         private readonly IAccounterService _accounterService;
         public AccounterController(IAccounterService accounterServices, IMapper mapper, IAuthService authService,
              IAccounterService accounterService)
         {
             _accounterServices = accounterServices;
             _mapper = mapper;
-            _authService = authService;
             _accounterService = accounterService;
         }
  
@@ -43,47 +41,6 @@ namespace LibraryWebApiFinal.Controllers
             var accounter = _accounterServices.FindByCondition(id);
             return accounter;
         }
-
-        [HttpPost("login")]
-        [AllowAnonymous]
-        public IActionResult Login([FromBody] AccounterDto accounterDto)
-        {
-            var accounter = _authService.Authenticate(accounterDto.Person.UserName, accounterDto.Person.Password);
-
-            if (accounter == null)
-                return Unauthorized("Invalid username or password");
-
-            var token = _authService.GenerateJwtToken(accounter);
-            return Ok(new { Token = token });
-        }
-
-
-        //[HttpPost("Register")]
-        //[AllowAnonymous]
-        //public IActionResult Register([FromBody] AccounterDto accounter)
-        //{
-        //    // Validate accounter DTO or handle validation errors
-
-        //    accounter.Person.Role = "accounter";
-
-        //    try
-        //    {
-        //        _authService.Register(accounter);
-        //        //_accounterServices.Create(accounter);
-
-        //        // Assuming your Create method sets the Id of the created accounter, you can retrieve it
-        //        int createdAccounterId = accounter.Id;
-
-        //        var token = _authService.GenerateJwtToken(accounter);
-
-        //        return CreatedAtAction("GetById", new { id = createdAccounterId }, new { Token = token });
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        // Log the exception or handle it as per your requirement
-        //        return StatusCode(500, $"Internal server error: {ex.Message}");
-        //    }
-        //}
 
 
 
