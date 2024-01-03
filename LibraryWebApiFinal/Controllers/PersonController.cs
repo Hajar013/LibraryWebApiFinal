@@ -18,11 +18,9 @@ namespace LibraryWebApiFinal.Controllers
     {
     
         private readonly IPersonService _personServices;
-        private readonly IMapper _mapper;
-        public PersonController(IPersonService personServices, IMapper mapper)
+        public PersonController(IPersonService personServices)
         {
             _personServices = personServices;
-            _mapper = mapper;
         }
 
         [HttpGet]
@@ -41,31 +39,6 @@ namespace LibraryWebApiFinal.Controllers
         }
 
 
-        //[HttpPost]
-        //[Route("Register")]
-        //public ActionResult<PersonDto> PostPerson([FromBody] PersonDto person)
-        //{
-        //    if (!ModelState.IsValid)
-        //    {
-        //        return BadRequest(ModelState);
-        //    }
-
-        //    try
-        //    {
-        //        _personServices.Create(person);
-
-        //        // Assuming your Create method sets the Id of the created person, you can retrieve it
-        //        int createdPersonId = person.Id;
-
-        //        // Use the correct action name ("GetById") and route values (id)
-        //        return CreatedAtAction("GetById", new { id = createdPersonId }, person);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        // Log the exception or handle it as per your requirement
-        //        return StatusCode(500, $"Internal server error: {ex.Message}");
-        //    }
-        //}
         //[HttpPut]
         //[Route("Edit/{id}")]
         //public ActionResult<PersonDto> EditPerson(int id, [FromBody] PersonDto updatedPerson)

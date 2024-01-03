@@ -25,18 +25,16 @@ namespace BLL.Services.BorrowerServices
     {
         private readonly IRepositoryFactory _repository;
         private readonly IMapper _mapper;
-        private readonly IConfiguration _configuration;
         private readonly IBookService _bookService;
         private readonly ITransactionService _transactionService;
         private readonly IBillService _billService;
 
 
-        public BorrowerService(IRepositoryFactory repository, IMapper mapper, IConfiguration configuration, IBookService bookService,
+        public BorrowerService(IRepositoryFactory repository, IMapper mapper, IBookService bookService,
              ITransactionService transactionService, IBillService billService)
         {
             _repository = repository;
             _mapper = mapper;
-            _configuration = configuration;
             _bookService = bookService;
             _transactionService = transactionService;
             _billService = billService; 
