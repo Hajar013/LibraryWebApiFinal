@@ -32,7 +32,7 @@ namespace LibraryWebApiFinal.Controllers
 
         [HttpGet]
         [Route("GetPerson/{id}")]
-        public List<PersonDto> GetById(int id)
+        public PersonDto GetById(int id)
         {
             var person = _personServices.FindByCondition(id);
             return person;

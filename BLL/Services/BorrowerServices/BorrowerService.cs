@@ -154,7 +154,7 @@ namespace BLL.Services.BorrowerServices
         public bool RequestToReturnBook(int transactionId, int borrowerId)
         {
             // Assuming there's a method to search for a book by ID in the BookRepository
-            TransactionDto transaction = _transactionService.FindByCondition(transactionId).FirstOrDefault();
+            TransactionDto transaction = _transactionService.FindByCondition(transactionId);
 
             if (transaction == null)
             {

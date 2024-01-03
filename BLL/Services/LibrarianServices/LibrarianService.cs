@@ -81,7 +81,7 @@ namespace BLL.Services.LibrarianServices
 
         public bool AllowBorrow(int librarianId,int transactionId)
         {
-            var transaction = _transactionService.FindByCondition(transactionId).FirstOrDefault();
+            var transaction = _transactionService.FindByCondition(transactionId);
             BookDto book = _bookService.FindByCondition(transaction.BookId);
            if (transaction == null)
             {
@@ -128,7 +128,7 @@ namespace BLL.Services.LibrarianServices
 
         public bool AllowReturn(int librarianId, int transactionId)
         {
-            var transaction = _transactionService.FindByCondition(transactionId).FirstOrDefault();
+            var transaction = _transactionService.FindByCondition(transactionId);
             BookDto book = _bookService.FindByCondition(transaction.BookId);
             if (transaction == null)
             {
