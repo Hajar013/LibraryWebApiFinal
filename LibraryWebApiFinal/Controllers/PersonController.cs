@@ -34,7 +34,7 @@ namespace LibraryWebApiFinal.Controllers
 
         [HttpGet]
         [Route("GetPerson/{id}")]
-        public IQueryable<PersonDto> GetById(int id)
+        public List<PersonDto> GetById(int id)
         {
             var person = _personServices.FindByCondition(id);
             return person;
