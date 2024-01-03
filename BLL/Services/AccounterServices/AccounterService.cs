@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using BLL.DTOs;
+using BLL.Services.AuthServices;
 using BLL.Services.BillServices;
 using BLL.Services.BookServices;
 using DAL.Entities;
@@ -17,7 +18,7 @@ using System.Threading.Tasks;
 
 namespace BLL.Services.AccounterServices
 {
-    public class AccounterService : IAccounterService, IAuthService<AccounterDto>
+    public class AccounterService : IAccounterService
     {
         private readonly IRepositoryFactory _repository;
         private readonly IMapper _mapper;

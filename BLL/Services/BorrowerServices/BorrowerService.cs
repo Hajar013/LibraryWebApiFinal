@@ -19,10 +19,11 @@ using BLL.Services.BookServices;
 using BLL.Services.PersonServices;
 using BLL.Services.TransactionServices;
 using BLL.Services.BillServices;
+using BLL.Services.AuthServices;
 
 namespace BLL.Services.BorrowerServices
 {
-    public  class BorrowerService : IBorrowerService, IAuthService<BorrowerDto>
+    public  class BorrowerService : IBorrowerService
     {
         private readonly IRepositoryFactory _repository;
         private readonly IMapper _mapper;

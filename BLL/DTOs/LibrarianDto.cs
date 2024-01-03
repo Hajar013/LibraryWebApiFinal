@@ -6,11 +6,11 @@ namespace BLL.DTOs
     public class LibrarianDto
     {
         public int Id { get; set; }
-        public int PersonId { get; set; }
+        public int? PersonId { get; set; }
         public string? LibrarianlicenseNumber { get; set; }      
         
         public List<TransactionDto>? transactions { get; set; }
-        public PersonDto Person { get; set; }
+        public PersonDto? Person { get; set; }
 
     }
 }

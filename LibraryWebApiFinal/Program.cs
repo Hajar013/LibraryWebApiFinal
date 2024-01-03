@@ -12,7 +12,6 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using BLL.DTOs;
-using BLL.Services;
 using System.Security.Claims;
 using BLL.Services.AccounterServices;
 using BLL.Services.BookServices;
@@ -20,6 +19,7 @@ using BLL.Services.TransactionServices;
 using BLL.Services.AuthorServices;
 using BLL.Services.BookAuthorServices;
 using BLL.Services.BillServices;
+using BLL.Services.AuthServices;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -89,9 +89,7 @@ builder.Services.AddScoped<IAuthorService, AuthorService>();
 builder.Services.AddScoped<IBookAuthorService, BookAuthorService>();
 builder.Services.AddScoped<IBillService, BillService>();
 
-builder.Services.AddScoped<IAuthService<LibrarianDto>, LibrarianService>();
-builder.Services.AddScoped<IAuthService<BorrowerDto>, BorrowerService>();
-builder.Services.AddScoped<IAuthService<AccounterDto>, AccounterService>();
+builder.Services.AddScoped<IAuthService,AuthService>();
 
 //to return person obj when login 
 builder.Services.AddControllers()

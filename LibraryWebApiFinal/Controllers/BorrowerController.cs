@@ -1,12 +1,12 @@
 ﻿using AutoMapper;
 using BLL.DTOs;
 using BLL.Services.BorrowerServices;
-using BLL.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using BLL.Services.BookServices;
 using BLL.Services.BillServices;
+using BLL.Services.AuthServices;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -19,9 +19,9 @@ namespace LibraryWebApiFinal.Controllers
     {
         private readonly IBorrowerService _borrowerServices;
         private readonly IMapper _mapper;
-        private readonly IAuthService<BorrowerDto> _authService;
+        private readonly IAuthService _authService;
         private readonly IBookService _bookService;
-        public BorrowerController(IBorrowerService borrowerServices, IMapper mapper, IAuthService<BorrowerDto> authService, IBookService bookService)
+        public BorrowerController(IBorrowerService borrowerServices, IMapper mapper, IAuthService authService, IBookService bookService)
         {
             _borrowerServices = borrowerServices;
             _mapper = mapper;
@@ -59,32 +59,32 @@ namespace LibraryWebApiFinal.Controllers
         }
 
 
-        [HttpPost("Register")]
-        [AllowAnonymous]
-        public IActionResult Register([FromBody] BorrowerDto borrower)
-        {
-            // Validate borrower DTO or handle validation errors
+        //[HttpPost("Register")]
+        //[AllowAnonymous]
+        //public IActionResult Register([FromBody] BorrowerDto borrower)
+        //{
+        //    // Validate borrower DTO or handle validation errors
 
-            borrower.Person.Role = "borrower";
+        //    borrower.Person.Role = "borrower";
 
-            try
-            {
-                _authService.Register(borrower);
-                //_borrowerServices.Create(borrower);
+        //    try
+        //    {
+        //        _authService.Register(borrower);
+        //        //_borrowerServices.Create(borrower);
 
-                // Assuming your Create method sets the Id of the created borrower, you can retrieve it
-                int createdBorrowerId = borrower.Id;
+        //        // Assuming your Create method sets the Id of the created borrower, you can retrieve it
+        //        int createdBorrowerId = borrower.Id;
 
-                var token = _authService.GenerateJwtToken(borrower);
+        //        var token = _authService.GenerateJwtToken(borrower);
 
-                return CreatedAtAction("GetById", new { id = createdBorrowerId }, new { Token = token });
-            }
-            catch (Exception ex)
-            {
-                // Log the exception or handle it as per your requirement
-                return StatusCode(500, $"Internal server error: {ex.Message}");
-            }
-        }
+        //        return CreatedAtAction("GetById", new { id = createdBorrowerId }, new { Token = token });
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        // Log the exception or handle it as per your requirement
+        //        return StatusCode(500, $"Internal server error: {ex.Message}");
+        //    }
+        //}
 
 
 
@@ -236,7 +236,7 @@ namespace LibraryWebApiFinal.Controllers
             {
                 int borrowerId = GetUserIdFromClaim();
                 // Validate borrower DTO or handle validation errors
-                if (_borrowerServices.RequestToBill(bookId, borrowerId)) ;
+                if (_borrowerServices.RequestToBill(bookId, borrowerId))
                     return StatusCode(200, "Your request was successfully sent to the librarian. Please wait...");
 
                 return StatusCode(400, "Something is wrong. The book title is not correct.");

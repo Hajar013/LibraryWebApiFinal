@@ -19,10 +19,11 @@ using System.Text.Unicode;
 using BLL.Services.TransactionServices;
 using BLL.Services.BookServices;
 using BLL.Services.BookAuthorServices;
+using BLL.Services.AuthServices;
 
 namespace BLL.Services.LibrarianServices
 {
-    public  class LibrarianService : ILibrarianService, IAuthService<LibrarianDto>
+    public  class LibrarianService : ILibrarianService  
     {
         private readonly IRepositoryFactory _repository;
         private readonly IMapper _mapper;

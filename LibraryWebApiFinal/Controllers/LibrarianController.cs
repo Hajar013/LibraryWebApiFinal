@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using BLL.DTOs;
-using BLL.Services;
 using BLL.Services.AuthorServices;
+using BLL.Services.AuthServices;
 using BLL.Services.BookServices;
 using BLL.Services.LibrarianServices;
 using BLL.Services.PersonServices;
@@ -23,8 +23,8 @@ namespace LibraryWebApiFinal.Controllers
         private readonly ILibrarianService _librarianServices;
         private readonly IBookService _bookService;
         private readonly IMapper _mapper;
-        private readonly IAuthService<LibrarianDto> _authService;
-        public LibrarianController(ILibrarianService librarianServices, IMapper mapper, IAuthService<LibrarianDto> authService, IBookService bookService)
+        private readonly IAuthService _authService;
+        public LibrarianController(ILibrarianService librarianServices, IMapper mapper, IAuthService authService, IBookService bookService)
         {
             _librarianServices = librarianServices;
             _mapper = mapper;
@@ -75,32 +75,32 @@ namespace LibraryWebApiFinal.Controllers
             return Ok(new { Token = token });
         }
 
-        [AllowAnonymous]
-        [HttpPost("Register")]
-        public IActionResult Register([FromBody] LibrarianDto librarian)
-        {
-            // Validate librarian DTO or handle validation errors
+        //[AllowAnonymous]
+        //[HttpPost("Register")]
+        //public IActionResult Register([FromBody] LibrarianDto librarian)
+        //{
+        //    // Validate librarian DTO or handle validation errors
 
-            librarian.Person.Role = "librarian";
+        //    librarian.Person.Role = "librarian";
 
-            try
-            {
-                _authService.Register(librarian);
-                //_librarianServices.Create(librarian);
+        //    try
+        //    {
+        //        _authService.Register(librarian);
+        //        //_librarianServices.Create(librarian);
 
-                // Assuming your Create method sets the Id of the created librarian, you can retrieve it
-                int createdLibrarianId = librarian.Id;
+        //        // Assuming your Create method sets the Id of the created librarian, you can retrieve it
+        //        int createdLibrarianId = librarian.Id;
 
-                var token = _authService.GenerateJwtToken(librarian);
+        //        var token = _authService.GenerateJwtToken(librarian);
 
-                return CreatedAtAction("GetById", new { id = createdLibrarianId }, new { Token = token });
-            }
-            catch (Exception ex)
-            {
-                // Log the exception or handle it as per your requirement
-                return StatusCode(500, $"Internal server error: {ex.Message}");
-            }
-        }
+        //        return CreatedAtAction("GetById", new { id = createdLibrarianId }, new { Token = token });
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        // Log the exception or handle it as per your requirement
+        //        return StatusCode(500, $"Internal server error: {ex.Message}");
+        //    }
+        //}
 
 
 

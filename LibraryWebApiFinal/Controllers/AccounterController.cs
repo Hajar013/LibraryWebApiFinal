@@ -1,11 +1,11 @@
 ﻿using AutoMapper;
 using BLL.DTOs;
 using BLL.Services.AccounterServices;
-using BLL.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using BLL.Services.BillServices;
+using BLL.Services.AuthServices;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -18,9 +18,9 @@ namespace LibraryWebApiFinal.Controllers
     {
         private readonly IAccounterService _accounterServices;
         private readonly IMapper _mapper;
-        private readonly IAuthService<AccounterDto> _authService;
+        private readonly IAuthService _authService;
         private readonly IAccounterService _accounterService;
-        public AccounterController(IAccounterService accounterServices, IMapper mapper, IAuthService<AccounterDto> authService,
+        public AccounterController(IAccounterService accounterServices, IMapper mapper, IAuthService authService,
              IAccounterService accounterService)
         {
             _accounterServices = accounterServices;
@@ -58,32 +58,32 @@ namespace LibraryWebApiFinal.Controllers
         }
 
 
-        [HttpPost("Register")]
-        [AllowAnonymous]
-        public IActionResult Register([FromBody] AccounterDto accounter)
-        {
-            // Validate accounter DTO or handle validation errors
+        //[HttpPost("Register")]
+        //[AllowAnonymous]
+        //public IActionResult Register([FromBody] AccounterDto accounter)
+        //{
+        //    // Validate accounter DTO or handle validation errors
 
-            accounter.Person.Role = "accounter";
+        //    accounter.Person.Role = "accounter";
 
-            try
-            {
-                _authService.Register(accounter);
-                //_accounterServices.Create(accounter);
+        //    try
+        //    {
+        //        _authService.Register(accounter);
+        //        //_accounterServices.Create(accounter);
 
-                // Assuming your Create method sets the Id of the created accounter, you can retrieve it
-                int createdAccounterId = accounter.Id;
+        //        // Assuming your Create method sets the Id of the created accounter, you can retrieve it
+        //        int createdAccounterId = accounter.Id;
 
-                var token = _authService.GenerateJwtToken(accounter);
+        //        var token = _authService.GenerateJwtToken(accounter);
 
-                return CreatedAtAction("GetById", new { id = createdAccounterId }, new { Token = token });
-            }
-            catch (Exception ex)
-            {
-                // Log the exception or handle it as per your requirement
-                return StatusCode(500, $"Internal server error: {ex.Message}");
-            }
-        }
+        //        return CreatedAtAction("GetById", new { id = createdAccounterId }, new { Token = token });
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        // Log the exception or handle it as per your requirement
+        //        return StatusCode(500, $"Internal server error: {ex.Message}");
+        //    }
+        //}
 
 
 

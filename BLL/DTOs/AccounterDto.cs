@@ -10,6 +10,6 @@ namespace BLL.DTOs
         public int PersonId { get; set; }
         public string? Certification { get; set; }
         public List<BillDto>? Bills { get; set; }
-        public PersonDto Person { get; set; }
+        public PersonDto? Person { get; set; }
     }
 }
