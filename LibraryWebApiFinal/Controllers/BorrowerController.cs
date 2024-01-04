@@ -14,7 +14,7 @@ namespace LibraryWebApiFinal.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    //[Authorize(Policy = "BorrowerPolicy")]
+    [Authorize(Policy = "BorrowerPolicy")]
     public class BorrowerController : ControllerBase
     {
         private readonly IBorrowerService _borrowerServices;
