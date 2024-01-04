@@ -16,7 +16,7 @@ namespace LibraryWebApiFinal.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Policy = "LibrarianPolicy")]
+    //[Authorize(Policy = "LibrarianPolicy")]
     public class LibrarianController : ControllerBase
     {
 
