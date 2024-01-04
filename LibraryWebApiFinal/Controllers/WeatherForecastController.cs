@@ -29,5 +29,11 @@ namespace LibraryWebApiFinal.Controllers
             })
             .ToArray();
         }
+
+        [HttpGet(Name = "getsomething")]
+        public string GetName()
+        {
+            return "hello world!";
+        }
     }
 }
