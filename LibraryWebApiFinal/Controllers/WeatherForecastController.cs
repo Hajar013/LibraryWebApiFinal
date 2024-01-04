@@ -22,7 +22,7 @@ namespace LibraryWebApiFinal.Controllers
         public IEnumerable<WeatherForecast> Get()
         {
             return Enumerable.Range(1, 5).Select(index => new WeatherForecast
-            {
+            { 
                 Date = DateTime.Now.AddDays(index),
                 TemperatureC = Random.Shared.Next(-20, 55),
                 Summary = Summaries[Random.Shared.Next(Summaries.Length)]
@@ -30,8 +30,7 @@ namespace LibraryWebApiFinal.Controllers
             .ToArray();
         }
 
-        [HttpGet]
-        [Route("GetName")]
+        [HttpGet(Name = "GetName")]
         public IActionResult GetName()
         {
             return StatusCode(200, "hello world!");
