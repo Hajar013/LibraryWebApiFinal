@@ -63,7 +63,7 @@ namespace BLL.Services.LibrarianServices
             return librariansDto;
         }
 
-        LibrarianDto FindByCondition(int id)
+       public LibrarianDto FindByCondition(int id)
         {
 
             Librarian librariansFromDB = _repository.Librarian.FindByCondition(x=>x.Id == id).FirstOrDefault();
@@ -79,7 +79,7 @@ namespace BLL.Services.LibrarianServices
             _repository.Save();
         }
 
-        bool AllowBorrow(int librarianId,int transactionId)
+       public bool AllowBorrow(int librarianId,int transactionId)
         {
             var transaction = _transactionService.FindByCondition(transactionId);
             BookDto book = _bookService.FindByCondition(transaction.BookId);
@@ -126,7 +126,7 @@ namespace BLL.Services.LibrarianServices
 
         }
 
-        bool AllowReturn(int librarianId, int transactionId)
+        public bool AllowReturn(int librarianId, int transactionId)
         {
             var transaction = _transactionService.FindByCondition(transactionId);
             BookDto book = _bookService.FindByCondition(transaction.BookId);

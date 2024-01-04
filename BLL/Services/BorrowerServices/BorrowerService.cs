@@ -58,7 +58,7 @@ namespace BLL.Services.BorrowerServices
             _repository.Save();
         }
 
-         IList<BorrowerDto> FindAll()
+        public IList<BorrowerDto> FindAll()
         {
 
             List<Borrower> borrowersFromDB = _repository.Borrower.FindAll().ToList();

@@ -28,7 +28,7 @@ namespace LibraryWebApiFinal.Controllers
         }
  
         [HttpGet("GetBorrowers")]
-        public List<BorrowerDto> Get()
+        public IList<BorrowerDto> Get()
         {
             var borrowers = _borrowerServices.FindAll();
             return borrowers;
@@ -44,66 +44,66 @@ namespace LibraryWebApiFinal.Controllers
         }
 
 
-        [HttpPut]
-        [Route("Edit/{id}")]
-        public ActionResult<BorrowerDto> EditPerson(int id, [FromBody] BorrowerDto updatedBorrower)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
+        //[HttpPut]
+        //[Route("Edit/{id}")]
+        //public ActionResult<BorrowerDto> EditPerson(int id, [FromBody] BorrowerDto updatedBorrower)
+        //{
+        //    if (!ModelState.IsValid)
+        //    {
+        //        return BadRequest(ModelState);
+        //    }
 
-            try
-            {
-                var existingBorrower = _borrowerServices.FindById(id);
+        //    try
+        //    {
+        //        var existingBorrower = _borrowerServices.FindById(id);
 
-                if (existingBorrower == null)
-                {
-                    return NotFound();
-                }
+        //        if (existingBorrower == null)
+        //        {
+        //            return NotFound();
+        //        }
 
-                // Update properties of existingBorrower with values from updatedBorrower
-                existingBorrower.DateOfMembership = updatedBorrower.DateOfMembership;
+        //        // Update properties of existingBorrower with values from updatedBorrower
+        //        existingBorrower.DateOfMembership = updatedBorrower.DateOfMembership;
 
 
-                // Use AutoMapper to map the updated entity back to DTO if needed
-                var updatedBorrowerDto = _mapper.Map<BorrowerDto>(existingBorrower);
+        //        // Use AutoMapper to map the updated entity back to DTO if needed
+        //        var updatedBorrowerDto = _mapper.Map<BorrowerDto>(existingBorrower);
 
-                // Save changes to the repository
-                _borrowerServices.Update(existingBorrower);
+        //        // Save changes to the repository
+        //        _borrowerServices.Update(existingBorrower);
 
-                return Ok(updatedBorrowerDto);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500);
-            }
-        }
+        //        return Ok(updatedBorrowerDto);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return StatusCode(500);
+        //    }
+        //}
 
-        [HttpDelete]
-        [Route("Delete/{id}")]
-        public IActionResult DeleteBorrower(int id)
-        {
-            try
-            {
-                var existingBorrower = _borrowerServices.FindById(id);
+        //[HttpDelete]
+        //[Route("Delete/{id}")]
+        //public IActionResult DeleteBorrower(int id)
+        //{
+        //    try
+        //    {
+        //        var existingBorrower = _borrowerServices.FindById(id);
 
-                if (existingBorrower == null)
-                {
-                    return NotFound();
-                }
+        //        if (existingBorrower == null)
+        //        {
+        //            return NotFound();
+        //        }
 
-                // Use your service to delete the Borrower
-                _borrowerServices.Delete(existingBorrower);
+        //        // Use your service to delete the Borrower
+        //        _borrowerServices.Delete(existingBorrower);
 
-                return NoContent(); // 204 No Content
-            }
-            catch (Exception ex)
-            {
-                // Log the exception or handle it as per your requirement
-                return StatusCode(500);
-            }
-        }
+        //        return NoContent(); // 204 No Content
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        // Log the exception or handle it as per your requirement
+        //        return StatusCode(500);
+        //    }
+        //}
 
         //[Authorize(Policy = "BorrowerPolicy")]
         //[HttpPost("RequestToBorrow")]

@@ -10,7 +10,7 @@ namespace BLL.Services.BorrowerServices
 {
     public interface IBorrowerService
     {
-        //IList<BorrowerDto> FindAll();
+        IList<BorrowerDto> FindAll();
         BorrowerDto FindById(int id);
 /*        void Create(BorrowerDto dto);
 *//*        void Update(BorrowerDto dto);

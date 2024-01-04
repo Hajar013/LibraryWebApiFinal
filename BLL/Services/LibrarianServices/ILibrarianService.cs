@@ -11,13 +11,13 @@ namespace BLL.Services.LibrarianServices
     public interface ILibrarianService
     {
         IList<LibrarianDto> FindAll();
-        //LibrarianDto FindByCondition(int id);
+        LibrarianDto FindByCondition(int id);
         //void Create(LibrarianDto dto);
         //void Update(LibrarianDto dto);
         //void Delete(LibrarianDto dto);
-        //bool AllowBorrow(int librarianId, int transactionId);
-        //bool AllowReturn(int librarianId, int transactionId);
-        //void AddBookAndAuther(BookAuthorDto bookAuthorDto);
+        bool AllowBorrow(int librarianId, int transactionId);
+        bool AllowReturn(int librarianId, int transactionId);
+        void AddBookAndAuther(BookAuthorDto bookAuthorDto);
 
 
     }

@@ -30,11 +30,11 @@ namespace LibraryWebApiFinal.Controllers
             _bookService = bookService;
         }
 
-        [HttpPost("AddBook")]
-        public void AddBook([FromBody] BookDto book)
-        {
-            _bookService.Create(book);
-        }
+        //[HttpPost("AddBook")]
+        //public void AddBook([FromBody] BookDto book)
+        //{
+        //    _bookService.Create(book);
+        //}
 
         [HttpGet]
 
@@ -47,7 +47,7 @@ namespace LibraryWebApiFinal.Controllers
         }
         [Authorize(Policy = "LibrarianPolicy")]
         [HttpGet("GetLibrarians")]
-        public List<LibrarianDto> Get()
+        public IList<LibrarianDto> Get()
         {
             var librarians = _librarianServices.FindAll();
             return librarians;
@@ -62,67 +62,67 @@ namespace LibraryWebApiFinal.Controllers
         }
 
 
-        [HttpPut]
-        [Route("Edit/{id}")]
-        public ActionResult<LibrarianDto> EditPerson(int id, [FromBody] LibrarianDto updatedLibrarian)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
+        //[HttpPut]
+        //[Route("Edit/{id}")]
+        //public ActionResult<LibrarianDto> EditPerson(int id, [FromBody] LibrarianDto updatedLibrarian)
+        //{
+        //    if (!ModelState.IsValid)
+        //    {
+        //        return BadRequest(ModelState);
+        //    }
 
-            try
-            {
-                var existingLibrarian = _librarianServices.FindByCondition(id);
+        //    try
+        //    {
+        //        var existingLibrarian = _librarianServices.FindByCondition(id);
 
-                if (existingLibrarian == null)
-                {
-                    return NotFound();
-                }
+        //        if (existingLibrarian == null)
+        //        {
+        //            return NotFound();
+        //        }
 
-                // Update properties of existingLibrarian with values from updatedLibrarian
-                existingLibrarian.LibrarianlicenseNumber = updatedLibrarian.LibrarianlicenseNumber;
+        //        // Update properties of existingLibrarian with values from updatedLibrarian
+        //        existingLibrarian.LibrarianlicenseNumber = updatedLibrarian.LibrarianlicenseNumber;
 
 
-                // Use AutoMapper to map the updated entity back to DTO if needed
-                var updatedLibrarianDto = _mapper.Map<LibrarianDto>(existingLibrarian);
+        //        // Use AutoMapper to map the updated entity back to DTO if needed
+        //        var updatedLibrarianDto = _mapper.Map<LibrarianDto>(existingLibrarian);
 
-                // Save changes to the repository
-                _librarianServices.Update(existingLibrarian);
+        //        // Save changes to the repository
+        //        _librarianServices.Update(existingLibrarian);
 
-                return Ok(updatedLibrarianDto);
-            }
-            catch (Exception ex)
-            {
-                // Log the exception or handle it as per your requirement
-                return StatusCode(500);
-            }
-        }
+        //        return Ok(updatedLibrarianDto);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        // Log the exception or handle it as per your requirement
+        //        return StatusCode(500);
+        //    }
+        //}
 
-        [HttpDelete]
-        [Route("Delete/{id}")]
-        public IActionResult DeleteLibrarian(int id)
-        {
-            try
-            {
-                var existingLibrarian = _librarianServices.FindByCondition(id);
+        //[HttpDelete]
+        //[Route("Delete/{id}")]
+        //public IActionResult DeleteLibrarian(int id)
+        //{
+        //    try
+        //    {
+        //        var existingLibrarian = _librarianServices.FindByCondition(id);
 
-                if (existingLibrarian == null)
-                {
-                    return NotFound();
-                }
+        //        if (existingLibrarian == null)
+        //        {
+        //            return NotFound();
+        //        }
 
-                // Use your service to delete the Librarian
-                _librarianServices.Delete(existingLibrarian);
+        //        // Use your service to delete the Librarian
+        //        _librarianServices.Delete(existingLibrarian);
 
-                return NoContent();
-            }
-            catch (Exception ex)
-            {
-                // Log the exception or handle it as per your requirement
-                return StatusCode(500);
-            }
-        }
+        //        return NoContent();
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        // Log the exception or handle it as per your requirement
+        //        return StatusCode(500);
+        //    }
+        //}
    
         [HttpPost("AllowBorrow")]
         public IActionResult AllowBorrow(int tranisactionId)
