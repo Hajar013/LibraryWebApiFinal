@@ -154,6 +154,7 @@ namespace BLL.Services.BorrowerServices
 
         //    return true;
         //}
+
         public bool RequestToBorrowBook(int bookId, int borrowerId)
         {
             // Assuming there's a method to search for a book by ID in the BookRepository
@@ -187,6 +188,7 @@ namespace BLL.Services.BorrowerServices
 
             return true; // Successfully borrowed the book
         }
+
 
         public bool RequestToBill(int bookId, int borrowerId)
         {

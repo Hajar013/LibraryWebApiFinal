@@ -32,21 +32,21 @@ namespace BLL.Services.AccounterServices
             _bookService = bookService;
         }
 
-        public void Create(AccounterDto dto)
+        void Create(AccounterDto dto)
         {
             Accounter accounter = _mapper.Map<Accounter>(dto);
             _repository.Accounter.Create(accounter);
             _repository.Save();
         }
 
-        public void Delete(AccounterDto dto)
+        void Delete(AccounterDto dto)
         {
             Accounter accounter = _mapper.Map<Accounter>(dto);
             _repository.Accounter.Delete(accounter);
             _repository.Save();
         }
 
-        public List<AccounterDto> FindAll()
+        public IList<AccounterDto> FindAll()
         {
 
             List<Accounter> accountersFromDB = _repository.Accounter.FindAll().ToList();
@@ -64,7 +64,7 @@ namespace BLL.Services.AccounterServices
             return accountersDto;
         }
 
-        public void Update(AccounterDto dto)
+        void Update(AccounterDto dto)
         {
             Accounter accounter = _mapper.Map<Accounter>(dto);
             _repository.Accounter.Update(accounter);
@@ -75,7 +75,7 @@ namespace BLL.Services.AccounterServices
         public bool AllowBills(int accounterId, int billId)
         {
             var bill = _billService.FindByCondition(billId);
-            //BookDto book = bill.Book;
+
             if (bill == null && bill.Book == null)
             {
                 return false;

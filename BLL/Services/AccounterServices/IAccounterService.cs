@@ -9,11 +9,11 @@ namespace BLL.Services.AccounterServices
 {
     public interface IAccounterService 
     {
-        List<AccounterDto> FindAll();
+        IList<AccounterDto> FindAll();
         AccounterDto FindByCondition(int id);
         bool AllowBills(int accounterId, int billId);
-        void Create(AccounterDto dto);
-        void Update(AccounterDto dto);
-        void Delete(AccounterDto dto);
+        //void Create(AccounterDto dto);
+        //void Update(AccounterDto dto);
+        //void Delete(AccounterDto dto);
     }
 }

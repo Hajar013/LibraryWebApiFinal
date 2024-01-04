@@ -28,7 +28,7 @@ namespace LibraryWebApiFinal.Controllers
         }
  
         [HttpGet("GetAccounters")]
-        public List<AccounterDto> Get()
+        public IList<AccounterDto> Get()
         {
             var accounters = _accounterServices.FindAll();
             return accounters;
@@ -40,57 +40,6 @@ namespace LibraryWebApiFinal.Controllers
         {
             var accounter = _accounterServices.FindByCondition(id);
             return accounter;
-        }
-
-
-
-        [HttpPut]
-        [Route("Edit/{id}")]
-        public ActionResult<AccounterDto> EditPerson(int id, [FromBody] AccounterDto updatedAccounter)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-
-                var existingAccounter = _accounterServices.FindByCondition(id);
-
-                if (existingAccounter == null)
-                {
-                    return NotFound();
-                }
-
-                // Update properties of existingAccounter with values from updatedAccounter
-                existingAccounter.Certification = updatedAccounter.Certification;
-
-
-                // Use AutoMapper to map the updated entity back to DTO if needed
-                var updatedAccounterDto = _mapper.Map<AccounterDto>(existingAccounter);
-
-                // Save changes to the repository
-                _accounterServices.Update(existingAccounter);
-
-                return Ok(updatedAccounterDto);
-
-        }
-
-        [HttpDelete]
-        [Route("Delete/{id}")]
-        public IActionResult DeleteAccounter(int id)
-        {
-                var existingAccounter = _accounterServices.FindByCondition(id);
-
-                if (existingAccounter == null)
-                {
-                    return NotFound();
-                }
-
-                // Use your service to delete the Accounter
-                _accounterServices.Delete(existingAccounter);
-
-                return NoContent(); // 204 No Content
-
         }
 
         [HttpPost("AllowBill")] 
@@ -105,7 +54,8 @@ namespace LibraryWebApiFinal.Controllers
 
                 return StatusCode(400);
 
-        }
+        } 
+
         private int GetUserIdFromClaim()
         {
             var userIdClaim = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -113,7 +63,7 @@ namespace LibraryWebApiFinal.Controllers
             {
                 return userId;
             }
-            throw new InvalidOperationException("User ID not found in claims.");
+            throw new InvalidOperationException();
         }
 
     }
