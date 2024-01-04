@@ -13,7 +13,7 @@ namespace LibraryWebApiFinal.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    //[Authorize(Policy = "AccounterPolicy")]
+    [Authorize(Policy = "AccounterPolicy")]
     public class AccounterController : ControllerBase
     {
         private readonly IAccounterService _accounterServices;
