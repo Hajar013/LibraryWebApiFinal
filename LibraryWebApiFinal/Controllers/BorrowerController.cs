@@ -105,7 +105,26 @@ namespace LibraryWebApiFinal.Controllers
             }
         }
 
-        [Authorize(Policy = "BorrowerPolicy")]
+        //[Authorize(Policy = "BorrowerPolicy")]
+        //[HttpPost("RequestToBorrow")]
+        //public IActionResult RequestToBorrow(int bookId)
+        //{
+        //    try
+        //    {
+        //        int borrowerId = GetUserIdFromClaim();
+        //        Console.WriteLine(bookId + " " + borrowerId+"=========================================================");
+        //        // Validate borrower DTO or handle validation errors
+        //        if (_borrowerServices.RequestToBorrowBook(bookId, borrowerId))
+        //            return StatusCode(200);
+
+        //        return StatusCode(400,"RequestToBorrowBook return false");
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return StatusCode(500);
+        //    }
+        //} 
+
         [HttpPost("RequestToBorrow")]
         public IActionResult RequestToBorrow(int bookId)
         {
@@ -124,13 +143,13 @@ namespace LibraryWebApiFinal.Controllers
             }
         }
 
-        
         [HttpPost("RequestToReturn")]
         public IActionResult RequestToReturn(int transactionId)
         {
             try
             {
                 int borrowerId = GetUserIdFromClaim();
+                Console.WriteLine(transactionId + "  " + borrowerId + "======================================");
                 // Validate borrower DTO or handle validation errors
                 if (_borrowerServices.RequestToReturnBook(transactionId, borrowerId))
                     return StatusCode(200);

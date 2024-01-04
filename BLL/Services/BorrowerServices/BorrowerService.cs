@@ -28,16 +28,18 @@ namespace BLL.Services.BorrowerServices
         private readonly IBookService _bookService;
         private readonly ITransactionService _transactionService;
         private readonly IBillService _billService;
+        private readonly IPersonService _personService;
 
 
         public BorrowerService(IRepositoryFactory repository, IMapper mapper, IBookService bookService,
-             ITransactionService transactionService, IBillService billService)
+             ITransactionService transactionService, IBillService billService, IPersonService personService)
         {
             _repository = repository;
             _mapper = mapper;
             _bookService = bookService;
             _transactionService = transactionService;
             _billService = billService; 
+            _personService = personService;
         }
 
 
@@ -82,6 +84,76 @@ namespace BLL.Services.BorrowerServices
             _repository.Save();
         }
 
+        //public bool RequestToBorrowBook(int bookId, int borrowerId)
+        //{
+        //    // Assuming there's a method to search for a book by ID in the BookRepository
+        //    var book = _bookService.FindByCondition(bookId);
+
+        //    if (book == null)
+        //    {
+        //        Console.WriteLine("Book not found or not available for borrowing.");
+        //        return false;
+        //    }
+
+        //    // Assuming there's a method to get a borrower by their ID from a PersonRepository
+        //    //var borrower =FindById(borrowerId);
+        //    var person = _personService.FindByCondition(borrowerId);
+
+        //    if (person == null && person.Borrower == null)
+        //    {
+        //        Console.WriteLine("Borrower not found.");
+        //        return false;
+        //    }
+
+        //    // Create a transaction and add it to the pending transactions
+        //    var transaction = new TransactionDto
+        //    {
+        //        BookId = book.Id,
+        //        BorrowerId = person.Borrower.Id,
+        //        BrrowStatus = "Pending",
+        //        Date = DateTime.Now
+        //    };
+
+        //    _transactionService.Create(transaction);
+
+        //    return true; // Successfully borrowed the book
+        //}
+
+        //public bool RequestToBorrowBook(int bookId, int borrowerId)
+        //{
+        //    var book = _bookService.FindByCondition(bookId);
+
+        //    if (book == null)
+        //    {
+        //        Console.WriteLine("Book not found or not available for borrowing.");
+        //        return false;
+        //    }
+
+        //    var person = _personService.FindByCondition(borrowerId);
+
+        //    if (person == null )
+        //    {
+        //        Console.WriteLine("person not found.");
+        //        return false;
+        //    }
+
+        //    if (person.Borrower == null)
+        //    {
+        //        Console.WriteLine("Borrower not found.");
+        //        return false;
+        //    }
+        //    var transaction = new TransactionDto
+        //    {
+        //        BookId = book.Id,
+        //        BorrowerId = person.Borrower.Id,
+        //        BrrowStatus = "Pending",
+        //        Date = DateTime.Now
+        //    };
+
+        //    _transactionService.Create(transaction);
+
+        //    return true;
+        //}
         public bool RequestToBorrowBook(int bookId, int borrowerId)
         {
             // Assuming there's a method to search for a book by ID in the BookRepository
@@ -94,7 +166,7 @@ namespace BLL.Services.BorrowerServices
             }
 
             // Assuming there's a method to get a borrower by their ID from a PersonRepository
-            var borrower =FindById(borrowerId);
+            var borrower = FindById(borrowerId);
 
             if (borrower == null)
             {
@@ -115,6 +187,7 @@ namespace BLL.Services.BorrowerServices
 
             return true; // Successfully borrowed the book
         }
+
         public bool RequestToBill(int bookId, int borrowerId)
         {
             // Assuming there's a method to search for a book by ID in the BookRepository

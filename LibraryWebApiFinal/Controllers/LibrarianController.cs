@@ -37,6 +37,7 @@ namespace LibraryWebApiFinal.Controllers
         }
 
         [HttpGet]
+
         [Route("GetBookById/{id}")]
         public BookDto GetBookById(int id)
         {
@@ -44,7 +45,7 @@ namespace LibraryWebApiFinal.Controllers
             var book = _bookService.FindByCondition(id);
             return book;
         }
-         
+        [Authorize(Policy = "LibrarianPolicy")]
         [HttpGet("GetLibrarians")]
         public List<LibrarianDto> Get()
         {

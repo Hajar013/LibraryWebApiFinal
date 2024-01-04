@@ -17,9 +17,32 @@ namespace LibraryWebApiFinal.Controllers
         {
             _authService = authService;
         }
-         
+
+        //[HttpPost("Register")]
+        //public IActionResult Register([FromBody] PersonDto person)
+        //{
+        //    // Validate librarian DTO or handle validation errors
+        //    if (!ModelState.IsValid)
+        //    {
+        //        return BadRequest(ModelState);
+        //    }
+
+        //    try
+        //    {
+        //        _authService.Register(person);
+        //        var token = _authService.GenerateJwtToken(person);
+        //        return StatusCode(200, new { Token = token });
+
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        // Log the exception or handle it as per your requirement
+        //        return StatusCode(500);
+        //    }
+        //}
+
         [HttpPost("Register")]
-        public IActionResult Register([FromBody] PersonDto person)
+        public IActionResult Register([FromBody] PersonDto librarian)
         {
             // Validate librarian DTO or handle validation errors
             if (!ModelState.IsValid)
@@ -29,8 +52,9 @@ namespace LibraryWebApiFinal.Controllers
 
             try
             {
-                _authService.Register(person);
-                var token = _authService.GenerateJwtToken(person);
+                string token = _authService.Register(librarian);
+                //Console.WriteLine($"== inside register controller: {librarian.Id} and personId {librarian.PersonId} and {librarian.Person.Id}===============");
+                //var token = _authService.GenerateJwtToken(librarian.Person);
                 return StatusCode(200, new { Token = token });
 
             }
@@ -40,7 +64,7 @@ namespace LibraryWebApiFinal.Controllers
                 return StatusCode(500);
             }
         }
-         
+
         [HttpPost("login")]
         public IActionResult Login([FromBody] PersonDto personDto)
         {
@@ -50,12 +74,11 @@ namespace LibraryWebApiFinal.Controllers
             }
             try
             {
-                var person = _authService.Authenticate(personDto.UserName, personDto.Password);
+                var token = _authService.Authenticate(personDto.UserName, personDto.Password);
 
-                if (person == null)
-                    return Unauthorized("Invalid username or password");
+                if (token == null)
+                    return Unauthorized();
 
-                var token = _authService.GenerateJwtToken(person);
                 return StatusCode(200, new { Token = token });
             }
             catch (Exception ex)

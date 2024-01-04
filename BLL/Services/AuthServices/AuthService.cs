@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
@@ -26,20 +27,25 @@ namespace BLL.Services.AuthServices
             _mapper = mapper;
         }
 
-        public PersonDto Authenticate(string username, string password)
+        public string Authenticate(string username, string password)
         {
-            var authenticatedPerson = _repository.Person
+            var person = _repository.Person
                 .FindByCondition(person =>
                     person.UserName == username && person.Password == password)
                 .FirstOrDefault();
-            var librarian = _mapper.Map<PersonDto>(authenticatedPerson);
+            if (person != null)
+            {
 
-            return librarian;
-
+                int id = GetPersonIdByRole(person);
+                var token = GenerateJwtToken(person.Role, id);
+                return token;
+            }
+            return null;
         }
 
-        public string GenerateJwtToken(PersonDto user)
+        public string GenerateJwtToken(string Role, int Id)
         {
+            
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
@@ -48,36 +54,88 @@ namespace BLL.Services.AuthServices
                 audience: _configuration["Jwt:Audience"],
                 claims: new List<Claim>
                 {
-                    new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-                    new Claim(ClaimTypes.Role, user.Role),
+                    new Claim(ClaimTypes.NameIdentifier, Id.ToString()),
+                    new Claim(ClaimTypes.Role, Role),
                 },
-                expires: DateTime.Now.AddDays(1), // Token expiry time (adjust as needed)
+                expires: DateTime.Now.AddDays(1), 
                 signingCredentials: credentials
             );
 
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
+        //public string RegisterLibrarianDto(LibrarianDto librarianDto)
+        //{
+        //    librarianDto.Person.Role = "librarian";
+        //    var librarian = _mapper.Map<Librarian>(librarianDto);
+        //    _repository.Librarian.Create(librarian);
+        //    _repository.Save();
+        //    var token = GenerateJwtToken(librarianDto.Person.Role,librarian.Id);
+        //    Console.WriteLine($"== inside register auth services: {librarian.Id} and personId {librarian.PersonId} and {librarian.Person.Id}===============");
+        //    Console.WriteLine($"inside register {librarian.Id}");
+        //    return token;
+        //}
 
 
-        public void Register(PersonDto user)
+
+        public string Register(PersonDto user)
         {
-            if (user.Librarian != null)
-            {
-                user.Role = "librarian";
-            }
-            else if (user.Accounter != null)
-            {
-                user.Role = "accounter";
-            }
-            else
-            {
-                user.Role = "borrower";
-            }
+            
+            int id;
             var person = _mapper.Map<Person>(user);
+
+            if (person.Librarian != null)
+            {
+                person.Role = "librarian";
+                _repository.Librarian.Create(person.Librarian);
+            }
+            else if (person.Accounter != null)
+            {
+                 person.Role = "accounter";
+                _repository.Accounter.Create(person.Accounter);
+            }
+            else if (person.Borrower != null)
+            {
+                person.Role = "borrower";
+                _repository.Borrower.Create(person.Borrower);
+            }
+
+
             _repository.Person.Create(person);
             _repository.Save();
-
+            id = GetPersonIdByRole(person);
+            var token = GenerateJwtToken(person.Role, person.Borrower.Id);
+            return token;
         }
+
+        private int GetPersonIdByRole(Person person)
+        {
+            int personId;
+
+            switch (person.Role.ToLower())
+            {
+                case "librarian":
+                    var librarian = _repository.Librarian.FindByCondition(l => l.PersonId == person.Id).FirstOrDefault();
+                    personId = librarian.Id;
+                    break;
+
+                case "accounter":
+                    var accounter = _repository.Accounter.FindByCondition(a => a.PersonId == person.Id).FirstOrDefault();
+                    personId = accounter.Id;
+                    break;
+
+                case "borrower":
+                    var borrower = _repository.Borrower.FindByCondition(b => b.PersonId == person.Id).FirstOrDefault();
+                    personId = borrower.Id;
+                    break;
+
+                default:
+                    return 0;
+            }
+
+            return personId;
+        }
+
+
     }
 }

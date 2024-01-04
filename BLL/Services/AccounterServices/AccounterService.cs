@@ -75,20 +75,13 @@ namespace BLL.Services.AccounterServices
         public bool AllowBills(int accounterId, int billId)
         {
             var bill = _billService.FindByCondition(billId);
-            BookDto book = _bookService.FindByCondition(bill.BookId);
-            if (bill == null)
+            //BookDto book = bill.Book;
+            if (bill == null && bill.Book == null)
             {
-                Console.WriteLine("bill NULL");
                 return false;
             }
 
-            if (book == null)
-            {
-                Console.WriteLine(" Book NULL");
-                return false;
-
-            }
-            if (!book.Availability || book.Copies == 0)
+            if (!bill.Book.Availability || bill.Book.Copies == 0)
             {
                 Console.WriteLine(" B NAV COPIES 0");
 
@@ -100,12 +93,12 @@ namespace BLL.Services.AccounterServices
             if (bill != null && bill.Status == "Pending")
             {
 
-                book.Copies--;
-                if (book.Copies == 0)
+                bill.Book.Copies--;
+                if (bill.Book.Copies == 0)
                 {
-                    book.Availability = false;
+                    bill.Book.Availability = false;
                 }
-                _bookService.Update(book);
+                _bookService.Update(bill.Book);
 
                 bill.AccounterId = accounterId;
                 bill.Status = "Success";

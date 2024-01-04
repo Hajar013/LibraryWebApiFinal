@@ -20,9 +20,9 @@ namespace BLL.DTOs
 
         public int? AccounterId { get; set; }
 
-        public Borrower Borrower { get; set; }
-        public Book Book { get; set; }
-        public Accounter? Accounter { get; set; }
+        public BorrowerDto Borrower { get; set; }
+        public BookDto Book { get; set; }
+        public AccounterDto? Accounter { get; set; }
 
     }
 

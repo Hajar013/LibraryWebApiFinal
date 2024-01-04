@@ -9,8 +9,9 @@ namespace BLL.Services.AuthServices
 {
     public interface IAuthService
     {
-        PersonDto Authenticate(string username, string password);
-        string GenerateJwtToken(PersonDto person);
-        void Register(PersonDto person);
+        string Authenticate(string username, string password);
+        string GenerateJwtToken( string Role, int Id);
+        string Register(PersonDto user);
+
     }
 }
