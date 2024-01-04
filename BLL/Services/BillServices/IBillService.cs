@@ -10,7 +10,7 @@ namespace BLL.Services.BillServices
 {
     public interface IBillService
     {
-        List<BillDto> FindAll();
+        //IList<BillDto> FindAll();
         BillDto FindByCondition(int id);
         void Create(BillDto dto);
         void Update(BillDto dto);

@@ -39,7 +39,7 @@ namespace BLL.Services.BillServices
             _repository.Save();
         }
 
-        public List<BillDto> FindAll()
+         IList<BillDto> FindAll()
         {
 
             IQueryable<Bill> billsFromDB = _repository.Bill.FindAll();

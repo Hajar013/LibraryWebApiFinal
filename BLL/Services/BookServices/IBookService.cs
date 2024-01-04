@@ -10,11 +10,11 @@ namespace BLL.Services.BookServices
 {
     public interface IBookService
     {
-        List<BookDto> FindAll();
+        IList<BookDto> FindAll();
         BookDto FindByCondition(int id);
-       /* List<BookDto> FindByTitle(string title);*/
-        void Create(BookDto dto);
+        /* List<BookDto> FindByTitle(string title);*/
+        //void Create(BookDto dto);
         void Update(BookDto dto);
-        void Delete(BookDto dto);
+        //void Delete(BookDto dto);
     }
 }

@@ -39,7 +39,7 @@ namespace BLL.Services.LibrarianServices
             _bookAuthorService= bookAuthorService;
         }
 
-        public void Create(LibrarianDto dto)
+        void Create(LibrarianDto dto)
         {
             Librarian librarian = _mapper.Map<Librarian>(dto);
             _repository.Librarian.Create(librarian);
@@ -47,14 +47,14 @@ namespace BLL.Services.LibrarianServices
 
         }
 
-        public void Delete(LibrarianDto dto)
+         void Delete(LibrarianDto dto)
         {
             Librarian librarian = _mapper.Map<Librarian>(dto);
             _repository.Librarian.Delete(librarian);
             _repository.Save();
         }
 
-        public List<LibrarianDto> FindAll()
+        public IList<LibrarianDto> FindAll()
         {
 
             List<Librarian> librariansFromDB = _repository.Librarian.FindAll().ToList();
@@ -63,7 +63,7 @@ namespace BLL.Services.LibrarianServices
             return librariansDto;
         }
 
-        public LibrarianDto FindByCondition(int id)
+        LibrarianDto FindByCondition(int id)
         {
 
             Librarian librariansFromDB = _repository.Librarian.FindByCondition(x=>x.Id == id).FirstOrDefault();
@@ -72,14 +72,14 @@ namespace BLL.Services.LibrarianServices
             return librariansDto;
         }
 
-        public void Update(LibrarianDto dto)
+        void Update(LibrarianDto dto)
         {
             Librarian librarian = _mapper.Map<Librarian>(dto);
             _repository.Librarian.Update(librarian);
             _repository.Save();
         }
 
-        public bool AllowBorrow(int librarianId,int transactionId)
+        bool AllowBorrow(int librarianId,int transactionId)
         {
             var transaction = _transactionService.FindByCondition(transactionId);
             BookDto book = _bookService.FindByCondition(transaction.BookId);
@@ -126,7 +126,7 @@ namespace BLL.Services.LibrarianServices
 
         }
 
-        public bool AllowReturn(int librarianId, int transactionId)
+        bool AllowReturn(int librarianId, int transactionId)
         {
             var transaction = _transactionService.FindByCondition(transactionId);
             BookDto book = _bookService.FindByCondition(transaction.BookId);

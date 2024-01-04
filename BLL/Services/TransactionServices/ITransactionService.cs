@@ -10,7 +10,7 @@ namespace BLL.Services.TransactionServices
 {
     public interface ITransactionService
     {
-        List<TransactionDto> FindAll();
+        //List<TransactionDto> FindAll();
         TransactionDto FindByCondition(int id);
         void Create(TransactionDto dto);
         void Update(TransactionDto dto);

@@ -39,7 +39,7 @@ namespace BLL.Services.TransactionServices
             _repository.Save();
         }
 
-        public List<TransactionDto> FindAll()
+        IList<TransactionDto> FindAll()
         {
 
             List<Transaction> transactionsFromDB = _repository.Transaction.FindAll().ToList();

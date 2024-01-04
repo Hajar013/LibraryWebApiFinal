@@ -43,7 +43,7 @@ namespace BLL.Services.BorrowerServices
         }
 
 
-        public void Create(BorrowerDto dto)
+         void Create(BorrowerDto dto)
         {
             Borrower borrower = _mapper.Map<Borrower>(dto);
             _repository.Borrower.Create(borrower);
@@ -51,14 +51,14 @@ namespace BLL.Services.BorrowerServices
 
         }
 
-        public void Delete(BorrowerDto dto)
+         void Delete(BorrowerDto dto)
         {
             Borrower borrower = _mapper.Map<Borrower>(dto);
             _repository.Borrower.Delete(borrower);
             _repository.Save();
         }
 
-        public List<BorrowerDto> FindAll()
+         IList<BorrowerDto> FindAll()
         {
 
             List<Borrower> borrowersFromDB = _repository.Borrower.FindAll().ToList();
@@ -77,7 +77,7 @@ namespace BLL.Services.BorrowerServices
         }
 
 
-        public void Update(BorrowerDto dto)
+         void Update(BorrowerDto dto)
         {
             Borrower borrower = _mapper.Map<Borrower>(dto);
             _repository.Borrower.Update(borrower);

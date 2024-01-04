@@ -24,7 +24,7 @@ namespace BLL.Services.BookServices
             _mapper = mapper;
         }
 
-        public void Create(BookDto dto)
+         void Create(BookDto dto)
         {
             Book book = _mapper.Map<Book>(dto);
             _repository.Book.Create(book);
@@ -32,14 +32,14 @@ namespace BLL.Services.BookServices
            
         }
 
-        public void Delete(BookDto dto)
+         void Delete(BookDto dto)
         {
             Book book = _mapper.Map<Book>(dto);
             _repository.Book.Delete(book);
             _repository.Save();
         }
 
-        public List<BookDto> FindAll()
+        public IList<BookDto> FindAll()
         {
 
            List<Book> booksFromDB = _repository.Book.FindAll().ToList();

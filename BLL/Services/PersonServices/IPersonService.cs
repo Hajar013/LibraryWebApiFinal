@@ -10,10 +10,10 @@ namespace BLL.Services.PersonServices
 {
     public interface IPersonService 
     {
-        List<PersonDto> FindAll();
-        PersonDto FindByCondition(int id);
-        void Create(PersonDto dto);
-        void Update(PersonDto dto);
-        void Delete(PersonDto dto);
+        //IList<PersonDto> FindAll();
+        //PersonDto FindByCondition(int id);
+        //void Create(PersonDto dto);
+        //void Update(PersonDto dto);
+        //void Delete(PersonDto dto);
     }
 }

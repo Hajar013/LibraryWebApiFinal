@@ -10,14 +10,14 @@ namespace BLL.Services.BorrowerServices
 {
     public interface IBorrowerService
     {
-        List<BorrowerDto> FindAll();
+        //IList<BorrowerDto> FindAll();
         BorrowerDto FindById(int id);
-        void Create(BorrowerDto dto);
-        void Update(BorrowerDto dto);
-        void Delete(BorrowerDto dto);
-        bool RequestToBorrowBook(int bookTitle, int borrowerId);
+/*        void Create(BorrowerDto dto);
+*//*        void Update(BorrowerDto dto);
+*//*        void Delete(BorrowerDto dto);
+*/        bool RequestToBorrowBook(int bookTitle, int borrowerId);
         bool RequestToReturnBook(int transactionId, int borrowerId);
-         bool RequestToBill(int bookId, int borrowerId);
+        bool RequestToBill(int bookId, int borrowerId);
 
     }
 }

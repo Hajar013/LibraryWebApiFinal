@@ -24,7 +24,7 @@ namespace BLL.Services.PersonServices
             _mapper = mapper;
         }
 
-        public void Create(PersonDto dto)
+        void Create(PersonDto dto)
         {
             Person person = _mapper.Map<Person>(dto);
             _repository.Person.Create(person);
@@ -32,14 +32,14 @@ namespace BLL.Services.PersonServices
 
         }
 
-        public void Delete(PersonDto dto)
+        void Delete(PersonDto dto)
         {
             Person person = _mapper.Map<Person>(dto);
             _repository.Person.Delete(person);
             _repository.Save();
         }
 
-        public List<PersonDto> FindAll()
+        IList<PersonDto> FindAll()
         {
 
             List<Person> personsFromDB = _repository.Person.FindAll().ToList();
@@ -48,14 +48,14 @@ namespace BLL.Services.PersonServices
             return personsDto;
         }
 
-        public PersonDto FindByCondition(int id)
+         PersonDto FindByCondition(int id)
         {
             Person personsFromDB = _repository.Person.FindByCondition(x=>x.Id == id).FirstOrDefault();
             PersonDto personsDto = _mapper.Map<PersonDto>(personsFromDB);
             return personsDto;
         }
 
-        public void Update(PersonDto dto)
+        void Update(PersonDto dto)
         {
             Person person = _mapper.Map<Person>(dto);
             _repository.Person.Update(person);

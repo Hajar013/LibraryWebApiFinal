@@ -31,14 +31,14 @@ namespace BLL.Services.BookAuthorServices
             _repository.Save();
         }
 
-        public void Delete(BookAuthorDto dto)
+         void Delete(BookAuthorDto dto)
         {
             BookAuthor bookAuthor = _mapper.Map<BookAuthor>(dto);
             _repository.BookAuthor.Delete(bookAuthor);
             _repository.Save();
         }
 
-        public List<BookAuthorDto> FindAll()
+         IList<BookAuthorDto> FindAll()
         {
 
             List<BookAuthor> bookAuthorsFromDB = _repository.BookAuthor.FindAll().ToList().ToList();
@@ -47,14 +47,14 @@ namespace BLL.Services.BookAuthorServices
             return bookAuthorsDto;
         }
 
-        public BookAuthorDto FindByCondition(int id)
+        BookAuthorDto FindByCondition(int id)
         {
             BookAuthor bookAuthorsFromDB = _repository.BookAuthor.FindByCondition(x => x.BookAuthorId == id).FirstOrDefault();
             BookAuthorDto bookAuthorsDto = _mapper.Map<BookAuthorDto>(bookAuthorsFromDB);
             return bookAuthorsDto;
         }
 
-        public void Update(BookAuthorDto dto)
+        void Update(BookAuthorDto dto)
         {
             BookAuthor bookAuthor = _mapper.Map<BookAuthor>(dto);
             _repository.BookAuthor.Update(bookAuthor);

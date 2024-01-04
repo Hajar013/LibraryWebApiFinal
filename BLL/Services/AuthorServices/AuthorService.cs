@@ -21,20 +21,20 @@ namespace BLL.Services.AuthorServices
             _mapper = mapper;
         }
 
-        public void Create(AuthorDto dto)
+         void Create(AuthorDto dto)
         {
             Author author = _mapper.Map<Author>(dto);
             _repository.Author.Create(author);
 
         }
 
-        public void Delete(AuthorDto dto)
+         void Delete(AuthorDto dto)
         {
             Author author = _mapper.Map<Author>(dto);
             _repository.Author.Delete(author);
         }
 
-        public List<AuthorDto> FindAll()
+         List<AuthorDto> FindAll()
         {
 
             IQueryable<Author> authorsFromDB = _repository.Author.FindAll();
@@ -43,7 +43,7 @@ namespace BLL.Services.AuthorServices
             return authorsDto;
         }
 
-        public AuthorDto FindByCondition(int id)
+         AuthorDto FindByCondition(int id)
         {
 
             Author authorsFromDB = _repository.Author.FindByCondition(x => x.Id == id).FirstOrDefault();
@@ -52,7 +52,7 @@ namespace BLL.Services.AuthorServices
             return authorsDto;
         }
 
-        public void Update(AuthorDto dto)
+         void Update(AuthorDto dto)
         {
             Author author = _mapper.Map<Author>(dto);
             _repository.Author.Update(author);
