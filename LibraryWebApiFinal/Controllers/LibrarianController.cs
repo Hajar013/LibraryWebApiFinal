@@ -194,6 +194,12 @@ namespace LibraryWebApiFinal.Controllers
             }
         }
 
-
+        [AllowAnonymous]
+        [HttpGet("GetAllBooks")]
+        public IList<BookDto> GetAllBooks()
+        {
+            var books = _bookService.FindAll();
+            return books;
+        }
     }
 }

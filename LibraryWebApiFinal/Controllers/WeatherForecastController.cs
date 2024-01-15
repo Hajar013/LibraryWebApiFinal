@@ -30,10 +30,10 @@ namespace LibraryWebApiFinal.Controllers
             .ToArray();
         }
 
-        [HttpGet(Name = "GetName")]
+/*        [HttpGet(Name = "GetName")]
         public IActionResult GetName()
         {
             return StatusCode(200, "hello world!");
-        }
+        }*/
     }
 }
