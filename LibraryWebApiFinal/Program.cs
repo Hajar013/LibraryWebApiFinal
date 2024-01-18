@@ -20,6 +20,7 @@ using BLL.Services.AuthorServices;
 using BLL.Services.BookAuthorServices;
 using BLL.Services.BillServices;
 using BLL.Services.AuthServices;
+using Microsoft.AspNetCore.Cors;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -116,8 +117,25 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors();
+
+
+app.UseCors(options =>
+{
+    options.WithOrigins("http://localhost:5173")
+           .AllowAnyMethod()
+           .AllowAnyHeader()
+           .AllowCredentials();
+});
+
+
+
+
+
 app.UseAuthentication();
 app.UseAuthorization();
+
 
 app.MapControllers();
 

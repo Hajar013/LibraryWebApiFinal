@@ -2,6 +2,7 @@
 using BLL.Services.AuthServices;
 using DAL.Entities;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -65,6 +66,9 @@ namespace LibraryWebApiFinal.Controllers
             }
         }
 
+      /*  [EnableCors("AllowOrigin")]*/
+
+        
         [HttpPost("login")]
         public IActionResult Login([FromBody] PersonDto personDto)
         {
@@ -72,18 +76,25 @@ namespace LibraryWebApiFinal.Controllers
             {
                 return BadRequest(ModelState);
             }
+
             try
             {
                 var token = _authService.Authenticate(personDto.UserName, personDto.Password);
 
                 if (token == null)
-                    return Unauthorized();
+                {
+                    return Unauthorized(new { Message = "Invalid username or password." });
+                }
 
-                return StatusCode(200, new { Token = token });
+                return Ok(new { Token = token });
             }
             catch (Exception ex)
             {
-                return StatusCode(500);
+                // Log the exception (consider using a logging framework like Serilog)
+                Console.WriteLine(ex.Message);
+
+                // Return a meaningful error response
+                return StatusCode(500, new { Message = "An internal server error occurred." });
             }
         }
 
