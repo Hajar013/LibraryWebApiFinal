@@ -1,6 +1,6 @@
 # Library Web Management System
 
-## Final Project for Assal Technology Training
+## Final Project for Asal Technologies Training
 
 This project is a **Library Management System** built using **.NET Core**, **C#**, and **RESTful APIs**. The system focuses on efficiently managing library resources and user interactions. It showcases modern software development practices, including modular code design using **3-Tier architecture** and the **Repository pattern**.
 
