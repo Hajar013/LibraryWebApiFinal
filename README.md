@@ -14,6 +14,7 @@ This project is a **Library Management System** built using **.NET Core**, **C#*
 - [Authentication](#authentication)
 - [Roles and Permissions](#roles-and-permissions)
 - [Error Handling](#error-handling)
+- [License](#license)
 
 ## Introduction
 
