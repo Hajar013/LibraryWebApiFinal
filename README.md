@@ -198,6 +198,7 @@ The API returns standard HTTP status codes in responses to indicate the result o
   "status": 400,
   "message": "Invalid request"
 }
+```
 
 ##  License
 
